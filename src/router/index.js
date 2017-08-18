@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
+// import Hello from '@/components/Hello'
 
 Vue.use(Router)
 
