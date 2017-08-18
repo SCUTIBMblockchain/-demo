@@ -14,13 +14,12 @@
           </el-form-item>
           <el-form-item label="角色" required="ture">
             <el-select v-model="form.role" placeholder="请选择角色">
-              <el-option label="学生" value="student"></el-option>
-              <el-option label="教师" value="instructor"></el-option>
               <el-option label="管理员" value="admin"></el-option>
+              <el-option label="医生" value="doctor"></el-option>
             </el-select> 
           </el-form-item>
           <el-form-item>
-            <el-button type="primary">登录</el-button> 
+            <el-button type="primary" @click="Login">登录</el-button> 
           </el-form-item>
         </el-form>
       </el-card>
@@ -36,8 +35,13 @@
         form: {
           account: '',
           password: '',
-          role: 'student'
+          role: 'doctor'
         }
+      }
+    },
+    methods: {
+      Login () {
+        this.$router.push('/' + this.form.role)
       }
     }
   }
