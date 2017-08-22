@@ -26,7 +26,6 @@
     </el-col>
   </el-row>
 </template>
-
 <script>
   export default{
     name: 'hello',
