@@ -6,13 +6,13 @@
           <span style="line-height:36px;">Please sign in</span>
         </div>
         <el-form ref="form" :model="form" label-position="top">
-          <el-form-item label="账号"  required="ture">
+          <el-form-item label="账号"  required="true">
             <el-input v-model="form.account" placeholder="请输入账号" type="text"></el-input>         
           </el-form-item>
-          <el-form-item label="密码" required="ture">
+          <el-form-item label="密码" required="true">
             <el-input v-model="form.password" placeholder="请输入密码" type="password"></el-input> 
           </el-form-item>
-          <el-form-item label="角色" required="ture">
+          <el-form-item label="角色" required="true">
             <el-select v-model="form.role" placeholder="请选择角色">
               <el-option label="管理员" value="admin"></el-option>
               <el-option label="医生" value="doctor"></el-option>
@@ -26,6 +26,8 @@
     </el-col>
   </el-row>
 </template>
+
+
 
 <script>
   export default{
@@ -41,7 +43,27 @@
     },
     methods: {
       Login () {
-        this.$router.push('/' + this.form.role)
+        var obj = {
+          name: this.account,
+          password: this.password
+        }
+        this.$http.post('/auth/admin', obj) // 将信息发送给后端
+        .then((res) => { // axios返回的数据都在res.data里
+          if (res.data.success) { // 如果成功
+            sessionStorage.setItem('demo-token', res.data.token) // 用sessionStorage把token存下来
+            this.$message({ // 登录成功，显示提示语
+              type: 'success',
+              message: '登录成功！'
+            })
+            this.$router.push('/' + this.form.role) // 登录成功
+          } else {
+            this.$message.error(res.data.info)// 登录失败，显示提示语
+            sessionStorage.setItem('demo-token', null) // 将token清空
+          }
+        }, (eor) => {
+          this.$message.error('请求错误！')
+          sessionStorage.setItem('demo-token', null) // 将token清空
+        })
       }
     }
   }
