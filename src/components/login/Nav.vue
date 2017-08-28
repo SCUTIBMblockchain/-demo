@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="activeIndex" class="top-menu" mode="horizontal" @select="handleSelect">
+  <el-menu :default-active="activeIndex" theme="dark" class="top-menu" mode="horizontal" @select="handleSelect">
     <el-menu-item index="index">{{title}}</el-menu-item>
   </el-menu>
 </template>
