@@ -12,8 +12,8 @@ const buildConnect = function* () {
 
 const postDoctorAuth = function* () {
   const userInfo = {
-    name: 'admin',
-    password: 'adminpw'
+    name: 'doctor',
+    password: 'doctorpw'
   }
   if (userInfo !== null) {                              // passwd not right
     if (userInfo.password !== 'adminpw') {

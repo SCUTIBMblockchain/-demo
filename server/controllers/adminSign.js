@@ -9,6 +9,7 @@ const buildConnect = function* () {
     console.log('admin connect good')
   })
 }
+
 const postAdminAuth = function* () {
   const data = this.request.body
   const userInfo = {
@@ -16,11 +17,10 @@ const postAdminAuth = function* () {
     password: 'adminpw'
   }
   if (userInfo !== null) {
-    console.log(userInfo.password + data.password)
     if (userInfo.password !== data.password) {         // passwd not right
       this.body = {
         success: false,
-        info: 'WrongInfo'
+        info: data.password
       }
     } else {                                           // messages pass to userToken
       const userToken = {
