@@ -6,13 +6,13 @@
           <span style="line-height:36px;">Please sign in</span>
         </div>
         <el-form ref="form" :model="form" label-position="top">
-          <el-form-item label="账号"  required="true">
+          <el-form-item label="账号"  required="">
             <el-input v-model="form.account" placeholder="请输入账号" type="text"></el-input>         
           </el-form-item>
-          <el-form-item label="密码" required="true">
+          <el-form-item label="密码" required="">
             <el-input v-model="form.password" placeholder="请输入密码" type="password"></el-input> 
           </el-form-item>
-          <el-form-item label="角色" required="true">
+          <el-form-item label="角色" required="">
             <el-select v-model="form.role" placeholder="请选择角色">
               <el-option label="管理员" value="admin"></el-option>
               <el-option label="医生" value="doctor"></el-option>

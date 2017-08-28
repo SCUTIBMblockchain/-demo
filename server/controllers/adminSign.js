@@ -16,11 +16,11 @@ const postAdminAuth = function* () {
     name: 'admin',
     password: 'adminpw'
   }
-  if (userInfo !== null) {
+  if (userInfo.name === data.name) {
     if (userInfo.password !== data.password) {         // passwd not right
       this.body = {
         success: false,
-        info: data.password
+        info: 'Wrong password!'
       }
     } else {                                           // messages pass to userToken
       const userToken = {
