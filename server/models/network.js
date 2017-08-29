@@ -23,10 +23,10 @@ var util = require('util')
 var fs = require('fs-extra')
 var User = require('fabric-client/lib/User.js')
 var CopService = require('fabric-ca-client')
-var config = require('../config.json')
+var config = require('../config/config.json')
 
 var Fbc = require('fabric-client')
-Fbc.addConfigFile(path.join(__dirname, 'network-config.json'))
+Fbc.addConfigFile(path.join(__dirname, '../config/network-config.json'))
 Fbc.setLogger(logger)
 var ORGS = Fbc.getConfigSetting('network-config')
 
@@ -106,55 +106,59 @@ function getKeyStoreForOrg (org) {
 function newRemotes (urls, forPeers, userOrg) {
   var targets = []
   // find the peer that match the urls
-  outer:
-    for (let index in urls) {
-      let peerUrl = urls[index]
-
-      let found = false
-      for (let key in ORGS) {
-        if (key.indexOf('org') === 0) {
+  for (let index in urls) {
+    let peerUrl = urls[index]
+    let state = false
+    let found = false
+    for (let key in ORGS) {
+      if (key.indexOf('org') === 0) {
           // if looking for event hubs, an app can only connect to
           // event hubs in its own org
-          if (!forPeers && key !== userOrg) {
-            continue
-          }
+        if (!forPeers && key !== userOrg) {
+          continue
+        }
 
-          let org = ORGS[key]
-          let client = getClientForOrg(key)
+        let org = ORGS[key]
+        let client = getClientForOrg(key)
 
-          for (let prop in org) {
-            if (prop.indexOf('peer') === 0) {
-              if (org[prop]['requests'].indexOf(peerUrl) >= 0) {
+        for (let prop in org) {
+          if (prop.indexOf('peer') === 0) {
+            if (org[prop]['requests'].indexOf(peerUrl) >= 0) {
                 // found a peer matching the subject url
-                if (forPeers) {
-                  let data = fs.readFileSync(path.join(__dirname, org[prop]['tls_cacerts']))
-                  targets.push(client.newPeer('grpcs://' + peerUrl, {
-                    pem: Buffer.from(data).toString(),
-                    'ssl-target-name-override': org[prop]['server-hostname']
-                  }))
-
-                  continue outer
-                } else {
-                  let eh = client.newEventHub()
-                  let data = fs.readFileSync(path.join(__dirname, org[prop]['tls_cacerts']))
-                  eh.setPeerAddr(org[prop]['events'], {
-                    pem: Buffer.from(data).toString(),
-                    'ssl-target-name-override': org[prop]['server-hostname']
-                  })
-                  targets.push(eh)
-
-                  continue outer
-                }
+              if (forPeers) {
+                let data = fs.readFileSync(path.join(__dirname, org[prop]['tls_cacerts']))
+                targets.push(client.newPeer('grpcs://' + peerUrl, {
+                  pem: Buffer.from(data).toString(),
+                  'ssl-target-name-override': org[prop]['server-hostname']
+                }))
+                state = true
+                break
+              } else {
+                let eh = client.newEventHub()
+                let data = fs.readFileSync(path.join(__dirname, org[prop]['tls_cacerts']))
+                eh.setPeerAddr(org[prop]['events'], {
+                  pem: Buffer.from(data).toString(),
+                  'ssl-target-name-override': org[prop]['server-hostname']
+                })
+                targets.push(eh)
+                state = true
+                break
               }
             }
           }
         }
-      }
-
-      if (!found) {
-        logger.error(util.format('Failed to find a peer matching the url %s', peerUrl))
+        if (state) {
+          break
+        }
       }
     }
+    if (state) {
+      continue
+    }
+    if (!found) {
+      logger.error(util.format('Failed to find a peer matching the url %s', peerUrl))
+    }
+  }
 
   return targets
 }
@@ -342,7 +346,7 @@ var getPeerAddressByName = function (org, peer) {
 
 exports.getChannelForOrg = getChannelForOrg
 exports.getClientForOrg = getClientForOrg
-exports.getLogger = getLogger
+exports.getlog = getLogger
 exports.setupChaincodeDeploy = setupChaincodeDeploy
 exports.getMspID = getMspID
 exports.ORGS = ORGS

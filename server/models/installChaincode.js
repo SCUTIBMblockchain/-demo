@@ -16,7 +16,7 @@
 'use strict'
 var util = require('util')
 var network = require('./network.js')
-var logger = network.getLogger('install-chaincode')
+var logger = network.getlog('install-chaincode')
 // function installChaincode(org) {
 var installChaincode = function* (peers, chaincodeName, chaincodePath,
   chaincodeVersion, username, org) {

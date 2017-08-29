@@ -17,7 +17,7 @@ var util = require('util')
 var path = require('path')
 var fs = require('fs')
 var txId = null
-var config = require('../config.json')
+var config = require('../config/config.json')
 var network = require('./network.js')
 var log = network.getlog('Join-Channel')
 // network.fbc.addConfigFile(path.join(__dirname, 'network-config.json'))
