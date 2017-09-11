@@ -4,6 +4,7 @@ const koa = require('koa-router')()
 const json = require('koa-json')
 const logger = require('koa-logger')
 const auth = require('./server/routes/auth')
+const api = require('./server/routes/api')
 
 app.use(require('koa-bodyparser')())
 app.use(json())
@@ -21,6 +22,7 @@ app.on('error', function (err, ctx) {
 })
 
 koa.use('/auth', auth.routes())
+koa.use('/api', api.routes())
 
 app.use(koa.routes())
 

@@ -18,26 +18,24 @@ function* createChannel () {
     this.response.body = JSON.stringify(getErrorMessage('\'channelConfigPath\''))
     return
   }
-
   this.body = yield channels.createChannel(channelName, channelConfigPath, this.request.body.username, this.request.body.orgName)
 }
-function* joinChannel() {
+function* joinChannel () {
   logger.info('<<<<<<<<<<<<<<<<< J O I N  C H A N N E L >>>>>>>>>>>>>>>>>')
-  var channelName = this.request.params.channelName
-  var peers = this.request.request.body.peers
+  var channelName = this.params.channelName
+  var peers = this.request.body.peers
   logger.debug('channelName : ' + channelName)
   logger.debug('peers : ' + peers)
   if (!channelName) {
-    JSON.stringify(getErrorMessage('\'channelName\''))
+    this.response.body = JSON.stringify(getErrorMessage('\'channelName\''))
     return
   }
-  if (!peers || peers.length == 0) {
-    res.json(getErrorMessage('\'peers\''))
+  if (!peers || peers.length === 0) {
+    this.response.body = JSON.stringify(getErrorMessage('\'peers\''))
     return
   }
-  join.joinChannel(channelName, peers, req.username, req.orgname)
-    .then(function (message) {
-      res.send(message)
-    })
+  this.body = yield channels.joinChannel(channelName, peers, this.request.body.username, this.request.body.orgName)
 }
+
 exports.createChannel = createChannel
+exports.joinChannel = joinChannel
