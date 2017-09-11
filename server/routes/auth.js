@@ -4,8 +4,7 @@ const infoOfDoc = require('../controllers/doctorDashbord')
 const router = require('koa-router')()
 
 var network = require('../models/network.js')
-var channels = require('../models/createChannel.js')
-var join = require('../models/joinchannel.js')
+var createChannel = require('../controllers/channel').createChannel
 var install = require('../models/installChaincode.js')
 var instantiate = require('../models/instantiateChaincode.js')
 var invoke = require('../models/invokeTransaction.js')
@@ -24,9 +23,7 @@ router.get('/doctorDash/:id', infoOfDoc.getMedicalLogs, infoOfDoc.getTransaction
 // Register and enroll user
 router.post('/users', network.getRegisteredUsers)
 // Create Channel
-router.post('/channels', channels.createChannel)
-// Join Channel
-router.post('/channels/:channelName/peers', join.joinChannel)
+router.post('/channels', createChannel)
 // Install chaincode on target peers
 router.post('/chaincodes', install.installChaincode)
 // Instantiate chaincode on target peers
