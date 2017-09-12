@@ -11,15 +11,16 @@ const buildConnect = function* () {
 }
 
 const postDoctorAuth = function* () {
+  const data = this.request.body
   const userInfo = {
-    name: 'admin',
-    password: 'adminpw'
+    name: 'doctor',
+    password: 'doctorpw'
   }
-  if (userInfo !== null) {                              // passwd not right
-    if (userInfo.password !== 'adminpw') {
+  if (userInfo.name === data.name) {                              // passwd not right
+    if (userInfo.password !== data.password) {
       this.body = {
         success: false,
-        info: 'WrongInfo'
+        info: 'Wrong password!'
       }
     } else {                                    // messages pass to userToken
       const userToken = {
