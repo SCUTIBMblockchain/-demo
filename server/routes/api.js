@@ -12,9 +12,10 @@ var query = require('../models/query.js')
 router.post('/channels', channel.createChannel)
 // Join Channels
 router.post('/channels/:channelName/peers', channel.joinChannel)
-// todo -start
 // Register and enroll user
 router.post('/users', network.getRegisteredUsers)
+
+// todo 尚未完成的api
 // Install chaincode on target peers
 router.post('/chaincodes', install.installChaincode)
 // Instantiate chaincode on target peers

@@ -228,6 +228,9 @@ var getAdminUser = function (userOrg) {
   })
 }
 
+// todo 在model目录下,新建一个user的文件,然后将这个函数拆成enrollnewUser和getRegisteredUser两个函数, 分别实现注册新用户,和查询账户的功能
+// ! 尚不确定该函数的所有引用情况,拆分同时请勿删除该函数以免崩溃
+
 var getRegisteredUsers = function (username, userOrg, isJson) {
   var member
   var client = getClientForOrg(userOrg)
