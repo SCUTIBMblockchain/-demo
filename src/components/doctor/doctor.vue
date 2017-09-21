@@ -197,7 +197,6 @@ export default {
       }else if (this._data.operation=="edit") {
 
       }
-
     },
     showHistory(index,row){
       this._data.historyDialogVisible = true;
