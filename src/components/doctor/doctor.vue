@@ -1,6 +1,6 @@
 <<template>
   <el-row class="content">
-    <el-col :xs="24" :sm="{span: 16,offset: 4}">
+    <el-col :xs="24" :sm="{span: 20,offset: 2}">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span style="line-height:36px;">选择病人进行操作</span>
@@ -62,10 +62,11 @@
               <!--</el-popover>-->
             </template>
           </el-table-column>
-          <el-table-column label="操作" >
+          <el-table-column label="操作" width="350">
             <template scope="scope">
               <el-button type="text" @click="showHistory(scope.$index,scope.row)">查看历史病例</el-button>
-              <!--<el-button type="text" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+              <el-button type="text" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              <el-button type="text" @click="handleMove(scope.$index, scope.row)">转诊</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -81,7 +82,6 @@ import EDITCASE from './editCase.vue'
 import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
 import TimeLine from './Timeline.vue'
 export default {
-  name: 'login',
   components: {
     ElButton,
     EDITCASE,
@@ -195,7 +195,7 @@ export default {
       if (this._data.operation=="new"){
         this._data.tableData.push(this._data.sampleData)
       }else if (this._data.operation=="edit") {
-        ;
+
       }
 
     },
@@ -203,8 +203,30 @@ export default {
       this._data.historyDialogVisible = true;
     },
     handleDelete (index, row) {
-      console.log(index, row)
-      alert('you click delete')
+      console.log(index, row);
+      for(n in this._data.tableData.length)
+        console.log(this._data.tableData[n])
+      //this._data.tableData.pop();
+      this._data.tableData.splice(index,1)
+      //this._data.tableData.pop()
+      console.log(this._data.tableData)
+    },
+    handleMove (index, row) {
+      let win = this
+      let myws = new WebSocket('ws://localhost:4000/ws');
+      myws.onopen = function (event) {
+        console.log('doctor client open');
+        myws.send('move'+index+row)
+      };
+      myws.onmessage = function (event) {
+        console.log('doctor client gets message');
+        console.log(event.data)
+        win.$message({
+          type: 'success',
+            message: event.data
+        })
+        win.handleDelete(index,row)
+      };
     },
     showSickDetailDialog () {
 //      this.dialogVisible = isVisible
