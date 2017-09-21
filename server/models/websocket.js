@@ -2,7 +2,7 @@ const ws = require('ws')
 const queryIp = require('./hospital')
 const WebSocketServer = ws.Server
 
-function createWebSocketServer (server, onConnection, onMessage, onClose, onError) {
+function createWebSocketServer (server) {
   let wss = new WebSocketServer({
     server: server
   })
@@ -11,35 +11,27 @@ function createWebSocketServer (server, onConnection, onMessage, onClose, onErro
       client.send(data)
     })
   }
-  onConnection = onConnection || function () {
-    console.log('[WebSocket] connected.')
-  }
-  onMessage = onMessage || function (msg) {
-    // query hospital ip
-    queryIp(msg.HospitalName).then((address) => {
-      // 建立与目标医院的webSocket连接
-      var h = new WebSocket(address)
-      // 发送信息
-      h.send = {
-        patientId: msg.patientId,
-        additionMsg: msg.additionMsg
-      }
-      // 接受返回信息
-      
-    })
-  }
-  onClose = onClose || function (code, message) {
-    console.log(`[WebSocket] closed: ${code} - ${message}`)
-  }
-  onError = onError || function (err) {
-    console.log('[WebSocket] error: ' + err)
-  }
   wss.on('connection', function (ws, req) {
-    ws.on('message', onMessage)
-    ws.on('close', onClose)
-    ws.on('error', onError)
-    ws.wss = wss
-    onConnection.apply(ws)
+    // 发送转诊请求
+    ws.on('message', function (msg) {
+      // query hospital ip
+      queryIp(msg.HospitalName).then((address) => {
+        // 建立与目标医院的webSocket连接
+        var h = new WebSocket(address)
+        // 发送信息
+        h.send = {
+          patientId: msg.patientId,
+          additionMsg: msg.additionMsg
+        }
+        // 接受返回信息
+        h.onmessage = function (event) {
+          var data = event.data
+          console.log(data)
+          var msg = JSON.parse(data)
+          ws.send(msg)
+        }
+      })
+    })
   })
   console.log('WebSocketServer was attached.')
   return wss
