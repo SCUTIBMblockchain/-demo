@@ -15,6 +15,10 @@ router.post('/channels/:channelName/peers', channel.joinChannel)
 // Register and enroll user
 router.post('/users', network.getRegisteredUsers)
 
+// TODO waiting for debugging
+
+// TODO -end for debugging
+
 // todo 尚未完成的api
 // Install chaincode on target peers
 router.post('/chaincodes', install.installChaincode)

@@ -34,8 +34,8 @@ var clients = {}
 var channels = {}
 var caClients = {}
 
-// set up the client and channel objects for each org
-for (let key in ORGS) {
+//* set up the client and channel objects for each org
+for (let key in ORGS) {                           // ? what does the key here mean?
   if (key.indexOf('org') === 0) {
     let client = new Fbc()
 
@@ -57,7 +57,7 @@ for (let key in ORGS) {
     caClients[key] = new CopService(caUrl, null /* defautl TLS opts */, '' /* default CA */, cryptoSuite)
   }
 }
-
+//* function for setting up peers
 function setupPeers (channel, org, client) {
   for (let key in ORGS[org]) {
     if (key.indexOf('peer') === 0) {
@@ -68,7 +68,6 @@ function setupPeers (channel, org, client) {
           'ssl-target-name-override': ORGS[org][key]['server-hostname']
         }
       )
-
       channel.addPeer(peer)
     }
   }
