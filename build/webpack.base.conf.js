@@ -3,6 +3,8 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
+var webpack = require('webpack')
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -19,12 +21,22 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: [' ','.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src')
+      '@': resolve('src'),
+      'src': path.resolve(__dirname, '../src'),
+      'assets': path.resolve(__dirname, '../src/assets'),
+      'components': path.resolve(__dirname, '../src/components'),
+      'jquery': path.resolve(__dirname, '../src/assets/js')
     }
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
+  ],
   module: {
     rules: [
       // {

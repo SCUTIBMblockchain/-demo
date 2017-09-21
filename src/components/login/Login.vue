@@ -7,19 +7,20 @@
         </div>
         <el-form ref="form" :model="form" label-position="top">
           <el-form-item label="账号"  required="">
-            <el-input v-model="form.account" placeholder="请输入账号" type="text"></el-input>         
+            <el-input v-model="form.account" placeholder="请输入账号" type="text"></el-input>
           </el-form-item>
           <el-form-item label="密码" required="">
-            <el-input v-model="form.password" placeholder="请输入密码" type="password"></el-input> 
+            <el-input v-model="form.password" placeholder="请输入密码" type="password"></el-input>
           </el-form-item>
           <el-form-item label="角色" required="">
             <el-select v-model="form.role" placeholder="请选择角色">
               <el-option label="管理员" value="admin"></el-option>
               <el-option label="医生" value="doctor"></el-option>
-            </el-select> 
+              <el-option label="开发人员" value="developer"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="Login">登录</el-button> 
+            <el-button type="primary" @click="Login">登录</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -70,7 +71,7 @@
     }
   }
 </script>
-  
+
 <style lang="stylus" scoped>
   .el-card
     margin-top 80px
