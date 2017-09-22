@@ -1,21 +1,24 @@
 
 const router = require('koa-router')()
 
-var network = require('../models/network.js')
 var channel = require('../controllers/channel')
 var install = require('../models/installChaincode.js')
 var instantiate = require('../models/instantiateChaincode.js')
 var invoke = require('../models/invokeTransaction.js')
 var query = require('../models/query.js')
+var user = require('../controllers/user')
 
+//* 以下api 与demo关联不大, 未来做开发者界面再搞
 // Create Channel
 router.post('/channels', channel.createChannel)
 // Join Channels
 router.post('/channels/:channelName/peers', channel.joinChannel)
-// Register and enroll user
-router.post('/users', network.getRegisteredUsers)
 
-// todo 尚未完成的api
+// todo 测试该api
+// Register and enroll user
+router.post('/users', user.enrollUser)
+
+// todo 移植api到koa上
 // Install chaincode on target peers
 router.post('/chaincodes', install.installChaincode)
 // Instantiate chaincode on target peers
@@ -37,5 +40,4 @@ router.get('/channels/:channelName', query.getChainInfo)
 router.get('/chaincodes', query.getInstalledChaincodes)
 // Query to fetch channels
 router.get('/channels', query.getChannels)
-// todo -end
 module.exports = router

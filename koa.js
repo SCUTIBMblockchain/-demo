@@ -5,11 +5,12 @@ const json = require('koa-json')
 const logger = require('koa-logger')
 const auth = require('./server/routes/auth')
 const api = require('./server/routes/api')
+const WebSocketServer = require('./server/models/websocket')
 
 app.use(require('koa-bodyparser')())
 app.use(json())
 app.use(logger())
-
+// 记录每次请求的时间
 app.use(function* (next) {
   let start = new Date()
   yield next
@@ -20,14 +21,14 @@ app.use(function* (next) {
 app.on('error', function (err, ctx) {
   console.log('server error', err)
 })
-
+// router
 koa.use('/auth', auth.routes())
 koa.use('/api', api.routes())
 
 app.use(koa.routes())
 
-app.listen(8889, () => {
-  console.log('Koa is listening in 8889')
-})
+var server = app.listen(8889)
+// websocket
+app.wss = WebSocketServer(server)
 
 module.exports = app
