@@ -212,20 +212,29 @@ export default {
     },
     handleMove (index, row) {
       let win = this
-      let myws = new WebSocket('ws://localhost:4000/ws');
-      myws.onopen = function (event) {
-        console.log('doctor client open');
+      let myws = new WebSocket('ws://localhost:4000/ws')
+      if('WebSocket'in window){
+        alert('your browser supports websocket!')
+        myws.onopen = function (event) {
+        console.log('doctor client open')
         myws.send('move'+index+row)
-      };
+      }
       myws.onmessage = function (event) {
-        console.log('doctor client gets message');
+        console.log('doctor client gets message')
         console.log(event.data)
         win.$message({
           type: 'success',
             message: event.data
         })
         win.handleDelete(index,row)
-      };
+      }
+       myws.onclose = function(){ 
+          alert("Connection is closing...")
+       }
+      }
+      else{
+          alert("Your browser does not support WebSocket!")
+      }
     },
     showSickDetailDialog () {
 //      this.dialogVisible = isVisible

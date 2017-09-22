@@ -35,8 +35,8 @@ var channels = {}
 var caClients = {}
 
 //* set up the client and channel objects for each org
-for (let key in ORGS) {                           // ? what does the key here mean?
-  if (key.indexOf('org') === 0) {
+for (let key in ORGS) {
+  if (key.indexOf('org') === 0) {      // ? Cannot undestand here and many down there, why only focus on org[0] or peer[0]
     let client = new Fbc()
 
     let cryptoSuite = Fbc.newCryptoSuite()
@@ -72,7 +72,7 @@ function setupPeers (channel, org, client) {
     }
   }
 }
-
+//* function for setting up new orderer
 function newOrderer (client) {
   var caRootsPath = ORGS.orderer.tls_cacerts
   let data = fs.readFileSync(path.join(__dirname, caRootsPath))
@@ -82,7 +82,7 @@ function newOrderer (client) {
     'ssl-target-name-override': ORGS.orderer['server-hostname']
   })
 }
-
+//* function for returning path of certs
 function readAllFiles (dir) {
   var files = fs.readdirSync(dir)
   var certs = []
@@ -102,7 +102,7 @@ function getKeyStoreForOrg (org) {
   return config.keyValueStore + '_' + org
 }
 
-function newRemotes (urls, forPeers, userOrg) {
+function newRemotes (urls, forPeers, userOrg) {                                    // ? forPeers (a boolean value)
   var targets = []
   // find the peer that match the urls
   for (let index in urls) {
@@ -116,7 +116,6 @@ function newRemotes (urls, forPeers, userOrg) {
         if (!forPeers && key !== userOrg) {
           continue
         }
-
         let org = ORGS[key]
         let client = getClientForOrg(key)
 
@@ -158,7 +157,6 @@ function newRemotes (urls, forPeers, userOrg) {
       logger.error(util.format('Failed to find a peer matching the url %s', peerUrl))
     }
   }
-
   return targets
 }
 
@@ -192,7 +190,6 @@ var getAdminUser = function (userOrg) {
   var password = users[0].secret
   var member
   var client = getClientForOrg(userOrg)
-
   return Fbc.newDefaultKeyValueStore({
     path: getKeyStoreForOrg(getOrgName(userOrg))
   }).then((store) => {
