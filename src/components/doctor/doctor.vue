@@ -1,6 +1,9 @@
 <<template>
-  <el-row class="content">
-    <el-col :xs="24" :sm="{span: 20,offset: 2}">
+  <el-row>
+    <el-col :span="3">
+      <VerticalNav v-bind:menuItems="navItems"></VerticalNav>
+    </el-col>
+    <el-col  :span="19" :offset="1" >
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span style="line-height:36px;">选择病人进行操作</span>
@@ -81,14 +84,20 @@
 import EDITCASE from './editCase.vue'
 import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
 import TimeLine from './Timeline.vue'
+import VerticalNav from '../VerticalNav.vue'
 export default {
   components: {
     ElButton,
     EDITCASE,
-    TimeLine
+    TimeLine,
+    VerticalNav,
   },
   data() {
     return {
+      navItems: [{
+        index: 'referral',
+        content: '发起转诊'
+      }],
       dialogVisible: false,
       historyDialogVisible: false,
       operation:'',

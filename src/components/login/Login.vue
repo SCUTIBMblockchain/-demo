@@ -14,8 +14,8 @@
           </el-form-item>
           <el-form-item label="角色" required="">
             <el-select v-model="form.role" placeholder="请选择角色">
-              <el-option label="管理员" value="admin"></el-option>
-              <el-option label="医生" value="doctor"></el-option>
+              <el-option label="接受转诊医院" value="admin"></el-option>
+              <el-option label="请求转诊医院" value="doctor"></el-option>
               <el-option label="开发人员" value="developer"></el-option>
             </el-select>
           </el-form-item>

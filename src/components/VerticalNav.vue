@@ -8,6 +8,11 @@
 <<script>
   export default {
     props: ['menuItems'],
+    data() {
+      return {
+
+      }
+    },
     methods: {
       handleSelect (event) {
         console.log(this.menuItems)
@@ -16,7 +21,7 @@
   }
 </script>
 
-</script>
+
 <style lang="stylus" scoped>
   .el-menu-item
     margin-top 10px

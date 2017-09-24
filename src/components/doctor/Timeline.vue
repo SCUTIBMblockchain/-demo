@@ -19,7 +19,7 @@
                   <div class="events">
                     <div class="events-header" @click="handleShow()">Event Heading</div>
                     <div class="events-body">
-                      <div class="row">
+                      <div class="row" id="hid">
                         <div class="events-desc">
                           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                         </div>
@@ -64,7 +64,16 @@
         this.$emit('update:visible', false)
       },
       handleShow(){
-        alert('show')
+        console.log(this)
+        let cls = document.getElementById("hid")
+        if(cls.style.display=="block"){
+          cls.style.display="none"
+        }else {
+          cls.style.display="block"
+        }
+
+//        cls.style.display="block"
+//          .VivaTimeline dl dd .events .events-body .row
       }
     }
   }
@@ -181,7 +190,7 @@
   }
 
   .VivaTimeline dl dd .events .events-body {
-    overflow: hidden;
+    /*overflow: hidden;*/
     zoom: 1;
     background-color: #EEE;
     padding: 10px;
