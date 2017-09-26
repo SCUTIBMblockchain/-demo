@@ -1,8 +1,11 @@
+//* receive and solve webSocket things
 const ws = require('ws')
-const queryIp = require('./hospital')
 const WebSocketServer = ws.Server
+const queryIp = require('./hospital')
+const invokeIp = require('./hospital')
 
 function createWebSocketServer (server) {
+  // create websocket server instance
   let wss = new WebSocketServer({
     server: server
   })
@@ -32,6 +35,25 @@ function createWebSocketServer (server) {
         }
       })
     })
+  })
+  //* solve reply from B
+  wss.on('reply', function (ws, accept) {
+    // B give reply message
+    if (accept) {
+      ws.on('message', function (msg) {
+        // query hospital ip
+        invokeIp(msg.HospitalName).then((address) => {
+          // build websocket with target hospital
+          var h = new WebSocket(address)
+          // send back patientID as well as additional message
+          h.send = {
+            accept: accept,
+            patientId: msg.patientId,
+            additionMsg: msg.additionMsg
+          }
+        })
+      })
+    }
   })
   console.log('WebSocketServer was attached.')
   return wss
