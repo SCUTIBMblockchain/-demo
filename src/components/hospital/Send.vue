@@ -162,7 +162,9 @@
         let myws = new WebSocket('ws://localhost:4000/ws');
         myws.onopen = function (event) {
           console.log('doctor client open');
-          myws.send('move' + index + row)
+          let jsonData = {"operation":"send","object":row};
+          console.log(jsonData);
+          myws.send(JSON.stringify(jsonData));
         };
         myws.onmessage = function (event) {
           console.log('doctor client gets message');
