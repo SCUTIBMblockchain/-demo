@@ -1,53 +1,57 @@
 const WebSocket = require('ws')
-// const queryIp = require('./hospital')
 const WebSocketServer = WebSocket.Server
-
-const queryChainCode = require('./query').queryChaincode
-var hospital = {
-  peer: 'peer1',
-  org: 'org1',
-  channelName: 'myChannel',
-  chaincode: 'mycc',
-  userName: 'admin'
-}
-const queryIp = function (name) {
-  return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, name, 'query', hospital.userName, hospital.org)
-}
 
 function createWebSocketServer (server) {
   let wss = new WebSocketServer({
     server: server
   })
-  wss.broadcast = function broadcast (data) {
-    wss.clients.forEach(function each (client) {
-      client.send(data)
-    })
-  }
+  // 保存连接的ws
+  wss.connections = {}
+  // 保存路由,具体格式
+  /*
+    url: {
+      message: f1, //接受到message时调用的函数
+    }
+  *
+  */
+  wss.router = {}
+  // 建立连接
   wss.on('connection', function (ws, req) {
-    // 发送转诊请求
-    ws.on('message', function (msg, req) {
-      var hospitalmsg = JSON.parse(msg)
-      // query hospital ip
-      queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, hospitalmsg.hospitalName, 'query', hospital.userName, hospital.org).then((address) => {
-        // 建立与目标医院的webSocket连接
-        var h = new WebSocket(address)
-        // 发送信息
-        h.send = {
-          patientId: msg.patientId,
-          additionMsg: msg.additionMsg
-        }
-        // 接受返回信息
-        h.onmessage = function (event) {
-          var data = event.data
-          console.log(data)
-          var msg = JSON.parse(data)
-          ws.send(msg)
-        }
-      })
-    })
+    // router
+    for (let url in wss.router) {
+      let fs = wss.router[url]
+      if (req.url === url) {
+         // 记录ws
+        wss.connections[url] = ws
+        // 注册函数
+        ws.on('message', fs.message.apply(this))
+      }
+    }
   })
+  // 注册router, 对应url调用相应的函数
+  wss.routerRegister = function (url, messageFunction) {
+    if (wss.router[url] == null) {
+      wss.router[url] = {
+        message: messageFunction
+      }
+    } else {
+      wss.router[url].message = messageFunction
+    }
+  }
+/* 向对应url连接的客户端发送信息
+ex: 向连接到服务器/referral/地址下的客户发送信息
+*/
+  wss.routers = function (routers) {
+    let urls = Object.keys(routers)
+    for(let url of urls){
+      wss.routerRegister
+    }
+  }
+
+  wss.sendMessage = function (url, message) {
+    wss.connections[url].send(message)
+  }
   console.log('WebSocketServer was attached.')
   return wss
 }
-
 module.exports = createWebSocketServer
