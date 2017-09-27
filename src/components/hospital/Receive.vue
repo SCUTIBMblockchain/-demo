@@ -12,22 +12,22 @@
         <!--</template>-->
       <!--</el-table-column>-->
     <!--</el-table>-->
-    <Case></Case>
-    <CaseList v-bind:visible.sync="caseListVisible"></CaseList>
-    <Referral v-bind:visible.sync="referralVisible"></Referral>
+    <Case :message="patientInfo"></Case>
+    <!--<CaseList v-bind:visible.sync="caseListVisible"></CaseList>-->
+    <!--<Referral v-bind:visible.sync="referralVisible"></Referral>-->
   </el-col>
 </template>
 
 <script>
   import ElCol from "element-ui/packages/col/src/col";
-  import CaseList from '../admin/referral/CaseList'
-  import Referral from '../admin/referral/Referral'
+//  import CaseList from '../admin/referral/CaseList'
+//  import Referral from '../admin/referral/Referral'
   import Case from './Case.vue'
   export default {
     components: {
       ElCol,
-      CaseList,
-      Referral,
+//      CaseList,
+//      Referral,
       Case,
     },
     props: ['receiveVisible'],
@@ -35,12 +35,7 @@
       return {
         caseListVisible: false,
         referralVisible: false,
-        patientInfo: [{
-          name: '刘备',
-          status: '待处理',
-          time: '2017-08-21',
-          request: 'haha'
-        }],
+        patientInfo: [],
       }
     },
     mounted() {
@@ -51,34 +46,40 @@
         let win = this;
         let myws = new WebSocket('ws://localhost:4000/');
         myws.onopen = function (event) {
-          console.log('接收转诊的医院打开了ws');
+          //console.log('接收转诊的医院打开了ws');
           let jsonData = {"operation":"receive","object":"receive这是一条接受转诊的医院发送给服务器的消息"};
-          console.log('jsondata is ',jsonData);
-          console.log('jsondata to str is ',JSON.stringify(jsonData));
+          //console.log('jsondata is ',jsonData);
+          //console.log('jsondata to str is ',JSON.stringify(jsonData));
           myws.send(JSON.stringify(jsonData));
-          console.log('open()结束')
+          //console.log('open()结束')
         };
         myws.onmessage = function (event) {
-          console.log('接受转诊的医院接收到来自服务器的消息');
+          //console.log('接受转诊的医院接收到来自服务器的消息');
           //console.log(event.data);
           let jsonobj = JSON.parse(event.data);
+          //console.log('jsonobj is ',jsonobj);
           if(jsonobj.operation==="move"){
             win.$message({
               type: 'success',
               message: '接收到一个新的转诊请求'
             });
+            //console.log('jsonobj.object is ',jsonobj.object);
+            console.log('this is ',this);
+            console.log('patientInfo is ',win.patientInfo);
+            win.patientInfo.push(jsonobj.object);
+            console.log('patientInfo is ',win.patientInfo);
           }else{
             win.$message.error('某些原因导致错误');
           }
 
         };
       },
-      handleLookat () {
-        this.caseListVisible = true;
-      },
-      handleReferral () {
-        this.referralVisible = true
-      }
+//      handleLookat () {
+//        this.caseListVisible = true;
+//      },
+//      handleReferral () {
+//        this.referralVisible = true
+//      }
     }
   }
 </script>

@@ -174,25 +174,25 @@ export default {
       for(n in this._data.tableData.length)
         console.log(this._data.tableData[n])
       //this._data.tableData.pop();
-      this._data.tableData.splice(index,1)
+      this._data.tableData.splice(index,1);
       //this._data.tableData.pop()
-      console.log(this._data.tableData)
+      console.log(this._data.tableData);
     },
     handleMove (index, row) {
-      let win = this
+      let win = this;
       let myws = new WebSocket('ws://localhost:4000/ws');
       myws.onopen = function (event) {
         console.log('doctor client open');
-        myws.send('move'+index+row)
+        myws.send('move'+index+row);
       };
       myws.onmessage = function (event) {
         console.log('doctor client gets message');
-        console.log(event.data)
+        console.log(event.data);
         win.$message({
           type: 'success',
             message: event.data
-        })
-        win.handleDelete(index,row)
+        });
+        win.handleDelete(index,row);
       };
     },
     showSickDetailDialog () {
