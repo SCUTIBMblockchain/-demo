@@ -1,6 +1,18 @@
-const ws = require('ws')
-const queryIp = require('./hospital')
-const WebSocketServer = ws.Server
+const WebSocket = require('ws')
+// const queryIp = require('./hospital')
+const WebSocketServer = WebSocket.Server
+
+const queryChainCode = require('./query').queryChaincode
+var hospital = {
+  peer: 'peer1',
+  org: 'org1',
+  channelName: 'myChannel',
+  chaincode: 'mycc',
+  userName: 'admin'
+}
+const queryIp = function (name) {
+  return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, name, 'query', hospital.userName, hospital.org)
+}
 
 function createWebSocketServer (server) {
   let wss = new WebSocketServer({
@@ -13,9 +25,10 @@ function createWebSocketServer (server) {
   }
   wss.on('connection', function (ws, req) {
     // 发送转诊请求
-    ws.on('message', function (msg) {
+    ws.on('message', function (msg, req) {
+      var hospitalmsg = JSON.parse(msg)
       // query hospital ip
-      queryIp(msg.HospitalName).then((address) => {
+      queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, hospitalmsg.hospitalName, 'query', hospital.userName, hospital.org).then((address) => {
         // 建立与目标医院的webSocket连接
         var h = new WebSocket(address)
         // 发送信息

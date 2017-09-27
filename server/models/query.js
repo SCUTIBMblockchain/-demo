@@ -16,7 +16,7 @@
 var network = require('./network.js')
 var log = network.getlog('Query')
 
-var queryChaincode = function* (peer, channelName, chaincodeName, args, fcn, username, org) {
+var queryChaincode = function (peer, channelName, chaincodeName, args, fcn, username, org) {
   var channel = network.getChannelForOrg(org)
   var client = network.getClientForOrg(org)
   var target = buildTarget(peer, org)
