@@ -24,7 +24,7 @@ function createWebSocketServer (server) {
          // 记录ws
         wss.connections[url] = ws
         // 注册函数
-        ws.on('message', fs.message.apply(this))
+        ws.on('message', fs.message.bind(this))
       }
     }
   })
@@ -38,16 +38,16 @@ function createWebSocketServer (server) {
       wss.router[url].message = messageFunction
     }
   }
+// 批量注册路由
+  wss.routes = function (routers) {
+    let urls = Object.keys(routers)
+    for (let url of urls) {
+      wss.routerRegister(url, routers[url])
+    }
+  }
 /* 向对应url连接的客户端发送信息
 ex: 向连接到服务器/referral/地址下的客户发送信息
 */
-  wss.routers = function (routers) {
-    let urls = Object.keys(routers)
-    for(let url of urls){
-      wss.routerRegister
-    }
-  }
-
   wss.sendMessage = function (url, message) {
     wss.connections[url].send(message)
   }

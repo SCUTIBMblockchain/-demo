@@ -5,6 +5,7 @@ const json = require('koa-json')
 const logger = require('koa-logger')
 const auth = require('./server/routes/auth')
 const api = require('./server/routes/api')
+const ws = require('./server/routes/ws')
 const WebSocketServer = require('./server/models/websocket')
 
 app.use(require('koa-bodyparser')())
@@ -30,5 +31,7 @@ app.use(koa.routes())
 var server = app.listen(8889)
 // websocket
 app.wss = WebSocketServer(server)
+// 注册websocket路由
+app.wss.routes(ws)
 
 module.exports = app

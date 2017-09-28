@@ -3,7 +3,11 @@ const queryIp = require('./hospital')
 var ws
 
 var referralRequest = function (msg) {
+  if (!msg) {
+    return
+  }
   var hospitalmsg = JSON.parse(msg)
+  ws.send('received')
   // query hospital ip
   queryIp(hospitalmsg.hospitalName).then((address) => {
     // 建立与目标医院的webSocket连接
