@@ -1,15 +1,17 @@
 <template>
-    <el-dialog title="课程班级信息" :visible.sync="visible" @close="update()"  >
+    <el-dialog title="病例信息" :visible.sync="visible" @close="update()" size="small" >
         <el-table ref="MyTable" highlight-current-row  @current-change="handleCurrentChange" :data="cases">
           <el-table-column property="start_time" label="就诊时间" width="200" ></el-table-column>
           <el-table-column property="hospital" label="就诊医院" width="100"></el-table-column>
           <el-table-column property="disease" label="疾病" width="200" ></el-table-column>
+
+
+
           <el-table-column property="end_time" label="出院时间" width="200" ></el-table-column>
           <el-table-column  label="操作" fixed="right" >
               <template scope="scope">
                 <el-button @click="handleShow(scope.$index)" type="text" size="small">查看详情</el-button>
-              </template> 
-            </templeate>
+              </template>
           </el-table-column>
         </el-table>
     </el-dialog>

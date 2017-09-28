@@ -1,6 +1,9 @@
 <<template>
-  <el-row class="content">
-    <el-col :xs="24" :sm="{span: 20,offset: 2}">
+  <el-row>
+    <el-col :span="3">
+      <VerticalNav v-bind:menuItems="navItems"></VerticalNav>
+    </el-col>
+    <el-col  :span="19" :offset="1" >
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span style="line-height:36px;">选择病人进行操作</span>
@@ -81,52 +84,25 @@
 import EDITCASE from './editCase.vue'
 import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
 import TimeLine from './Timeline.vue'
+import VerticalNav from '../VerticalNav.vue'
 export default {
   components: {
     ElButton,
     EDITCASE,
-    TimeLine
+    TimeLine,
+    VerticalNav,
   },
   data() {
     return {
+      navItems: [{
+        index: 'referral',
+        content: '发起转诊'
+      }],
       dialogVisible: false,
       historyDialogVisible: false,
       operation:'',
       sampleData: {create_time:'', update_time:'',name:'',age:'',sex:'',address:'',history:'',guominyuan:'',doctor:'',sick:''},
       tableData: [{
-        create_time: '2016-05-01',
-        update_time: '2016-05-02',
-        name: '王小虎1号',
-        age: '22',
-        sex: '男',
-        address: '上海市普陀区金沙江路 1518 弄',
-        history: '无',
-        guominyuan: '无',
-        doctor: '黄品超',
-        sick: '感冒'
-      }, {
-        create_time: '2016-05-01',
-        update_time: '2016-05-02',
-        name: '王小虎1号',
-        age: '22',
-        sex: '男',
-        address: '上海市普陀区金沙江路 1518 弄',
-        history: '无',
-        guominyuan: '无',
-        doctor: '黄品超',
-        sick: '感冒'
-      }, {
-        create_time: '2016-05-01',
-        update_time: '2016-05-02',
-        name: '王小虎1号',
-        age: '22',
-        sex: '男',
-        address: '上海市普陀区金沙江路 1518 弄',
-        history: '无',
-        guominyuan: '无',
-        doctor: '黄品超',
-        sick: '感冒'
-      }, {
         create_time: '2016-05-01',
         update_time: '2016-05-02',
         name: '王小虎1号',
@@ -143,14 +119,6 @@ export default {
   methods: {
     handleEdit (index, row) {
       this._data.dialogVisible = true;
-//      this._data.sampleData.date = '2015-05-02'
-//      this._data.sampleData.name = 'lisa'
-//      this._data.sampleData.age = '21'
-//      this._data.sampleData.sex = 'feman'
-//      this._data.sampleData.sick = 'nothing'
-//      this._data.sampleData.address = 'home'
-//      console.log(index, row)
-//      console.log(row.date,row.name,row.age,row.sex,row.sick,row.address)
       this._data.operation = "edit";
       this._data.sampleData = row
     },

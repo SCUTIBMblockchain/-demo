@@ -5,18 +5,23 @@
   </el-menu>
 </template>
 
-<<script>
+<script>
   export default {
     props: ['menuItems'],
+    data() {
+      return {
+
+      }
+    },
     methods: {
-      handleSelect (event) {
-        console.log(this.menuItems)
+      handleSelect (index) {
+        console.log(index)
       }
     }
   }
 </script>
 
-</script>
+
 <style lang="stylus" scoped>
   .el-menu-item
     margin-top 10px

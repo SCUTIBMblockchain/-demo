@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="课程班级信息" :visible.sync="visible" @close="update()"  >
+  <el-dialog title="确认转诊" :visible.sync="visible" @close="update()"  >
     <el-form ref="form" :model="form" label-width="80px" style="width: 100%;"></el-form>
   </el-dialog>
 </template>
