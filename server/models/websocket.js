@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-//* receive and solve webSocket things
-const ws = require('ws')
-const WebSocketServer = ws.Server
-const queryIp = require('./hospital')
-const invokeIp = require('./hospital')
-=======
 const WebSocket = require('ws')
 // const queryIp = require('./hospital')
 const WebSocketServer = WebSocket.Server
 
 const queryChainCode = require('./query').queryChaincode
+const invokeChainCode = require('./invokeTransaction').invokeChaincode
 var hospital = {
   peer: 'peer1',
   org: 'org1',
@@ -17,10 +11,13 @@ var hospital = {
   chaincode: 'mycc',
   userName: 'admin'
 }
-const queryIp = function (name) {
-  return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, name, 'query', hospital.userName, hospital.org)
+var hospitalB = {
+  peersUrls: 'peer0',   // ! mistake here
+  channelName: 'myChannel',
+  chaincodeName: 'mycc',
+  userName: 'admin',
+  org: 'org2'
 }
->>>>>>> 1f29ff02cd93c4d1dc17498f9dde4d49f5deb697
 
 function createWebSocketServer (server) {
   // create websocket server instance
@@ -53,29 +50,51 @@ function createWebSocketServer (server) {
           ws.send(msg)
         }
       })
+      
     })
   })
   //* solve reply from B
-  wss.on('reply', function (ws, accept) {
+  console.log('WebSocketServer was attached.')
+  return wss
+}
+function solveReply () {
+  wss.on('reply', function (msg, accept) {
     // B give reply message
     if (accept) {
       ws.on('message', function (msg) {
-        // query hospital ip
-        invokeIp(msg.HospitalName).then((address) => {
-          // build websocket with target hospital
-          var h = new WebSocket(address)
+        var replyMsg = JSON.parse(msg)
+        invokeChainCode(hospitalB.peersUrls, hospitalB.channelName, hospitalB.chaincodeName, 'invokeIp', replyMsg.name, hospitalB.userName, hospitalB.org).then(() =>{
           // send back patientID as well as additional message
           h.send = {
             accept: accept,
             patientId: msg.patientId,
             additionMsg: msg.additionMsg
           }
-        })
+          // 接受返回信息
+          h.onmessage = function (event) {
+            var data = event.data
+            console.log(data)
+            var msg = JSON.parse(data)
+            ws.send(msg)
+          }
       })
+    })
+  }
+  else {
+    h.send = {
+      accept: accept,
+      patientId: msg.patientId,
+      additionMsg: msg.additionMsg
     }
+    // 接受返回信息
+    h.onmessage = function (event) {
+      var data = event.data
+      console.log(data)
+      var msg = JSON.parse(data)
+      ws.send(msg)
+    }
+  }
   })
-  console.log('WebSocketServer was attached.')
-  return wss
 }
 
 module.exports = createWebSocketServer
