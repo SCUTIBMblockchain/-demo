@@ -21,7 +21,7 @@
             <el-popover trigger="hover" placement="top">
               <p>{{ scope.row.sex }},{{ scope.row.age }}岁</p>
               <p>住址: {{ scope.row.address }}</p>
-              <p>既往病史: {{ scope.row.history }}</p>
+              <!--<p>既往病史: {{ scope.row.history }}</p>-->
               <p>过敏原: {{ scope.row.guominyuan }}</p>
               <div slot="reference" class="name-wrapper">
                 <label>{{ scope.row.name }}</label>
@@ -29,13 +29,13 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="既往病史" width="100">
-          <template scope="scope">
-            <div slot="reference" class="age-wrapper">
-              <label>{{ scope.row.history }}</label>
-            </div>
-          </template>
-        </el-table-column>
+        <!--<el-table-column label="既往病史" width="100">-->
+          <!--<template scope="scope">-->
+            <!--<div slot="reference" class="age-wrapper">-->
+              <!--<label>{{ scope.row.history }}</label>-->
+            <!--</div>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column label="过敏原" width="80">
           <template scope="scope">
             <div slot="reference" class="sex-wrapper">
@@ -87,18 +87,19 @@
         dialogVisible: false,
         historyDialogVisible: false,
         operation:'',
-        sampleData: {create_time:'', update_time:'',name:'',age:'',sex:'',address:'',history:'',guominyuan:'',doctor:'',sick:''},
+        sampleData: {create_time:'', update_time:'',name:'',age:'',sex:'',address:'',guominyuan:'',doctor:'',sick:'',detail_sick:''},
         tableData: [{
           create_time: '2016-05-01',
           update_time: '2016-05-02',
-          name: '王小虎1号',
-          age: '22',
+          name: 'mike',
+          age: '25',
           sex: '男',
-          address: '上海市普陀区金沙江路 1518 弄',
-          history: '无',
+          address: 'guangzhou',
+          //history: '无',
           guominyuan: '无',
           doctor: '黄品超',
-          sick: '感冒'
+          sick: '感冒',
+          detail_sick: '体温39',
         }]
       }
     },
@@ -135,10 +136,11 @@
           age: '',
           sex: '男',
           address: '',
-          history: '',
+          //history: '',
           guominyuan: '',
           doctor: '',
-          sick: ''
+          sick: '',
+          detail_sick: '',
         };
         this._data.operation = "new";
         this._data.sampleData = tmp
@@ -159,10 +161,12 @@
       },
       handleMove(index, row) {
         let win = this;
-        let myws = new WebSocket('ws://localhost:4000/ws');
+        let myws = new WebSocket('ws://localhost:8703/referral');
         myws.onopen = function (event) {
-          console.log('doctor client open');
-          myws.send('move' + index + row)
+          //console.log('doctor client open');
+          //myws.send('move' + index + row)
+          let sendData = {"hospitalId": "hospital01","patientId": "patient01","additionMsg": row};
+          myws.send(JSON.stringify(sendData));
         };
         myws.onmessage = function (event) {
           console.log('doctor client gets message');

@@ -35,8 +35,8 @@
     },
     data () {
       return {
-        sendVisible:false,
-        receiveVisible:true,
+        sendVisible:true,
+        receiveVisible:false,
         navItems: [{
           index: 'receive',
           content: '接收转诊'

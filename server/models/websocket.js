@@ -2,9 +2,7 @@ const WebSocket = require('ws')
 const WebSocketServer = WebSocket.Server
 
 function createWebSocketServer (server) {
-  let wss = new WebSocketServer({
-    server: server
-  })
+  let wss = new WebSocketServer({port: '8703'});
   // 保存连接的ws
   wss.connections = {}
   // 保存路由,具体格式

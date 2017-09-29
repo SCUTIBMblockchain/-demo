@@ -15,15 +15,15 @@
     },
     methods: {
       handleSelect (index) {
-        console.log(index);
+        //console.log(index);
         if (index==="send"){
           this._props.visible = true;
-          console.log('index===send change the of sendVisible visibility');
+          //console.log('index===send change the of sendVisible visibility');
           this.$emit('update:sendVisible',true);
           this.$emit('update:receiveVisible',false)
         }else {
           this._props.sendVisible = false;
-          console.log('index!==send change the visibility of sendVisible false');
+          //console.log('index!==send change the visibility of sendVisible false');
           this.$emit('update:sendVisible',false);
           this.$emit('update:receiveVisible',true)
         }
