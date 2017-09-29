@@ -8,7 +8,7 @@ var hospital = {
   userName: 'admin'
 }
 const queryIp = function (hospitalId) {
-  console.log(hospitalId);
+  console.log(hospitalId)
   return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, hospitalId, 'queryIpByHospitalId', hospital.userName, hospital.org)
 }
 
