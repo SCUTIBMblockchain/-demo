@@ -21,6 +21,7 @@ function createWebSocketServer (server) {
     // router
     for (let url in wss.router) {
       let fs = wss.router[url]
+      wss.connections[url] = {}
       if (req.url === url) {
          // 记录ws
         wss.connections[url] = ws

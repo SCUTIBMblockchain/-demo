@@ -161,7 +161,7 @@
       },
       handleMove(index, row) {
         let win = this;
-        let myws = new WebSocket('ws://localhost:8703/referral');
+        let myws = new WebSocket('ws://localhost:8889/referral/request');
         myws.onopen = function (event) {
           //console.log('doctor client open');
           //myws.send('move' + index + row)
