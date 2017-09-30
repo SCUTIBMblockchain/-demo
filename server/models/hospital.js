@@ -8,7 +8,7 @@ var hospital = {
   userName: 'admin'
 }
 const queryIp = function (name) {
-  return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, name, 'query', hospital.userName, hospital.org)
+  return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, name, 'queryIpByHospitalId', hospital.userName, hospital.org)
 }
 
 module.exports = queryIp

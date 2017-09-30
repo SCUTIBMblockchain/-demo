@@ -17,6 +17,7 @@ function createWebSocketServer (server) {
   wss.router = {}
   // 建立连接
   wss.on('connection', function (ws, req) {
+    console.log('connected')
     // router
     for (let url in wss.router) {
       let fs = wss.router[url]
@@ -24,7 +25,10 @@ function createWebSocketServer (server) {
          // 记录ws
         wss.connections[url] = ws
         // 注册函数
-        ws.on('message', fs.message.bind(this))
+        ws.on('message', fs.message.bind({
+          ws: ws,
+          wss: wss
+        }))
       }
     }
   })
