@@ -56,7 +56,7 @@
       EDITCASE,
       TimeLine
     },
-    props: ['message'],
+    props: ['message','ws'],
     data() {
       return {
         dialogVisible: false,
@@ -101,10 +101,14 @@
         this._data.historyDialogVisible = true;
       },
       acceptMove(index, row) {
-        alert('you choose accept move')
+        alert('you choose accept move');
+        let sendData = {"operation": "accept"};
+        this._props.ws.send(JSON.stringify(sendData));
       },
       rejectMove(index, row) {
-        alert('you choose reject move')
+        alert('you choose reject move');
+        let sendData = {"operation": "reject","hospitalId": "hospital01","patientId": "patient01","additionMsg": row};
+        this._props.ws.send(JSON.stringify(sendData));
       },
     }
   }

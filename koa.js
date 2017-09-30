@@ -28,7 +28,7 @@ koa.use('/api', api.routes())
 
 app.use(koa.routes())
 
-var server = app.listen(9000)
+var server = app.listen(8889)
 // websocket
 app.wss = WebSocketServer(server)
 // 注册websocket路由

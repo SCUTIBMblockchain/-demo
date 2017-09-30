@@ -12,7 +12,7 @@
       ElCol,
       Case,
     },
-    props: ['receiveVisible'],
+    props: ['receiveVisible','receiveLogs','ws'],
     data() {
       return {
         caseListVisible: false,
@@ -21,7 +21,7 @@
       }
     },
     mounted() {
-      this.init()
+      //this.init()
     },
     methods: {
       init() {
