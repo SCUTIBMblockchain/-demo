@@ -113,53 +113,12 @@ export default {
         guominyuan: '无',
         doctor: '黄品超',
         sick: '感冒'
-      }, {
-        create_time: '2016-05-01',
-        update_time: '2016-05-02',
-        name: '王小虎1号',
-        age: '22',
-        sex: '男',
-        address: '上海市普陀区金沙江路 1518 弄',
-        history: '无',
-        guominyuan: '无',
-        doctor: '黄品超',
-        sick: '感冒'
-      }, {
-        create_time: '2016-05-01',
-        update_time: '2016-05-02',
-        name: '王小虎1号',
-        age: '22',
-        sex: '男',
-        address: '上海市普陀区金沙江路 1518 弄',
-        history: '无',
-        guominyuan: '无',
-        doctor: '黄品超',
-        sick: '感冒'
-      }, {
-        create_time: '2016-05-01',
-        update_time: '2016-05-02',
-        name: '王小虎1号',
-        age: '22',
-        sex: '男',
-        address: '上海市普陀区金沙江路 1518 弄',
-        history: '无',
-        guominyuan: '无',
-        doctor: '黄品超',
-        sick: '感冒'
       }]
     }
   },
   methods: {
     handleEdit (index, row) {
       this._data.dialogVisible = true;
-//      this._data.sampleData.date = '2015-05-02'
-//      this._data.sampleData.name = 'lisa'
-//      this._data.sampleData.age = '21'
-//      this._data.sampleData.sex = 'feman'
-//      this._data.sampleData.sick = 'nothing'
-//      this._data.sampleData.address = 'home'
-//      console.log(index, row)
-//      console.log(row.date,row.name,row.age,row.sex,row.sick,row.address)
       this._data.operation = "edit";
       this._data.sampleData = row
     },

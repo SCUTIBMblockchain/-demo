@@ -38,13 +38,15 @@
     <el-input v-model="addressInput" placeholder="家庭住址"><template slot="prepend">家庭住址:</template></el-input>
     <div style="margin: 20px 0;"></div>
 
-    <el-input v-model="historyInput" placeholder="既往病史"><template slot="prepend">既往病史:</template></el-input>
-    <div style="margin: 20px 0;"></div>
+    <!--<el-input v-model="historyInput" placeholder="既往病史"><template slot="prepend">既往病史:</template></el-input>-->
+    <!--<div style="margin: 20px 0;"></div>-->
     <el-input v-model="guominyuanInput" placeholder="过敏原"><template slot="prepend">过敏原:</template></el-input>
     <div style="margin: 20px 0;"></div>
     <el-input v-model="doctorInput" placeholder="主治医生"><template slot="prepend">主治医生:</template></el-input>
     <div style="margin: 20px 0;"></div>
-    <el-input type="textarea" autosize v-model="textarea" placeholder="患病情况"></el-input>
+    <el-input type="textarea" autosize v-model="sick" placeholder="患病概述"></el-input>
+    <div style="margin: 20px 0;"></div>
+    <el-input type="textarea" autosize v-model="detail_sick" placeholder="患病详情"></el-input>
     <div style="margin: 20px 0;"></div>
 
     <span slot="footer" class="dialog-footer">
@@ -71,10 +73,11 @@
         radio: 'man',
         //dateInput: '',
         addressInput: '',
-        historyInput: '',
+        //historyInput: '',
         guominyuanInput: '',
         doctorInput: '',
-        textarea: '',
+        sick: '',
+        detail_sick: '',
         dateInput:''
       }
     },
@@ -125,10 +128,11 @@
         }
         //this._props.edit.sex = this._data.radioInput
         this._props.edit.address = this._data.addressInput;
-        this._props.edit.history = this._data.historyInput;
+        //this._props.edit.history = this._data.historyInput;
         this._props.edit.guominyuan = this._data.guominyuanInput;
         this._props.edit.doctor = this._data.doctorInput;
-        this._props.edit.sick = this._data.textarea;
+        this._props.edit.sick = this._data.sick;
+        this._props.edit.detail_sick = this._data.detail_sick;
         this._props.edit.update_time = new Date(this._data.dateInput).format("yyyy-MM-dd");
         this._props.visible = false;
         this.$emit('update:edit',this._props.edit)
@@ -148,10 +152,11 @@
         }
 
         this._data.addressInput = this._props.edit.address;
-        this._data.historyInput = this._props.edit.history;
+        //this._data.historyInput = this._props.edit.history;
         this._data.guominyuanInput = this._props.edit.guominyuan
         this._data.doctorInput = this._props.edit.doctor;
-        this._data.textarea = this._props.edit.sick
+        this._data.sick = this._props.edit.sick
+        this._data.detail_sick = this._props.edit.detaik_sick
 
       }
     }

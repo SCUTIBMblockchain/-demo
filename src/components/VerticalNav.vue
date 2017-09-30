@@ -5,7 +5,7 @@
   </el-menu>
 </template>
 
-<<script>
+<script>
   export default {
     props: ['menuItems'],
     data() {
@@ -14,8 +14,8 @@
       }
     },
     methods: {
-      handleSelect (event) {
-        console.log(this.menuItems)
+      handleSelect (index) {
+        console.log(index)
       }
     }
   }
