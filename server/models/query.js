@@ -38,8 +38,7 @@ var queryChaincode = function (peer, channelName, chaincodeName, args, fcn, user
       for (let i = 0; i < responsePayloads.length; i++) {
         log.info(args[0] + ' now has ' + responsePayloads[i].toString('utf8') +
           ' after the move')
-        return args[0] + ' now has ' + responsePayloads[i].toString('utf8') +
-          ' after the move'
+        return responsePayloads[i].toString('utf8')
       }
     } else {
       log.error('responsePayloads is null')

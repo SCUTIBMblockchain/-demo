@@ -17,15 +17,7 @@ var referralRequest = function (msg) {
       additionMsg: msg.additionMsg
     }
     // 接受返回信息
-    h.onmessage = function (event) {
-      var data = event.data
-      console.log(data)
-      var msg = JSON.parse(data)
-      ws.send(msg)
-    }
-  })
 }
-
 module.exports = {
   referralRequest
 }
