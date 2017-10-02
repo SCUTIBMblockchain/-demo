@@ -3,6 +3,10 @@ var referral = function (msg) {
   const referralPatient = require('../models/hospital').referralPatient
   const WebSocket = require('ws')
   // const webSocket = require('./')
+  if(msg.includes("@"))
+  {
+    return
+  }
   if (!msg) {
     return
   }
@@ -10,7 +14,7 @@ var referral = function (msg) {
   if (message.operation === 'send') {
     // queryIp([message.hospitalId]).then((address) => {
       // 建立与目标医院的webSocket连接
-      var h = new WebSocket('ws://' + 'localhost:9000' + '/referral/host')
+      var h = new WebSocket('ws://' + 'localhost:8889' + '/referral/host')
       // 发送信息
       var sendmsg = {
         operation: 'send',
@@ -18,7 +22,19 @@ var referral = function (msg) {
         additionMsg: message.additionMsg
       }
       this.ws.referralMsg = sendmsg
-      h.send( JSON.stringify(sendmsg))
+      h.on('open', function open () {
+        h.send(JSON.stringify(sendmsg))
+      })
+      var wss = this.wss
+      h.on('message', function incoming (data) {
+        var message = JSON.parse(data)
+        if (message.operation === 'accept' || message.operation === 'reject') {
+          var reply = {
+            operation: message.operation
+          }
+          wss.sendMessage('/referral', JSON.stringify(reply))
+        }
+      })
       // 接受返回信息
     // })
   }
@@ -46,17 +62,11 @@ var referralHost = function (msg) {
     return
   }
   var message = JSON.parse(msg)
-  if (message.operation === 'accept' || message.operation === 'reject') {
-    var reply = {
-      operation: message.operation
-    }
-    this.wss.sendMessage('/referral', JSON.stringify(reply))
-  }
   if (message.operation === 'send') {
-    reply = {
+     var reply = {
       operation: 'receive',
-      patientId: msg.patientId,
-      additionMsg: msg.additionMsg
+      patientId: message.patientId,
+      additionMsg: message.additionMsg
 
     }
     this.wss.sendMessage('/referral', JSON.stringify(reply))

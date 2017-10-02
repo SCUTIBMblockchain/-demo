@@ -21,7 +21,6 @@ function createWebSocketServer (server) {
     // router
     for (let url in wss.router) {
       let fs = wss.router[url]
-      wss.connections[url] = {}
       if (req.url === url) {
          // 记录ws
         wss.connections[url] = ws
@@ -54,7 +53,8 @@ function createWebSocketServer (server) {
 ex: 向连接到服务器/referral/地址下的客户发送信息
 */
   wss.sendMessage = function (url, message) {
-    wss.connections[url].send(message)
+    var w = wss.connections[url]
+    w.send(message)
   }
   console.log('WebSocketServer was attached.')
   return wss
