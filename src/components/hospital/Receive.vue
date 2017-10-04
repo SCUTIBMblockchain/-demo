@@ -27,7 +27,7 @@
       init() {
         let win = this;
         console.log('in receive hospital before ws create')
-        let myws = new WebSocket('ws://localhost:9000/referral/reply')
+        let myws = new WebSocket('ws://localhost:8889/referral')
         console.log('in receive hospital after ws create')
         myws.onopen = function (event) {
           let sendData = {"message": "receive这是一条接受转诊的医院发送给服务器的消息"}
