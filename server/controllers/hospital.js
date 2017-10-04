@@ -8,7 +8,7 @@ var referral = function (msg) {
   }
   var message = JSON.parse(msg)
   if (message.operation === 'send') {
-    // queryIp([message.hospitalId]).then((address) => {
+     queryIp([message.hospitalId]).then((address) => {
       // 建立与目标医院的webSocket连接
       var h = new WebSocket('ws://' + 'localhost:9000' + '/referral/host')
       // 发送信息
@@ -20,7 +20,7 @@ var referral = function (msg) {
       this.ws.referralMsg = sendmsg
       h.send( JSON.stringify(sendmsg))
       // 接受返回信息
-    // })
+     })
   }
   if (message.operation === 'accept') {
     // 若使用fabric请去掉注释
