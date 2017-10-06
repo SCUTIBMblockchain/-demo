@@ -45,6 +45,8 @@
     </el-table>
     <EDITCASE :visible.sync="dialogVisible"  :operation.sync="operation" :edit.sync="sampleData" v-on:update:edit="updateTableData()"></EDITCASE>
     <TimeLine :visible.sync="historyDialogVisible"></TimeLine>
+    <h1>{{message}}</h1>
+    <h1>{{tableData}}</h1>
   </div>
 </template>
 
@@ -63,18 +65,7 @@
         historyDialogVisible: false,
         operation:'',
         sampleData: {create_time:'', update_time:'',name:'',age:'',sex:'',address:'',history:'',guominyuan:'',doctor:'',sick:''},
-        tableData: [{
-          create_time: '2016-05-01',
-          update_time: '2016-05-02',
-          name: '王小虎1号',
-          age: '22',
-          sex: '男',
-          address: '上海市普陀区金沙江路 1518 弄',
-          //history: '无',
-          guominyuan: '无',
-          doctor: '黄品超',
-          sick: '感冒'
-        }],
+        table:[],
         cases: [
           {
             start_time: '2017-9-7',
@@ -84,6 +75,15 @@
           }
         ],
       }
+    },
+    computed:{
+      tableData: function () {
+        console.log("create in this.message ? ","create_time" in this.message );
+        if ("create_time" in this.message) {
+          this.table.push(this.message);
+          return this.table
+        }
+      },
     },
     methods: {
       handleEdit(index, row) {
@@ -101,12 +101,10 @@
         this._data.historyDialogVisible = true;
       },
       acceptMove(index, row) {
-        alert('you choose accept move');
         let sendData = {"operation": "accept"};
         this._props.ws.send(JSON.stringify(sendData));
       },
       rejectMove(index, row) {
-        alert('you choose reject move');
         let sendData = {"operation": "reject","hospitalId": "hospital01","patientId": "patient01","additionMsg": row};
         this._props.ws.send(JSON.stringify(sendData));
       },

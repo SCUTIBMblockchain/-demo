@@ -166,11 +166,14 @@
         this._data.tableData.splice(index, 1);
       },
       handleMove(index, row) {
-        let win = this;
-        let totalLogs = ['医院A：发送转诊请求', '后台A：接收到转诊请求，对内容解码', 'fabric：验证请求用户权限', 'fabric：执行查询的chaincode，返回查询结果',
+        /*
+        * '后台A：接收到转诊请求，对内容解码', 'fabric：验证请求用户权限', 'fabric：执行查询的chaincode，返回查询结果',
           '后台A：接收到查询结果，向对应服务器建立连接', '后台A：向后台B发送转诊信息', '后台B：接收到转诊信息，向fabric查询病人信息', 'fabric：验证请求用户权限',
           'fabric：执行查询的chaincode，返回查询结果', '后台B：打包查询结果和其余信息，发送给医院B', '医院B：接收到转诊请求，同意转诊，并提交附加信息',
-          '后台B：接收到处理结果，将结果和附加信息发送给后台A', '后台A：接收到处理结果，将结果和附加信息发送给医院A'];
+          '后台B：接收到处理结果，将结果和附加信息发送给后台A', '后台A：接收到处理结果，将结果和附加信息发送给医院A'
+        * */
+        let win = this;
+        let totalLogs = ['医院A：发送转诊请求','other msg' ];
         let timer = setInterval(function () {
           let logItem = totalLogs.shift();
           if (logItem === undefined) {

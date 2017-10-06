@@ -5,7 +5,7 @@
         <OperationNav v-bind:menuItems="navItems" :sendVisible.sync="sendVisible" :receiveVisible.sync="receiveVisible"></OperationNav>
       </el-col>
       <el-col :span="21">
-        <Receive :receiveVisible="receiveVisible" :receiveLogs.sync="receiveLog" :ws.sync="myws"></Receive>
+        <Receive :receiveVisible="receiveVisible" :receiveLogs.sync="receiveLog" :ws.sync="myws" :patientInfo.sync="patientInfo"></Receive>
       </el-col>
       <br/>
       <el-col :span="21">
@@ -39,9 +39,10 @@
         sendVisible: true,
         receiveVisible: false,
         //myss:'',
-        myws: this.init(),
         sendLog: 'this is a message of send log',
         receiveLog: 'this is a message of receive log',
+        patientInfo: {},
+        myws: this.init(),
         navItems: [{
           index: 'receive',
           content: '接收转诊'
@@ -75,15 +76,18 @@
 //          win.$emit('update:receiveLogs',win._props.receiveLogs);
         };
         myws.onmessage = function (event) {
-          win._props.receiveLogs += '\nreceive a message from ws';
-          win.$emit('update:receiveLogs',win._props.receiveLogs);
+          //win._props.receiveLogs += '\nreceive a message from ws';
+          //win.$emit('update:receiveLogs',win._props.receiveLogs);
           let jsonobj = JSON.parse(event.data);
           if(jsonobj.operation==="receive"){
             win.$message({
               type: 'success',
               message: '接收到一个新的转诊请求'
             });
-            win.patientInfo.push(jsonobj.additionMsg);
+            console.log('patient info is ', win.patientInfo)
+            win.patientInfo = jsonobj.additionMsg
+
+            //win.patientInfo.push(jsonobj.additionMsg);
           }else if(jsonobj.operation==="accept"){
             win.$message({
               type: 'success',
