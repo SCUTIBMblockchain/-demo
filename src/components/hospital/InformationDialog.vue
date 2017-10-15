@@ -1,7 +1,7 @@
 <template>
   <div id="information dialog">
     <el-dialog
-      title="信息"
+      title="查看信息"
       size="large"
       @open="beforeOpen"
       :before-close="beforeClose"

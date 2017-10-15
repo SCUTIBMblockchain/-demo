@@ -18,21 +18,28 @@
     props: ['menuItems','sendVisible','receiveVisible'],
     data() {
       return {
-
+        selfSendVisible: this.sendVisible,
+        selfReceiveVisible: this.receiveVisible,
+      }
+    },
+    watch: {
+      sendVisible (newValue) {
+        this.selfSendVisible = newValue;
+      },
+      receiveVisible (newValue) {
+        this.selfReceiveVisible = newValue;
       }
     },
     methods: {
       handleSelect (index) {
         if (index==="send"){
-          this._props.visible = true;
-          this.$emit('update:sendVisible',true);
-          this.$emit('update:receiveVisible',false)
+          this.$emit('updateSendVisible',true);
+          this.$emit('updateReceiveVisible',false)
         }else {
-          this._props.sendVisible = false;
-          this.$emit('update:sendVisible',false);
-          this.$emit('update:receiveVisible',true)
+          this.$emit('updateSendVisible',false);
+          this.$emit('updateReceiveVisible',true)
         }
-      }
+      },
     }
   }
 </script>

@@ -134,9 +134,39 @@
         }
       },
       acceptReferral(row){
-      console.log(row.id,'accept')
+        this.$confirm('你选择了接受转诊, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '接受成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消接受'
+          });
+        });
+        console.log(row.id,'accept')
       },
       rejectReferral(row) {
+        this.$confirm('你选择了拒绝转诊, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '拒绝成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消拒绝'
+          });
+        });
         console.log(row.id,'reject')
       },
       showReferralCase (rowId) {
