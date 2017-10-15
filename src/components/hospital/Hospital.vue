@@ -2,10 +2,10 @@
   <div id="hospital">
     <el-row >
 
-        <OperationNav v-bind:menuItems="navItems" :sendVisible.sync="sendVisible" :receiveVisible.sync="receiveVisible"></OperationNav>
+        <OperationNav v-bind:menuItems="navItems" :sendVisible="sendVisible" :receiveVisible="receiveVisible" @updateSendVisible="updateSendVisible" @updateReceiveVisible="updateReceiveVisible"></OperationNav>
 
       <el-col :span="22">
-        <Receive :receiveVisible="receiveVisible" :receiveLogs.sync="receiveLog" :ws.sync="myws" :patientInfo.sync="patientInfo"></Receive>
+        <Receive :receiveVisible="receiveVisible" :ws="myws"></Receive>
       </el-col>
       <br/>
       <el-col :span="22">
@@ -80,6 +80,12 @@
           }
         };
         return myws;
+      },
+      updateSendVisible(newValue) {
+        this.sendVisible = newValue
+      },
+      updateReceiveVisible(newValue) {
+        this.receiveVisible = newValue
       },
     }
   }
