@@ -2,6 +2,7 @@ const WebSocket = require('ws')
 const WebSocketServer = WebSocket.Server
 
 function createWebSocketServer (server) {
+  // create websocket server instance
   let wss = new WebSocketServer({
     server: server
   })
