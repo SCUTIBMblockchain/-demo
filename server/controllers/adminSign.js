@@ -4,7 +4,7 @@ const network = require('composer-client')
 var client = new network.BusinessNetworkConnection()
 
 const buildConnect = function* () {
-  return client.connect('connetion.json', 'org-acme-biznet', 'admin', 'adminpw')
+  return client.connect('connection.json', 'org-acme-biznet', 'admin', 'adminpw')
   .then(function (businessNetworkDefinition) {
     console.log('admin connect good')
   })

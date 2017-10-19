@@ -7,12 +7,17 @@ var instantiate = require('../models/instantiateChaincode.js')
 var invoke = require('../models/invokeTransaction.js')
 var query = require('../models/query.js')
 var user = require('../controllers/user')
+var patient = require('../controllers/patientQuery')
 
 //* 以下api 与demo关联不大, 未来做开发者界面再搞
 // Create Channel
 router.post('/channels', channel.createChannel)
 // Join Channels
 router.post('/channels/:channelName/peers', channel.joinChannel)
+
+// API 查询所有病人，病人病例
+router.get('/patient/queryByHospitalName/:hospitalName', patient.getAllPatient)
+router.get('/case/queryByPatientId/:PatientId', patient.getCasesByPatientId)
 
 // todo 测试该api
 // Register and enroll user
