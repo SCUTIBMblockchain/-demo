@@ -178,7 +178,7 @@
           this.fromDisable = true
           this.toDisable = true
           this.fromVisiable = true
-          this.toVisiable = !this.form.State === 'reject'
+          this.toVisiable = !(this.form.State === 'reject')
           this.sendVisiable = false
           this.receiveVisiable = false
           break
@@ -205,7 +205,7 @@
         form: {
           Id: '20171010001',
           Date: '20171012',
-          State: 'reject',
+          State: 'accept',
           RejectReason: '专家有事不在',
           Name: '王建国',
           PIN: '142703199701012232',
@@ -239,7 +239,7 @@
         toVisiable: true,
         sendVisiable: true,
         receiveVisiable: false,
-        state: 'look'
+        state: 'send'
       }
     },
     methods: {
