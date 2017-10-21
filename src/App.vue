@@ -1,19 +1,16 @@
 <template>
   <div id="app">
-    <Nav></Nav>
-    <Referral></Referral>
+    <TitleNav></TitleNav>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Nav from './components/Nav'
-import Referral from './components/hospital/ReferralPorfile'
+import TitleNav from './components/TitleNav'
 export default {
   name: 'app',
   components: {
-    Nav,
-    Referral
+    TitleNav
   }
 }
 </script>
