@@ -9,84 +9,84 @@
       <el-collapse v-model="activeNames">
         <el-collapse-item title="病人基本信息" name="1">
           <el-form :inline="true">
-            <el-form-item label="name">
+            <el-form-item label="姓名">
                 <el-input placeholder="姓名" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="patient id">
                 <el-input placeholder="id" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="gender">
+            <el-form-item label="性别">
                 <el-input placeholder="性别" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="age">
+            <el-form-item label="年龄">
                 <el-input placeholder="年龄" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="Nationality">
+            <el-form-item label="民族">
               <el-input placeholder="民族" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="resident">
+            <el-form-item label="居住地">
                 <el-input placeholder="居住地" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="phone">
+            <el-form-item label="联系电话">
                 <el-input placeholder="联系电话" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="pin">
+            <el-form-item label="身份证">
                 <el-input placeholder="身份证" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="marriage">
+            <el-form-item label="婚姻状态">
               <el-input placeholder="婚姻状态" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="birthday">
-              <el-input placeholder="出生日期" :disabled="true"></el-input>
+            <el-form-item label="籍贯">
+              <el-input placeholder="籍贯" :disabled="true"></el-input>
             </el-form-item>
 
-            <el-form-item label="Occupation">
+            <el-form-item label="职业">
               <el-input placeholder="职业" :disabled="true"></el-input>
             </el-form-item>
           </el-form>
           <hr>
           <label>relations</label>
           <el-form :inline="true">
-            <el-form-item label="Name">
+            <el-form-item label="亲属姓名">
               <el-input placeholder="亲属姓名" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="Phone">
+            <el-form-item label="亲属联系电话">
               <el-input placeholder="亲属联系电话" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="Relation">
+            <el-form-item label="关系">
               <el-input placeholder="关系" :disabled="true"></el-input>
             </el-form-item>
           </el-form>
           <hr>
           <label>addition</label>
           <el-form :inline="true">
-            <el-form-item label="Smoke">
+            <el-form-item label="抽烟">
               <el-input placeholder="抽烟" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="Alcohol">
+            <el-form-item label="嗜酒">
               <el-input placeholder="嗜酒" :disabled="true"></el-input>
             </el-form-item>
           </el-form>
           <hr>
           <label>history</label>
           <el-form :inline="true">
-            <el-form-item label="Anaphylactogen">
+            <el-form-item label="过敏原">
               <el-input placeholder="过敏原" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="InfectiousDiseaseHistory">
+            <el-form-item label="感染病史">
               <el-input placeholder="感染病史" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="GeneticDiseaseHistory">
+            <el-form-item label="遗传病史">
               <el-input placeholder="遗传病史" :disabled="true"></el-input>
             </el-form-item>
           </el-form>
           <hr>
           <label>state</label>
           <el-form :inline="true">
-            <el-form-item label="HospitalName">
+            <el-form-item label="当前医院">
               <el-input placeholder="当前医院" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="Referral">
+            <el-form-item label="转诊状态">
               <el-input placeholder="转诊状态" :disabled="true"></el-input>
             </el-form-item>
           </el-form>
