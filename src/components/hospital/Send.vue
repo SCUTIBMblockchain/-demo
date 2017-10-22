@@ -17,7 +17,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template scope="scope">
-            <el-button type="text">生成转诊单</el-button>
+            <el-button type="text" @click="createReferral(scope.row)">生成转诊单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -39,7 +39,7 @@
       </el-table>
 
       <h1>处理历史</h1>
-      <el-table :data="dealedTableData" :row-class-name="tableRowClassName" @cell-click="handleCellClick" height="300" width="1050"  >
+      <el-table :data="dealedTableData" :row-class-name="tableRowClassName" @cell-click="showReferral" height="300" width="1050"  >
         <template>
           <el-table-column label="id" prop="id" width="100">
           </el-table-column>
@@ -61,19 +61,25 @@
     </el-card>
 
     <InformationDialog :InfoDialogVisible="dialogVisible" @updateDialogVisible="updateDialogVisible"></InformationDialog>
+    <ReferralProfile :referralVisible="referralVisible" :state.sync = "referralState" :ws = "ws" :info = 'referralInfo' @updateReferralVisible="referralVisible=false"></ReferralProfile>
   </el-col>
 </template>
 
 <script>
   import InformationDialog from './InformationDialog'
+  import ReferralProfile from './ReferralPorfile.vue'
   export default {
     components: {
       InformationDialog,
+      ReferralProfile
     },
     props: ['sendVisible'],
     data() {
       return {
         dialogVisible: false,
+        referralVisible: false,
+        referralState: 'send',
+        referralInfo: null,
         undealTableData: [{
           'id': '2011',
           'name': 'jack',
@@ -159,19 +165,29 @@
       handleCellClick(row,event) {
         if(event.label === '操作') {
           this.showReferralCase(row.id)
-        }else {
-          //console.log('other cell click');
-          this.dialogVisible = true;
+        } else {
+          this.dialogVisible = true
         }
+      },
+      showReferral (row) {
+        this.referralVisible = true
+        this.referralState = 'look'
+        this.referralInfo = row.id
       },
       showReferralCase(rowId){
         //console.log('calling referral case');
         //console.log('row',row)
-        alert('row id is '+rowId)
+        alert('row id is ' + rowId)
       },
       updateDialogVisible(val){
         this.dialogVisible = val;
-      }
+      },
+      createReferral(row) {
+        this.referralState = 'send'
+        this.referralVisible = true
+        this.referralInfo = row.id
+      },
+  
 //      handleEdit(index, row) {
 //        this._data.dialogVisible = true;
 //        this._data.operation = "edit";

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title='转诊单' :visible.sync='dialogVisible'>
+  <el-dialog title='转诊单' :visible.sync='referralVisible' :before-close="beforeClose" @update:visible='referralStateChange'>
     <span>
        <el-row>
         <el-col :span="5">
@@ -158,7 +158,7 @@
       </span>
     </span>
     <span slot='footer' class='dialog-footer' v-show='sendVisiable'>
-    <el-button @click='dialogVisible = false'>取 消</el-button>
+    <el-button @click='beforeClose'>取 消</el-button>
     <el-button type='primary' @click='onSubmit'>确 定</el-button>
   </span>
     <span slot='footer' class='dialog-footer' v-show='receiveVisiable'>
@@ -171,34 +171,8 @@
 
 <script>
   export default {
-    props: ['receiveVisible', 'ws', 'patientInfo'],
+    props: ['referralVisible', 'state', 'ws', 'info'],
     created () {
-      switch (this.state) {
-        case 'look':
-          this.fromDisable = true
-          this.toDisable = true
-          this.fromVisiable = true
-          this.toVisiable = !(this.form.State === 'reject')
-          this.sendVisiable = false
-          this.receiveVisiable = false
-          break
-        case 'send':
-          this.fromDisable = false
-          this.toDisable = true
-          this.fromVisiable = true
-          this.toVisiable = false
-          this.sendVisiable = true
-          this.receiveVisiable = false
-          break
-        case 'receive':
-          this.fromDisable = true
-          this.toDisable = false
-          this.fromVisiable = true
-          this.toVisiable = true
-          this.sendVisiable = false
-          this.receiveVisiable = true
-          break
-      }
     },
     data () {
       return {
@@ -238,9 +212,10 @@
         toDisable: false,
         toVisiable: true,
         sendVisiable: true,
-        receiveVisiable: false,
-        state: 'send'
+        receiveVisiable: false
       }
+    },
+    computed: {
     },
     methods: {
       onSubmit () {
@@ -274,7 +249,38 @@
           })
         }).catch(() => {})
       },
-      handleClose (done) {}
+      beforeClose () {
+        this.$emit('updateReferralVisible')
+      },
+      handleClose (done) { },
+      referralStateChange: function () {
+        switch (this.state) {
+          case 'look':
+            this.fromDisable = true
+            this.toDisable = true
+            this.fromVisiable = true
+            this.toVisiable = !(this.form.State === 'reject')
+            this.sendVisiable = false
+            this.receiveVisiable = false
+            break
+          case 'send':
+            this.fromDisable = false
+            this.toDisable = true
+            this.fromVisiable = true
+            this.toVisiable = false
+            this.sendVisiable = true
+            this.receiveVisiable = false
+            break
+          case 'receive':
+            this.fromDisable = true
+            this.toDisable = false
+            this.fromVisiable = true
+            this.toVisiable = true
+            this.sendVisiable = false
+            this.receiveVisiable = true
+            break
+        }
+      }
     }
   }
 
