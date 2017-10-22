@@ -17,7 +17,7 @@ router.post('/channels/:channelName/peers', channel.joinChannel)
 
 // API 查询所有病人，病人病例
 router.get('/patient/queryByHospitalName/:hospitalName', patient.getAllPatient)
-router.get('/case/queryByPatientId/:PatientId', patient.getCasesByPatientId)
+router.get('/case/queryByPatientId/:patientId', patient.getCasesByPatientId)
 
 // todo 测试该api
 // Register and enroll user

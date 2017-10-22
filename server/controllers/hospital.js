@@ -3,8 +3,7 @@ var referral = function (msg) {
   const referralPatient = require('../models/hospital').referralPatient
   const WebSocket = require('ws')
   // const webSocket = require('./')
-  if (msg.includes('@'))
-  {
+  if (msg.includes('@')) {
     return
   }
   if (!msg) {
