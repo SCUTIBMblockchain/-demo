@@ -60,7 +60,7 @@
       </el-table>
     </el-card>
 
-    <InformationDialog :InfoDialogVisible="dialogVisible" @updateDialogVisible="updateDialogVisible"></InformationDialog>
+    <InformationDialog :InfoDialogVisible="dialogVisible" :patientId="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
   </el-col>
 </template>
 
@@ -74,6 +74,7 @@
     data() {
       return {
         dialogVisible: false,
+        clickPatientId: '',
         undealTableData: [{
           'id': '2011',
           'name': 'jack',
@@ -160,7 +161,7 @@
         if(event.label === '操作') {
           this.showReferralCase(row.id)
         }else {
-          //console.log('other cell click');
+          this.clickPatientId = row.id;
           this.dialogVisible = true;
         }
       },
