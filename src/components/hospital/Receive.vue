@@ -18,13 +18,12 @@
         </el-table-column>
         <el-table-column label="操作">
           <template scope="scope">
-            <el-button type="text" @click="acceptReferral(scope.row)">接受</el-button>,
-            <el-button type="text" @click="rejectReferral(scope.row)">拒绝</el-button>
+            <el-button type="text" @click="dealReferral(scope.row)">处 理 转 诊</el-button>
           </template>
         </el-table-column>
       </el-table>
       <h1>已处理</h1>
-      <el-table :data="dealedTableData" :row-class-name="tableRowClassName" @cell-click="handleCellClick" height="300" width="1050"  >
+      <el-table :data="dealedTableData" :row-class-name="tableRowClassName" @cell-click="showReferral" height="300" width="1050"  >
         <template>
           <el-table-column label="id" prop="id" width="100">
           </el-table-column>
@@ -44,25 +43,29 @@
       </el-table>
     </el-card>
     <InformationDialog :InfoDialogVisible="dialogVisible" @updateDialogVisible="updateDialogVisible"></InformationDialog>
-
+    <ReferralProfile :referralVisible="referralVisible" :info= 'referralInfo' :state.sync = "referralState" :ws = "ws" @updateReferralVisible="referralVisible=false"></ReferralProfile>
   </el-col>
 </template>
 
 <script>
   import InformationDialog from './InformationDialog.vue'
+  import ReferralProfile from './ReferralPorfile.vue'
   import ElCol from 'element-ui/packages/col/src/col'
   import Case from './Case.vue'
   export default {
     components: {
       Case,
-      InformationDialog
+      InformationDialog,
+      ReferralProfile
     },
-    props: ['receiveVisible','ws'],
+    props: ['receiveVisible', 'ws'],
     data () {
       return {
         caseListVisible: false,
         referralVisible: false,
         dialogVisible: false,
+        referralState: 'receive',
+        referralInfo: null,
         todealTableData: [{
           'id': '2011',
           'name': 'jack',
@@ -113,7 +116,7 @@
       }
     },
     methods: {
-      tableRowClassName (row ,index) {
+      tableRowClassName (row, index) {
         if (row.referralStatus === '未处理') {
           return 'info-row'
         } else {
@@ -130,50 +133,26 @@
           ;//don't need to do anything
         } else {
           // console.log('other cell click');
-          this.dialogVisible = true;
+          this.dialogVisible = true
         }
-      },
-      acceptReferral(row){
-        this.$confirm('你选择了接受转诊, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '接受成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消接受'
-          });
-        });
-        console.log(row.id,'accept')
-      },
-      rejectReferral(row) {
-        this.$confirm('你选择了拒绝转诊, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '拒绝成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消拒绝'
-          });
-        });
-        console.log(row.id,'reject')
       },
       showReferralCase (rowId) {
         alert('row id is' + rowId)
       },
       updateDialogVisible (val) {
         this.dialogVisible = val
+      },
+      showReferral(row) {
+        
+        this.referralInfo = row.id
+        this.referralVisible = true
+        this.referralState = 'look'
+        
+      },
+      dealReferral(row) {
+        this.referralVisible = true
+        this.referralState = 'receive'
+        this.referralInfo = row.id
       }
     }
   }
