@@ -1,0 +1,7 @@
+import ProcessDemo from './processDemo.vue'
+const processDemo={
+    install:function (Vue) {
+        Vue.component('processDemo',ProcessDemo)
+    }
+};
+export default processDemo
