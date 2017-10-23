@@ -60,12 +60,8 @@
       </el-table>
     </el-card>
 
-<<<<<<< HEAD
-    <InformationDialog :InfoDialogVisible="dialogVisible" @updateDialogVisible="updateDialogVisible"></InformationDialog>
-    <ReferralProfile :referralVisible="referralVisible" :state.sync = "referralState" :ws = "ws" :info = 'referralInfo' @updateReferralVisible="referralVisible=false"></ReferralProfile>
-=======
     <InformationDialog :InfoDialogVisible="dialogVisible" :patientId="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
->>>>>>> dcf6ffbcb48862a187daed6a8ce16d06ad5d0d2b
+    <ReferralProfile :referralVisible="referralVisible" :state.sync = "referralState" :ws = "ws" :info = 'referralInfo' @updateReferralVisible="referralVisible=false"></ReferralProfile>
   </el-col>
 </template>
 
@@ -81,13 +77,10 @@
     data() {
       return {
         dialogVisible: false,
-<<<<<<< HEAD
         referralVisible: false,
         referralState: 'send',
         referralInfo: null,
-=======
         clickPatientId: '',
->>>>>>> dcf6ffbcb48862a187daed6a8ce16d06ad5d0d2b
         undealTableData: [{
           'id': '2011',
           'name': 'jack',
@@ -173,14 +166,9 @@
       handleCellClick(row,event) {
         if(event.label === '操作') {
           this.showReferralCase(row.id)
-<<<<<<< HEAD
-        } else {
-          this.dialogVisible = true
-=======
         }else {
           this.clickPatientId = row.id;
           this.dialogVisible = true;
->>>>>>> dcf6ffbcb48862a187daed6a8ce16d06ad5d0d2b
         }
       },
       showReferral (row) {
