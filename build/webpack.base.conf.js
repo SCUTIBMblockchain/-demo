@@ -28,10 +28,11 @@ module.exports = {
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
-      'jquery': path.resolve(__dirname, '../src/assets/js')
+      'jquery': 'jquery'
     }
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin('common.js'),
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
