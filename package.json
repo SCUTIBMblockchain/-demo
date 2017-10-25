@@ -52,6 +52,8 @@
     "fabric-client": "^1.0.0",
     "fs-extra": "^2.0.0",
     "jsonwebtoken": "^7.3.0",
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
     "log4js": "^0.6.38",
     "ws": "latest"
   },
