@@ -1,6 +1,7 @@
 var referral = function (msg) {
   const queryIp = require('../models/hospital')
   const referralPatient = require('../models/hospital').referralPatient
+  const genReferral = require('../models/referral')
   const WebSocket = require('ws')
   // const webSocket = require('./')
   if (msg.includes('@')) {
@@ -13,6 +14,8 @@ var referral = function (msg) {
   if (message.operation === 'send') {
      // queryIp([message.hospitalId]).then((address) => {
       // 建立与目标医院的webSocket连接
+    //*   在区块链中生成转诊单
+    genReferral.generateReferralByPatientId(msg)
     var h = new WebSocket('ws://' + 'localhost:8889' + '/referral/host')
       // 发送信息
     var sendmsg = {

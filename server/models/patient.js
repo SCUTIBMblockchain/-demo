@@ -1,8 +1,8 @@
 const query = require('./query')
 const hospital = require('./hospital').hospital
-var patient = {
+const patient = {
   peer: 'peer1',            // peer name preset
-  org: 'org1',              // organization name preset
+  org: 'org2',              // organization name preset
   channelName: 'mychannel', // channel Name that hospital in
   chaincode: 'mycc',        // invoked chaincode name
   adminName: 'admin',       // name of admin that want to check out message
@@ -32,12 +32,13 @@ var queryCasesByPatientId = function* (patientId) {
 
 //* 查询某个病人的病人信息
 var queryPatientByPatientId = function* (patientId) {
-  const Case = yield query.queryChainCode(patient.peer, patient.channelName, patient.chaincode, [patientId], 'queryPatientsByPatientId', patient.adminName, patient.org)
+  const Case = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [patientId], 'queryPatientByPatientId', patient.adminName, patient.org)
   return Case
 }
 
 module.exports = {
   queryAllPatient,
   queryCasesByPatientId,
-  queryPatientByPatientId
+  queryPatientByPatientId,
+  patient
 }
