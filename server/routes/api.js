@@ -16,11 +16,16 @@ router.post('/channels', channel.createChannel)
 // Join Channels
 router.post('/channels/:channelName/peers', channel.joinChannel)
 
-// API 查询所有病人，病人病例
+//* demo接口
+//* API 查询所有病人信息，病人病例
 router.get('/patient/queryByHospitalName/:hospitalName', patient.getAllPatient)
 router.get('/case/queryByPatientId/:patientId', patient.getCasesByPatientId)
 router.get('/referral/send/queryByHospitalId/:hospitalId', referral.getSendReferrals)
 router.get('/referral/receive/queryByHospitalId/:hospitalId', referral.getReceiveReferrals)
+router.get('/get_undeal_patients/:hospitalId', patient.getUndealPatient)
+router.get('/get_todeal_patients/:hospitalId', patient.getToDealPatient)
+router.get('/get_dealed_patients/:hospitalId', patient.getDealedPatient)
+//* end of demo API
 
 // todo 测试该api
 // Register and enroll user

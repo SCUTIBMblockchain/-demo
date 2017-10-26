@@ -1,6 +1,4 @@
 var referral = function (msg) {
-  const queryIp = require('../models/hospital')
-  const referralPatient = require('../models/hospital').referralPatient
   const genReferral = require('../models/referral')
   const WebSocket = require('ws')
   // const webSocket = require('./')
@@ -14,10 +12,10 @@ var referral = function (msg) {
   if (message.operation === 'send') {
      // queryIp([message.hospitalId]).then((address) => {
       // 建立与目标医院的webSocket连接
-    //*   在区块链中生成转诊单
+    //* 在区块链中生成转诊单
     genReferral.generateReferralByPatientId(msg)
     var h = new WebSocket('ws://' + 'localhost:8889' + '/referral/host')
-      // 发送信息
+    // 发送信息
     var sendmsg = {
       operation: 'send',
       patientId: message.patientId,
@@ -44,8 +42,10 @@ var referral = function (msg) {
     // 若使用fabric请去掉注释
     // referralPatient([this.ws.referralmsg.patientId, 'hospital01', this.ws.referralmsg.hospitalId]).then(() => {
       // 同意转诊
+    // TODO 认为需要invoke改变转诊单状态以便查询
     var reply = {
-      operation: 'accept'
+      operation: message.operation,
+      referralProfile: message.referralProfile
     }
     this.wss.sendMessage('/referral/host', JSON.stringify(reply))
     // })

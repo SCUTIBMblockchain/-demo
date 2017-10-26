@@ -7,6 +7,24 @@ const getAllPatient = function* () {
   const result = yield patient.queryAllPatient(hospitalName)
   this.body = result
 }
+// 返回医院下的所有病人
+const getUndealPatient = function* () {
+  const hospitalName = this.params.hospitalName
+  const result = yield patient.queryUndealPatient(hospitalName)
+  this.body = result
+}
+// 返回医院下的所有病人
+const getToDealPatient = function* () {
+  const hospitalName = this.params.hospitalName
+  const result = yield patient.queryTodealPatient(hospitalName)
+  this.body = result
+}
+// 返回医院下的所有病人
+const getDealedPatient = function* () {
+  const hospitalName = this.params.hospitalName
+  const result = yield patient.queryDealedPatient(hospitalName)
+  this.body = result
+}
 // 返回病人的病例
 const getCasesByPatientId = function* () {
   const patientId = this.params.patientId
@@ -30,5 +48,8 @@ module.exports = {
   getAllPatient,
   getCasesByPatientId,
   getPatientInfoByPatientId,
-  getReferralByPatientId
+  getReferralByPatientId,
+  getUndealPatient,
+  getToDealPatient,
+  getDealedPatient
 }
