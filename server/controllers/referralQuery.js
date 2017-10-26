@@ -14,7 +14,18 @@ const getReceiveReferrals = function* () {
   this.body = result
 }
 
+// 请求所有接收到的转诊单
+const getReferrals = function* () {
+  const msg = {
+    referralId: this.accept.headers.referralid,
+    hospitalId: this.accept.headers.hospitalid
+  }
+  const result = yield referral.queryReferrals(msg)
+  this.body = result
+}
+
 module.exports = {
   getSendReferrals,
-  getReceiveReferrals
+  getReceiveReferrals,
+  getReferrals
 }

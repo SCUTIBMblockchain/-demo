@@ -11,13 +11,20 @@ var querySendReferrals = function* (hospitalId) {
   const Case = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [hospitalId], 'queryReferralsAsSenderByHospitalId', patient.adminName, patient.org)
   return Case
 }
+
 var queryReceiveReferrals = function* (hospitalId) {
   const Case = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [hospitalId], 'queryReferralsAsSenderByHospitalId', patient.adminName, patient.org)
+  return Case
+}
+
+var queryReferrals = function* (msg) {
+  const Case = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [msg.referralId, msg.hospitalId], 'queryReferralByReferralIdAndHospitalId', patient.adminName, patient.org)
   return Case
 }
 
 module.exports = {
   generateReferralByPatientId,
   querySendReferrals,
-  queryReceiveReferrals
+  queryReceiveReferrals,
+  queryReferrals
 }
