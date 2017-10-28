@@ -216,9 +216,11 @@
       //console.log(row)
       this.clickRowId = row.id;
       this.caseVisible = true;
+      this.InfoDialogVisible = false
     },
     updateCaseVisible(val){
       this.caseVisible = val;
+      this.InfoDialogVisible = true
     }
   },
 }
