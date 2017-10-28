@@ -36,7 +36,6 @@
         sendVisible: true,
         receiveVisible: false,
         //myss:'',
-        receiveLog: 'this is a message of receive log',
         patientInfo: {},
         rejectData: {},
         myws: this.init(),

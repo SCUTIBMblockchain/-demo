@@ -15,7 +15,7 @@
       <hr>
       <el-form ref='patientInfo' :model='form' label-width='80px'>
         <el-row>
-          <el-col :span="4">
+          <el-col :span="5">
             <el-form-item label='病人姓名'>
               <el-input v-model='form.Name' :disabled='true'></el-input>
             </el-form-item>
@@ -67,7 +67,7 @@
         </el-row>
       </el-form>
       <span v-show='fromVisiable'>
-        <hr>   
+        <hr>
         <el-form ref='fromInfo' :model='form.FromInfo' label-width='80px'>
           <el-row>
             <el-col :span="7">
@@ -119,11 +119,11 @@
                 <el-input type='textarea' v-model='form.FromInfo.RelationDemand' :disabled='fromDisable'></el-input>
               </el-form-item>
             </el-col>
-          </el-row>    
+          </el-row>
         </el-form>
       </span>
       <span v-show='toVisiable'>
-        <hr>   
+        <hr>
         <el-form ref='toInfo' :model='form.ToInfo' label-width='80px'>
           <el-row>
             <el-col :span="5">
@@ -141,19 +141,19 @@
                 <el-input v-model='form.ToInfo.Phone' :disabled='toDisable'></el-input>
               </el-form-item>
             </el-col>
-          </el-row>   
+          </el-row>
         </el-form>
       </span>
-      <span v-show="state=='look'&&form.State=='reject'">  
+      <span v-show="state=='look'&&form.State=='reject'">
         <hr>
-        <el-form ref='fromInfo' :model='form' label-width='80px'> 
+        <el-form ref='fromInfo' :model='form' label-width='80px'>
           <el-row>
             <el-col :span="15">
               <el-form-item label='拒绝理由' label-width='80px' >
                 <el-input type='textarea' v-model='form.RejectReason' :disabled='fromDisable'></el-input>
               </el-form-item>
             </el-col>
-          </el-row>    
+          </el-row>
         </el-form>
       </span>
     </span>
@@ -177,32 +177,32 @@
     data () {
       return {
         form: {
-          Id: '20171010001',
+          Id: '20171010636741',
           Date: '20171012',
           State: 'accept',
           RejectReason: '专家有事不在',
-          Name: '王建国',
+          Name: '赵镇洪',
           PIN: '142703199701012232',
           Gender: '男',
-          Age: 20,
+          Age: 26,
           Birthplace: '陕西省忻州市五寨县',
           Nationality: '汉',
           Occupation: '电工',
-          Resident: '广东省广州市番禹区番禺小区4栋502号',
+          Resident: '广东省广州市番禹区番禺小区4栋471号',
           Phone: '13825646512',
           FromInfo: {
             Section: '内科',
             HospitalName: '仁和医院',
-            Doctor: '张伟',
+            Doctor: '徐宽',
             Phone: '13654681827',
             ReferralType: '治疗重症',
-            RelationDemand: '要王伟专家负责',
+            RelationDemand: '要杨镇宇专家负责',
             PayWay: '医保',
             IllnessState: '长期高烧不退，各种抗生素均无效'
           },
           ToInfo: {
             Section: '内科',
-            Doctor: '王伟',
+            Doctor: '徐宽',
             Phone: '13427534816'
           }
         },

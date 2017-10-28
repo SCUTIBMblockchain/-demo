@@ -10,9 +10,9 @@
         </el-table-column>
         <el-table-column label="性别" prop="gender" width="100">
         </el-table-column>
-        <el-table-column label="家庭住址" prop="address" width="100">
+        <el-table-column label="家庭住址" prop="address" width="300">
         </el-table-column>
-        <el-table-column label="就诊医院" prop="hospital" width="100">
+        <el-table-column label="就诊医院" prop="hospital" width="200">
         </el-table-column>
         <el-table-column label="转诊状态" prop="referralStatus" width="100">
         </el-table-column>
@@ -32,9 +32,9 @@
         </el-table-column>
         <el-table-column label="性别" prop="gender" width="100">
         </el-table-column>
-        <el-table-column label="家庭住址" prop="address" width="100">
+        <el-table-column label="家庭住址" prop="address" width="300">
         </el-table-column>
-        <el-table-column label="就诊医院" prop="hospital" width="100">
+        <el-table-column label="就诊医院" prop="hospital" width="200">
         </el-table-column>
         <el-table-column label="转诊状态" prop="referralStatus" width="100">
         </el-table-column>
@@ -67,49 +67,49 @@
         referralState: 'receive',
         referralInfo: null,
         todealTableData: [{
-          'id': '2011',
-          'name': 'jack',
-          'gender': 'man',
-          'address': 'home',
-          'hospital': 'hospitalA',
+          'id': 'patient09',
+          'name': '贺肃',
+          'gender': '男',
+          'address': '广东省东莞市大石镇大石街道办4层461号',
+          'hospital': '广东省仁和医院',
           'referralStatus': '未处理'
         }, {
-          'id': '2011',
-          'name': 'jack',
-          'gender': 'man',
-          'address': 'home',
-          'hospital': 'hospitalA',
+          'id': 'patient21',
+          'name': '辰法',
+          'gender': '男',
+          'address': '广东省东莞市厚街镇厚街362号',
+          'hospital': '广东省仁和医院',
           'referralStatus': '未处理'
         }, {
-          'id': '2011',
-          'name': 'jack',
-          'gender': 'man',
-          'address': 'home',
-          'hospital': 'hospitalA',
+          'id': 'patient24',
+          'name': '钟娟',
+          'gender': '女',
+          'address': '广东省惠州市惠新镇城中村339号',
+          'hospital': '广州市红十字会医院',
           'referralStatus': '未处理'
         }],
         dealedTableData: [{
-          'id': '2011',
-          'name': 'jack',
-          'gender': 'man',
-          'address': 'home',
-          'hospital': 'hospitalA',
+          'id': 'patient28',
+          'name': '林琅',
+          'gender': '男',
+          'address': '广东省广州市番禹区大学城华南理工大学C4栋118号',
+          'hospital': '华南理工大学附属医院',
           'referralStatus': '已处理',
           'operationStatus': '接受'
         }, {
-          'id': '2011',
-          'name': 'jack',
-          'gender': 'man',
-          'address': 'home',
-          'hospital': 'hospitalA',
+          'id': 'patient36',
+          'name': '孙子良',
+          'gender': '男',
+          'address': '广东省广州市番禹区番禺小区7栋746号',
+          'hospital': '广东省第二人民医院',
           'referralStatus': '已处理',
           'operationStatus': '拒绝'
         }, {
-          'id': '2011',
-          'name': 'jack',
-          'gender': 'man',
-          'address': 'home',
-          'hospital': 'hospitalA',
+          'id': 'patient37',
+          'name': '周运楚',
+          'gender': '女',
+          'address': '广东省广州市中山二路106号',
+          'hospital': '中国人民解放军第421医院',
           'referralStatus': '已处理',
           'operationStatus': '接受'
         }]
@@ -143,11 +143,11 @@
         this.dialogVisible = val
       },
       showReferral(row) {
-        
+
         this.referralInfo = row.id
         this.referralVisible = true
         this.referralState = 'look'
-        
+
       },
       dealReferral(row) {
         this.referralVisible = true
