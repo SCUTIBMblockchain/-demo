@@ -2,108 +2,108 @@
   <div id="information dialog">
     <el-dialog
       title="查看信息"
-      size="large"
       @open="beforeOpen"
       :close-on-press-escape="false"
       :before-close="beforeClose"
-      :visible="selfVisible">
+      :visible="selfVisible"  >
       <el-collapse v-model="activeNames">
         <el-collapse-item title="病人基本信息" name="1">
-          <el-form>
-            <el-row :gutter="50">
-              <el-col :span="4">
-                <el-form-item label="姓名">
+          <el-form label-width='50px'>
+            <el-row >
+              <el-col :span="3">
+                <el-form-item label="姓名" label-width='40px'>
                   <el-input placeholder="姓名" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
-                <el-form-item label="病人 id">
+              <el-col :span="5">
+                <el-form-item label="病人 id" label-width='60px'>
                   <el-input placeholder="id" :value="this.selfPatientId" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="3">
                 <el-form-item label="性别">
                   <el-input placeholder="性别" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="3">
                 <el-form-item label="年龄">
                   <el-input placeholder="年龄" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
-                <el-form-item label="民族">
+              
+              </el-row>
+              <el-row>
+              <el-col :span="3">
+                <el-form-item label="民族" label-width='40px'>
                   <el-input placeholder="民族" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
-                <el-form-item label="联系电话">
-                  <el-input placeholder="联系电话" :disabled="true"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="50">
-              <el-col :span="4">
-                <el-form-item label="居住地">
-                  <el-input placeholder="居住地" :disabled="true"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="身份证">
-                  <el-input placeholder="身份证" :disabled="true"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="婚姻状态">
+              <el-col :span="5">
+                <el-form-item label="婚姻状态" label-width='80px'>
                   <el-input placeholder="婚姻状态" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
-                <el-form-item label="籍贯">
-                  <el-input placeholder="籍贯" :disabled="true"></el-input>
+              <el-col :span="7">
+                <el-form-item label="联系电话" label-width='80px'>
+                  <el-input placeholder="联系电话" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
-                <el-form-item label="职业">
+              <el-col :span="7">
+                <el-form-item label="居住地" label-width='60px'>
+                  <el-input placeholder="居住地" :disabled="true"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="3">
+                <el-form-item label="职业" label-width='40px'>
                   <el-input placeholder="职业" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
-
+              <el-col :span="7" >
+                <el-form-item label="身份证" label-width='60px'>
+                  <el-input placeholder="身份证" :disabled="true"></el-input>
+                </el-form-item>
+              </el-col>
+      
+              <el-col :span="7">
+                <el-form-item label="籍贯">
+                  <el-input placeholder="籍贯" :disabled="true"></el-input>
+                </el-form-item>
               </el-col>
             </el-row>
           </el-form>
           <hr>
           <label>亲属</label>
-          <el-form>
-            <el-row :gutter="50">
-              <el-col :span="4">
-                <el-form-item label="亲属姓名">
+          <el-form label-width='40px'>
+            <el-row>
+              <el-col :span="5">
+                <el-form-item label="亲属姓名" label-width='80px'>
                   <el-input placeholder="亲属姓名" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                <el-form-item label="亲属联系电话">
-                  <el-input placeholder="亲属联系电话" :disabled="true"></el-input>
+                <el-form-item label="与病人关系" label-width='90px'>
+                  <el-input placeholder="关系" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
-                <el-form-item label="与病人关系">
-                  <el-input placeholder="关系" :disabled="true"></el-input>
+              <el-col :span="8">
+                <el-form-item label="亲属联系电话" label-width='105px'>
+                  <el-input placeholder="亲属联系电话" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
           </el-form>
           <hr>
           <label>不良嗜好</label>
-          <el-form>
-            <el-row :gutter="50">
-              <el-col :span="4">
+          <el-form label-width='50px'>
+            <el-row>
+              <el-col :span="5">
                 <el-form-item label="抽烟">
                   <el-input placeholder="抽烟" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="5">
                 <el-form-item label="嗜酒">
                   <el-input placeholder="嗜酒" :disabled="true"></el-input>
                 </el-form-item>
@@ -112,35 +112,39 @@
           </el-form>
           <hr>
           <label>病史</label>
-          <el-form>
-            <el-row :gutter="50">
-              <el-col :span="4">
+          <el-form label-width='90px'>
+            <el-row>
+              <el-col :span="12">
                 <el-form-item label="过敏原">
-                  <el-input placeholder="过敏原" :disabled="true"></el-input>
+                  <el-input placeholder="过敏原" type='textarea' :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+            </el-row>
+            <el-row>
+              <el-col :span="12">
                 <el-form-item label="感染病史">
-                  <el-input placeholder="感染病史" :disabled="true"></el-input>
+                  <el-input placeholder="感染病史" type='textarea' :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+            </el-row>
+            <el-row>
+              <el-col :span="12">
                 <el-form-item label="遗传病史">
-                  <el-input placeholder="遗传病史" :disabled="true"></el-input>
+                  <el-input placeholder="遗传病史" type='textarea' :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
           </el-form>
           <hr>
           <label>状态</label>
-          <el-form :inline="true">
-            <el-row :gutter="50">
-              <el-col :span="4">
+          <el-form label-width='90px'>
+            <el-row>
+              <el-col :span="6">
                 <el-form-item label="当前医院">
                   <el-input placeholder="当前医院" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="6">
                 <el-form-item label="转诊状态">
                   <el-input placeholder="转诊状态" :disabled="true"></el-input>
                 </el-form-item>
