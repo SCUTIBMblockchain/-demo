@@ -277,6 +277,8 @@
         this.$confirm('确认提交？')
           .then(_ => {
             console.log('确认')
+            let sendData = this.form
+          this.ws.send(JSON.stringify(sendData))
           })
           .catch(_ => {
             console.log('取消')
@@ -289,6 +291,8 @@
         }).then(({
           value
         }) => {
+          let sendData = this.form
+          this.ws.send(JSON.stringify(sendData))
           this.$message({
             type: 'success',
             message: '拒绝理由是: ' + value
