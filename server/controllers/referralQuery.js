@@ -24,8 +24,15 @@ const getReferrals = function* () {
   this.body = result
 }
 
+const getReferralId = function () {
+  const patientId = this.params.patientId
+  const referralId = referral.generateRefferralId(patientId)
+  this.body = referralId
+}
+
 module.exports = {
   getSendReferrals,
   getReceiveReferrals,
-  getReferrals
+  getReferrals,
+  getReferralId
 }

@@ -22,9 +22,9 @@ router.get('/patient/queryByHospitalName/:hospitalName', patient.getAllPatient)
 router.get('/case/queryByPatientId/:patientId', patient.getCasesByPatientId)
 router.get('/referral/send/queryByHospitalId/:hospitalId', referral.getSendReferrals)
 router.get('/referral/receive/queryByHospitalId/:hospitalId', referral.getReceiveReferrals)
-router.get('/get_undeal_patients/:hospitalId', patient.getUndealPatient)
-router.get('/get_todeal_patients/:hospitalId', patient.getToDealPatient)
-router.get('/get_dealed_patients/:hospitalId', patient.getDealedPatient)
+router.get('/get_undeal_patients/:hospitalName', patient.getUndealPatient)
+router.get('/get_todeal_patients/:hospitalName', patient.getToDealPatient)
+router.get('/get_dealed_patients/:hospitalName', patient.getDealedPatient)
 router.get('/referrals', referral.getReferrals)
 //* end of demo API
 
