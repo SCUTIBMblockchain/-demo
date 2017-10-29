@@ -1,6 +1,6 @@
 const queryChainCode = require('./query').queryChaincode
 const invokeChainCode = require('./invokeTransaction').invokeChaincode
-var hospital = {
+const hospital = {
   peer: 'peer1',
   org: 'org1',
   channelName: 'mychannel',
@@ -19,5 +19,6 @@ const referralPatient = function* (args) {
 }
 module.exports = {
   queryIp,
-  referralPatient
+  referralPatient,
+  hospital
 }
