@@ -1,6 +1,6 @@
 <template id="processDemo">
     <div>
-        <div id="txStoryPanel" ><span id="closeTxStoryPos" class="fa fa-close closeTxStory"></span>
+        <div id="txStoryPanel"><span id="closeTxStoryPos" class="fa fa-close closeTxStory"></span>
             <div id="txStep1" class="txStepWrap inactiveStep">
                 <div class="txStatusWrap">
                     <div class="txStatus"></div>
@@ -39,10 +39,10 @@
                         <div id="endorseMarble" class="ball"><span class="fa fa-check"></span></div>
                     </div>
                     <div class="peersEndorse" id="peer1">
-                        <span title="Another marble tx" class="ball ordererMarbles" style="top: -3.5px;"><span class="fa fa-check hideMe" id="peers1"></span></span>
+                        <span title="Another marble tx" class="ball ordererMarbles" style="top: -1.5px;left:-4px;"><span class="fa fa-check hideMe" id="peers1"></span></span>
                     </div>
                     <div class="peersEndorse" id="peer2">
-                        <span title="Another marble tx" class="ball ordererMarbles" style="top:47.5px;background-color: #ff8100"><span class="fa fa-check hideMe" id="peers2"></span></span>
+                        <span title="Another marble tx" class="ball ordererMarbles" style="top:47.5px;left:-4px;background-color: #ff8100"><span class="fa fa-check hideMe" id="peers2"></span></span>
                     </div>
 
                 </div>
@@ -80,22 +80,25 @@
             </div>
             <!--注意：为了演示的目的，这个过程的速度将被放慢-->
             <br/>
-            <div>
-                <div style="left: 10%;position: fixed;display: inline-block">
+
+                <div style="left: 10%;position: absolute;display: inline-block">
                     <button type="button" @click="nextTx">下一步</button> </div>
-                <div class="hint" style="display: inline-block">
-                    <span><br/>*注意：为了演示的目的，这个过程的速度将被放慢</span>
+
+                <div style="position: absolute;right: 10%;display: inline-block;">
+                    <button type="button" @click="rePerform">重新播放</button>
                 </div>
-                <div style="position: fixed;right: 10%;display: inline-block;">
-                    <button type="button" @click="rePerform">重新播放</button> </div>
-            </div>
+              <div class="hint" style="text-align: center">
+                <span><br/>*注意：为了演示的目的，这个过程的速度将被放慢</span>
+              </div>
+
             <div id="txStoryErrorWrap"> <span style="fill: #000;" class="fa fa-warning"></span><span id="txStoryErrorTxt">&nbsp;</span></div>
             <div id="doneTxStep" class="stepHelpWrap">
-                <h2>交易完成</h2><br/><br/>
+                <h2>交易完成</h2>
                 <button type="button" class="closeTxStory">关闭</button>
             </div>
         </div>
-        <button @click.nactive='show_tx'>详情</button>
+        <!--<button @click.nactive='show_tx'>详情</button>-->
+        <!--<div class="testMarsk"></div>-->
     </div>
 
 </template>
@@ -111,31 +114,6 @@
     // =================================================================================
     // On Load
     // =================================================================================
-    $(document).on('ready', function() {
-
-
-        // =================================================================================
-        // jQuery UI Events
-        // =================================================================================
-        $('.closeTxStory').click(function(){
-            $('#txStoryPanel, #tint, #doneTxStep').fadeOut();
-
-            //reset
-            setTimeout(function(){
-                $('#txStep1 .txStoryWrap').html(story1html);
-                $('#txStep2 .txStoryWrap').html(story2html);
-                $('#txStep3 .txStoryWrap').html(story3html);
-                $('#txStep4 .txStoryWrap').html(story4html);
-            }, 500);
-        });
-
-        //remember initial contents, we will rebuild on reset
-        story1html = $('#txStep1 .txStoryWrap').html();
-        story2html = $('#txStep2 .txStoryWrap').html();
-        story3html = $('#txStep3 .txStoryWrap').html();
-        story4html = $('#txStep4 .txStoryWrap').html();
-//        $('.peersEndorse').hide();
-    });
 
     // =================================================================================
     // Start Up Fun
@@ -233,6 +211,7 @@
     }
 
     function reset(){
+      $('.peersEndorse').hide();
         $('#txStoryPanel, #tint').fadeIn(300);
         $('#txStep1, #txStep2, #txStep3, #txStep4').removeClass('stepFailed');	//reset
         $('#txStoryErrorTxt').html('');
@@ -266,8 +245,10 @@
         var dist2 = $('#txStep2 .txStatusWrap .txStatus').offset();
         var diff = dist2.left - dist1.left;
         $('.peersEndorse').fadeIn(500);
+        $('#peers1').hide();
+        $('#peers2').hide();
         var dist3 = $('#peer1 .ball').offset();
-        var diffCol=dist3.top-dist1.top-20;
+        var diffCol=dist3.top-dist1.top-35;
 
         roll_ball('#proposeMarble', diff, function(){
             setTimeout(function () {
@@ -326,9 +307,9 @@
                 }, 500);
             }, 300);
         });
-    setTimeout(function () {
-        $('#orderBox').fadeIn(1000);
-    },3500);
+        setTimeout(function () {
+            $('#orderBox').fadeIn(1000);
+        },3500);
 
     }
 
@@ -370,10 +351,32 @@
         });
     }
     export default {
+      mounted:function () {
+          // =================================================================================
+          // jQuery UI Events
+          // =================================================================================
+          $('.closeTxStory').click(function(){
+            $('#txStoryPanel, #tint, #doneTxStep').fadeOut();
+            $('.testMarsk').fadeOut();
+            //reset
+            setTimeout(function(){
+              $('#txStep1 .txStoryWrap').html(story1html);
+              $('#txStep2 .txStoryWrap').html(story2html);
+              $('#txStep3 .txStoryWrap').html(story3html);
+              $('#txStep4 .txStoryWrap').html(story4html);
+            }, 500);
 
+          });
+          story1html = $('#txStep1 .txStoryWrap').html();
+          story2html = $('#txStep2 .txStoryWrap').html();
+          story3html = $('#txStep3 .txStoryWrap').html();
+          story4html = $('#txStep4 .txStoryWrap').html();
+          $('.peersEndorse').hide();
 
+      },
         methods:{
             show_tx:function () {
+                $('.testMarsk').show();
                 show_tx_step({state:"building_proposal"});
 
             } ,//动画全过程
@@ -442,5 +445,6 @@
 
 </script>
 <style scoped>
-    @import "./main.min.css";
+    @import "main.min.css";
+  @import "font-awesome-4.5.0/css/fontTesting.css";
 </style>

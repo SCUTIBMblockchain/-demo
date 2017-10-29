@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-dialog title='转诊单' :visible.sync='referralVisible' :before-close="beforeClose" @update:visible='referralStateChange'>
     <span>
        <el-row>
@@ -166,11 +167,18 @@
     <el-button type='primary' @click='onAccept'>接 收</el-button>
     <el-button type='primary' @click='onReject'>拒 绝</el-button>
   </span>
+    <process-demo ref="processDemo"></process-demo>
   </el-dialog>
+
+  </div>
 </template>
 
 <script>
+  import ProcessDemo from "../processDemo/ProcessDemo.vue"
   export default {
+    components:{
+      ProcessDemo
+    },
     props: ['referralVisible', 'state', 'ws', 'info'],
     created () {
     },
@@ -221,7 +229,8 @@
       onSubmit () {
         this.$confirm('确认提交？')
           .then(_ => {
-            console.log('确认')
+            console.log('确认');
+            this.$refs.processDemo.show_tx();       //动画效果
           })
           .catch(_ => {
             console.log('取消')
@@ -286,7 +295,7 @@
 
 </script>
 
-<style lang='stylus' scoped>
+<style scoped>
 
 
 </style>
