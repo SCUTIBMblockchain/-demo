@@ -6,7 +6,7 @@
     
             {
     
-                "url": "grpc://139.199.69.232:7050"
+                "url": "grpc://localhost:7050"
     
             }
     
@@ -14,7 +14,7 @@
     
         "ca": {
     
-            "url": "http://139.199.69.232:7054",
+            "url": "http://localhost:7054",
     
             "name": "ca.org1.example.com"
     
@@ -24,9 +24,9 @@
     
             {
     
-                "requestURL": "grpc://139.199.69.232:7051",
+                "requestURL": "grpc://localhost:7051",
     
-                "eventURL": "grpc://139.199.69.232:7053"
+                "eventURL": "grpc://localhost:7053"
     
             }
     
