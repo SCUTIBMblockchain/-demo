@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-dialog title='转诊单' :visible.sync='referralVisible' :before-close="beforeClose" @update:visible='referralStateChange'>
     <span>
        <el-row>
@@ -67,7 +68,7 @@
         </el-row>
       </el-form>
       <span v-show='fromVisiable'>
-        <hr>   
+        <hr>
         <el-form ref='fromInfo' :model='form.FromInfo' label-width='80px'>
           <el-row>
             <el-col :span="7">
@@ -119,11 +120,11 @@
                 <el-input type='textarea' v-model='form.FromInfo.RelationDemand' :disabled='fromDisable'></el-input>
               </el-form-item>
             </el-col>
-          </el-row>    
+          </el-row>
         </el-form>
       </span>
       <span v-show='toVisiable'>
-        <hr>   
+        <hr>
         <el-form ref='toInfo' :model='form.ToInfo' label-width='80px'>
           <el-row>
             <el-col :span="5">
@@ -141,19 +142,19 @@
                 <el-input v-model='form.ToInfo.Phone' :disabled='toDisable'></el-input>
               </el-form-item>
             </el-col>
-          </el-row>   
+          </el-row>
         </el-form>
       </span>
-      <span v-show="state=='look'&&form.State=='reject'">  
+      <span v-show="state=='look'&&form.State=='reject'">
         <hr>
-        <el-form ref='fromInfo' :model='form' label-width='80px'> 
+        <el-form ref='fromInfo' :model='form' label-width='80px'>
           <el-row>
             <el-col :span="15">
               <el-form-item label='拒绝理由' label-width='80px' >
                 <el-input type='textarea' v-model='form.RejectReason' :disabled='fromDisable'></el-input>
               </el-form-item>
             </el-col>
-          </el-row>    
+          </el-row>
         </el-form>
       </span>
     </span>
@@ -166,11 +167,18 @@
     <el-button type='primary' @click='onAccept'>接 收</el-button>
     <el-button type='primary' @click='onReject'>拒 绝</el-button>
   </span>
+    <process-demo ref="processDemo"></process-demo>
   </el-dialog>
+
+  </div>
 </template>
 
 <script>
+  import ProcessDemo from "../processDemo/ProcessDemo.vue"
   export default {
+    components:{
+      ProcessDemo
+    },
     props: ['referralVisible', 'state', 'ws', 'info'],
     created () {
     },
@@ -221,7 +229,8 @@
       onSubmit () {
         this.$confirm('确认提交？')
           .then(_ => {
-            console.log('确认')
+            console.log('确认');
+            this.$refs.processDemo.show_tx();       //动画效果
           })
           .catch(_ => {
             console.log('取消')
@@ -286,7 +295,7 @@
 
 </script>
 
-<style lang='stylus' scoped>
+<style scoped>
 
 
 </style>
