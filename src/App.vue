@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Nav></Nav>
+    <TitleNav></TitleNav>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Nav from './components/Nav'
+import TitleNav from './components/TitleNav'
 export default {
   name: 'app',
   components: {
-    Nav
+    TitleNav
   }
 }
 </script>

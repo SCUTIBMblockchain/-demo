@@ -14,7 +14,7 @@
     },
     methods: {
       handleSelect (key) {
-        alert(key)
+        //alert(key)
       }
     }
   }
@@ -27,4 +27,3 @@
     font-size  25px
     margin-bottom 10px
 </style>
-                

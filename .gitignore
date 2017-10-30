@@ -11,3 +11,9 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+# Myself gitignore
+*.js~
+*.html~
+*.vue~
+*.gitignore~
