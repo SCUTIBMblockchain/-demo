@@ -195,7 +195,7 @@
         case 'send':
           this.$http.post('根据patientid创建转诊单').then((res) => {
             if (res.status === 200) {
-              
+
             }
             else {
               this.$message.error('创建转诊单失败')
@@ -207,7 +207,7 @@
         case 'receive':
           this.$http.post('根据referralid获取referral').then((res) => {
             if (res.status === 200) {
-              
+
             }
             else {
               this.$message.error('创建转诊单失败')
@@ -268,6 +268,7 @@
             let sendData = this.form
             this.ws.send(JSON.stringify(sendData))
             this.$refs.processDemo.show_tx() // 动画效果
+            console.log('确认');
           })
           .catch(_ => {
             console.log('取消')
@@ -276,9 +277,14 @@
       onAccept () {
         this.$confirm('确认提交？')
           .then(_ => {
-            console.log('确认')
-            let sendData = this.form
-          this.ws.send(JSON.stringify(sendData))
+            console.log('确认');
+            this.$refs.processDemo.show_tx();       //动画效果
+            let sendData = {
+              "operation": "accept",
+              "referralProfile": this.form,
+              };
+            //传数据到后端
+            ws.send(JSON.stringify(sendData));
           })
           .catch(_ => {
             console.log('取消')
