@@ -18,30 +18,6 @@ var queryAllPatient = function* (name) {
   return allPatient
 }
 
-var queryUndealPatient = function* (name) {
-  // temp way for invoke query
-  var hospitalId = name
-  var undeal = yield query.queryChaincode(hospital.peer, hospital.channelName, hospital.chaincode, [hospitalId], 'queryPatientsByHospitalId', hospital.userName, hospital.org)
-  
-  return undeal
-}
-
-var queryTodealPatient = function* (name) {
-  // temp way for invoke query
-  var hospitalId = name
-  const toDeal = yield query.queryChaincode(hospital.peer, hospital.channelName, hospital.chaincode, [hospitalId], 'queryPatientsByHospitalId', hospital.userName, hospital.org)
-  // 遍历处理数组，删掉不合格对象
-  return toDeal
-}
-
-var queryDealedPatient = function* (name) {
-  // temp way for invoke query
-  var hospitalId = name
-  const dealed = yield query.queryChaincode(hospital.peer, hospital.channelName, hospital.chaincode, [hospitalId], 'queryPatientsByHospitalId', hospital.userName, hospital.org)
-  // 遍历处理数组，删掉不合格对象
-  return dealed
-}
-
 /**
  * (peer, channelName, chaincodeName, args, fcn, username, org)
  * @param {*} args = [patientId, originHospitalId, targetHospitalId]
@@ -64,8 +40,5 @@ module.exports = {
   queryAllPatient,
   queryCasesByPatientId,
   queryPatientByPatientId,
-  queryDealedPatient,
-  queryUndealPatient,
-  queryTodealPatient,
   patient
 }

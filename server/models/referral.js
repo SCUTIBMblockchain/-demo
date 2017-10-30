@@ -8,10 +8,11 @@ var generateReferralByPatientId = function* (msg) {
     msg.fromInfo.phone], 'CreateReferralProfile', patient.adminName, patient.org)
   return referralProfile
 }
-//* 生成转诊单号
+
 var refId = []
 var count = 0
 var generateRefferralId = function (patientId) {
+  //* 生成转诊单号
   var len = count
   if (len < 10) {
     len = '0' + len
@@ -24,8 +25,8 @@ var generateRefferralId = function (patientId) {
   }
   count++
   refId[patientId] = refToken
-  var result = refId[patientId]
-  return result
+  var referralId = refId[patientId]
+  return referralId
 }
 
 var querySendReferrals = function* (hospitalId) {
