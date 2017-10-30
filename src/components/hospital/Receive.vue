@@ -12,7 +12,7 @@
         </el-table-column>
         <el-table-column label="家庭住址" prop="address" width="300">
         </el-table-column>
-        <el-table-column label="就诊医院" prop="hospital" width="200">
+        <el-table-column label="目前就诊医院" prop="hospital" width="200">
         </el-table-column>
         <el-table-column label="转诊状态" prop="referralStatus" width="100">
         </el-table-column>
@@ -43,7 +43,7 @@
       </el-table>
     </el-card>
     <InformationDialog :InfoDialogVisible="dialogVisible" @updateDialogVisible="updateDialogVisible"></InformationDialog>
-    <ReferralProfile :referralVisible="referralVisible" :info= 'referralInfo' :state.sync = "referralState" :ws = "ws" @updateReferralVisible="referralVisible=false"></ReferralProfile>
+    <ReferralProfile :referralVisible="referralVisible" :info= 'referralInfo' :state.sync = "referralState" :ws = "selfWs" @updateReferralVisible="referralVisible=false"></ReferralProfile>
   </el-col>
 </template>
 
@@ -58,35 +58,37 @@
       InformationDialog,
       ReferralProfile
     },
-    props: ['receiveVisible', 'ws'],
+    props: ['receiveVisible', 'ws','patientInfo'],
     data () {
       return {
         caseListVisible: false,
         referralVisible: false,
         dialogVisible: false,
+        hospitalId: 'hospital01',
         referralState: 'receive',
         referralInfo: null,
+        selfWs: this.ws,
         todealTableData: [{
           'id': 'patient09',
           'name': '贺肃',
           'gender': '男',
           'address': '广东省东莞市大石镇大石街道办4层461号',
           'hospital': '广东省仁和医院',
-          'referralStatus': '未处理'
+          'referralStatus': 'undeal'
         }, {
           'id': 'patient21',
           'name': '辰法',
           'gender': '男',
           'address': '广东省东莞市厚街镇厚街362号',
           'hospital': '广东省仁和医院',
-          'referralStatus': '未处理'
+          'referralStatus': 'undeal'
         }, {
           'id': 'patient24',
           'name': '钟娟',
           'gender': '女',
           'address': '广东省惠州市惠新镇城中村339号',
           'hospital': '广州市红十字会医院',
-          'referralStatus': '未处理'
+          'referralStatus': 'undeal'
         }],
         dealedTableData: [{
           'id': 'patient28',
@@ -95,7 +97,7 @@
           'address': '广东省广州市番禹区大学城华南理工大学C4栋118号',
           'hospital': '华南理工大学附属医院',
           'referralStatus': '已处理',
-          'operationStatus': '接受'
+          'operationStatus': 'receive'
         }, {
           'id': 'patient36',
           'name': '孙子良',
@@ -103,7 +105,7 @@
           'address': '广东省广州市番禹区番禺小区7栋746号',
           'hospital': '广东省第二人民医院',
           'referralStatus': '已处理',
-          'operationStatus': '拒绝'
+          'operationStatus': 'reject'
         }, {
           'id': 'patient37',
           'name': '周运楚',
@@ -111,18 +113,67 @@
           'address': '广东省广州市中山二路106号',
           'hospital': '中国人民解放军第421医院',
           'referralStatus': '已处理',
-          'operationStatus': '接受'
+          'operationStatus': 'accept'
         }]
+      }
+    },
+    mounted: function () {
+      this.$http.get('/api/receiver/get_todeal_patients',this.hospitalId)
+        .then((res) => {
+          if (res.status==='200') {
+            this.todealTableData = res.data.patients;
+          }else {
+            console.log('this.$http.get(\'/api/receiver/get_todeal_patients\',this.hospitalId) return is not 200');
+          }
+        },(err) => {
+          this.$message.error('初始化未处理病人时请求错误！')
+        });
+      this.$http.get('/api/receiver/get_todeal_patients',this.hospitalId)
+        .then((res) => {
+          if (res.status==='200') {
+            this.dealedTableData = res.data.patients;
+          }else {
+            console.log('this.$http.get(\'/api/receiver/get_dealed_patients\',this.hospitalId) return is not 200');
+          }
+        },(err) => {
+          this.$message.error('初始化未处理病人时请求错误！')
+        });
+    },
+    watch: {
+      patientInfo (newPaitent){
+        if ('id' in newPaitent) {
+          ;//pass
+        }else {
+          console.log('id not in newPatient');
+          return;
+        }
+        let tmpPatient = {
+          'id': '',
+          'name': '',
+          'gender': '',
+          'address': '',
+          'hospital': '',
+          'referralStatus': '',
+          'operationStatus': ''
+        };
+        tmpPatient.id = newPaitent.id;
+        tmpPatient.name = newPaitent.name;
+        tmpPatient.gender = newPaitent.gender;
+        tmpPatient.address = newPaitent.address;
+        tmpPatient.hospital = newPaitent.hospital;
+        tmpPatient.referralStatus = newPaitent.referralStatus;
+        tmpPatient.operationStatus = newPaitent.operationStatus;
+        this.todealTableData.push(tmpPaitent);
       }
     },
     methods: {
       tableRowClassName (row, index) {
-        if (row.referralStatus === '未处理') {
+        if (row.referralStatus === 'undeal') {
           return 'info-row'
         } else {
-          if (row.operationStatus === '拒绝') {
+          if (row.operationStatus === 'reject') {
             return 'negative-row'
-          } else if (row.operationStatus === '接受') {
+          } else if (row.operationStatus === 'accept') {
             return 'positive-row'
           }
         }
