@@ -1,7 +1,7 @@
 <template>
   <el-col  :span="22" :offset="1" v-show="sendVisible">
     <el-card class="box-card">
-      <h1>未处理</h1>
+      <h1>未转诊</h1>
       <el-table :data="undealTableData" :row-class-name="tableRowClassName" @cell-click="handleCellClick" height="300" width="1050"  >
         <el-table-column label="id" prop="id" width="100">
         </el-table-column>
@@ -21,7 +21,6 @@
           </template>
         </el-table-column>
       </el-table>
-
       <h1>待处理</h1>
       <el-table :data="todealTableData" :row-class-name="tableRowClassName" @cell-click="handleCellClick" height="300" width="1050"  >
         <el-table-column label="id" prop="id" width="100">
@@ -37,14 +36,12 @@
         <el-table-column label="转诊状态" prop="referralStatus">
         </el-table-column>
       </el-table>
-
       <h1>处理历史</h1>
       <el-table :data="dealedTableData" :row-class-name="tableRowClassName" @cell-click="showReferral" height="300" width="1050"  >
         <template>
           <el-table-column label="id" prop="id" width="100">
           </el-table-column>
         </template>
-
         <el-table-column label="病人姓名" prop="name" width="100">
         </el-table-column>
         <el-table-column label="性别" prop="gender" width="100">
@@ -59,7 +56,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-
     <InformationDialog :InfoDialogVisible="dialogVisible" :patientId="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
     <ReferralProfile :referralVisible="referralVisible" :state.sync = "referralState" :ws = "ws" :info = 'referralInfo' @updateReferralVisible="referralVisible=false"></ReferralProfile>
   </el-col>
@@ -73,7 +69,7 @@
       InformationDialog,
       ReferralProfile
     },
-    props: ['sendVisible'],
+    props: ['sendVisible','patientInfo' ],
     data() {
       return {
         dialogVisible: false,
@@ -81,6 +77,7 @@
         referralState: 'send',
         referralInfo: null,
         clickPatientId: '',
+        hospitalId: 'hospital01',
         undealTableData: [{
           'id': 'patient01',
           'name': '赵镇洪',
@@ -150,6 +147,68 @@
           'referralStatus': '被接受',
           'operationStatus': '对方接受',
         }],
+      }
+    },
+    mounted: function() {
+      this.$http.get('/api/sender/get_undeal_patients/',this.hospitalId)
+        .then((res) => {
+          if(res.status === '200') {
+            alert(res.data);
+            this.undealTableData = res.data.patients
+          }else {
+            alert('初始化未处理病人时失败!')
+          }
+        }, (eor) => {
+          this.$message.error('初始化未处理病人时请求错误！')
+        });
+      this.$http.get('/api/sender/get_todeal_patients/',this.hospitalId)
+        .then((res) => {
+          if(res.status === '200') {
+            alert(res.data);
+            this.todealTableData = res.data.patients
+          }else {
+            alert('初始化待处理病人时失败!')
+          }
+        }, (eor) => {
+          this.$message.error('初始化待处理病人时请求错误！')
+        });
+      this.$http.get('/api/sender/get_dealed_patients/',this.hospitalId)
+        .then((res) => {
+          if(res.result === '200') {
+            alert(res.data);
+            this.dealedTableData = res.data.patients
+          }else {
+            alert('初始化已处理病人时失败!')
+          }
+        }, (eor) => {
+          this.$message.error('初始化已处理病人时请求错误！')
+        });
+    },
+    watch: {
+      patientInfo(newPatient){
+        if('id' in newPatient){
+          ;//pass
+        }else {
+          console.log('id not in new Patients');
+          return;
+        }
+        let tmpPatient = {
+          'id': '',
+          'name': '',
+          'gender': '',
+          'address': '',
+          'hospital': '',
+          'referralStatus': '',
+          'operationStatus': '',
+        };
+        tmpPatient.id = newPatient.id;
+        tmpPatient.name = newPatient.name;
+        tmpPatient.gender = newPatient.gender;
+        tmpPatient.address = newPatient.address;
+        tmpPatient.hospital = newPatient.hospital;
+        tmpPatient.referralStatus = newPatient.referralStatus;
+        tmpPatient.operationStatus = newPatient.operationStatus;
+        this.undealTableData.push(tmpPatient);
       }
     },
     methods: {

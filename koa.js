@@ -6,6 +6,7 @@ const logger = require('koa-logger')
 const auth = require('./server/routes/auth')
 const api = require('./server/routes/api')
 const ws = require('./server/routes/ws')
+const front = require('./server/routes/front')
 const WebSocketServer = require('./server/models/websocket')
 
 app.use(require('koa-bodyparser')())
@@ -25,6 +26,7 @@ app.on('error', function (err, ctx) {
 // router
 koa.use('/auth', auth.routes())
 koa.use('/api', api.routes())
+koa.use('/patient', front.routes())
 
 app.use(koa.routes())
 

@@ -7,12 +7,26 @@ var instantiate = require('../models/instantiateChaincode.js')
 var invoke = require('../models/invokeTransaction.js')
 var query = require('../models/query.js')
 var user = require('../controllers/user')
+var patient = require('../controllers/patientQuery')
+var referral = require('../controllers/referralQuery')
 
 //* 以下api 与demo关联不大, 未来做开发者界面再搞
 // Create Channel
 router.post('/channels', channel.createChannel)
 // Join Channels
 router.post('/channels/:channelName/peers', channel.joinChannel)
+
+//* demo接口
+//* API 查询所有病人信息，病人病例
+router.get('/patient/queryByHospitalName/:hospitalName', patient.getAllPatient)
+router.get('/case/queryByPatientId/:patientId', patient.getCasesByPatientId)
+router.get('/referral/send/queryByHospitalId/:hospitalId', referral.getSendReferrals)
+router.get('/referral/receive/queryByHospitalId/:hospitalId', referral.getReceiveReferrals)
+router.get('/get_undeal_patients/:hospitalName', patient.getUndealPatient)
+router.get('/get_todeal_patients/:hospitalName', patient.getToDealPatient)
+router.get('/get_dealed_patients/:hospitalName', patient.getDealedPatient)
+router.get('/referrals', referral.getReferrals)
+//* end of demo API
 
 // todo 测试该api
 // Register and enroll user

@@ -5,11 +5,11 @@
         <OperationNav v-bind:menuItems="navItems" :sendVisible="sendVisible" :receiveVisible="receiveVisible" @updateSendVisible="updateSendVisible" @updateReceiveVisible="updateReceiveVisible"></OperationNav>
 
       <el-col :span="22">
-        <Receive :receiveVisible="receiveVisible" :ws="myws"></Receive>
+        <Receive :receiveVisible="receiveVisible" :ws.sync="myws" :patientInfo.sync="receivePatientInfo"></Receive>
       </el-col>
       <br/>
       <el-col :span="22">
-        <Send :sendVisible="sendVisible"></Send>
+        <Send :sendVisible="sendVisible" :patient.sync="rejectPatientInfo" :ws.sync="myws"></Send>
       </el-col>
     </el-row>
 
@@ -35,9 +35,8 @@
       return {
         sendVisible: true,
         receiveVisible: false,
-        //myss:'',
-        patientInfo: {},
-        rejectData: {},
+        receivePatientInfo: {},
+        rejectPatientInfo: {},
         myws: this.init(),
         navItems: [{
           index: 'send',
@@ -63,8 +62,8 @@
               type: 'success',
               message: '接收到一个新的转诊请求'
             });
-            console.log('patient info is ', win.patientInfo);
-            win.patientInfo = jsonobj.additionMsg
+            console.log('patient info is ', jsonobj.referralProfile);
+            win.receivePatientInfo = jsonobj.referralProfile
           }else if(jsonobj.operation==="accept"){
             win.$message({
               type: 'success',
@@ -72,7 +71,7 @@
             });
           }else if(jsonobj.operation==="reject"){
             win.$message.error('对方拒绝接收转诊');
-             win.rejectData = jsonobj.additionMsg;
+             win.rejectPatientInfo = jsonobj.referralProfile;
             console.log("json data is ",jsonobj)
           }else {
             win.$message.error('某些原因导致错误');

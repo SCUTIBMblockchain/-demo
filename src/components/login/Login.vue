@@ -40,7 +40,7 @@
           name: this.form.account,
           password: this.form.password
         }
-        this.$http.post('/auth/admin',obj) // 将信息发送给后端
+        this.$http.post('/auth/admin', obj) // 将信息发送给后端
         .then((res) => { // axios返回的数据都在res.data里
           if (res.data.success) { // 如果成功
             sessionStorage.setItem('demo-token', res.data.token) // 用sessionStorage把token存下来
