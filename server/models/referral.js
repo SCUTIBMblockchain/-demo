@@ -1,12 +1,15 @@
 const query = require('./query')
 const patient = require('./patient').patient
+const invokeChainCode = require('./invokeTransaction').invokeChaincode
 
 //* 生成转诊单
-var generateReferralByPatientId = function* (msg) {
-  const referralProfile = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [msg.Id, msg.patientId, msg.referralType, msg.relationDemand, msg.payWay,
-    msg.IllnessState, msg.toInfo.hospitalId, msg.toInfo.section, msg.toInfo.doctor, msg.toInfo.phone, msg.fromInfo.hospitalId, msg.fromInfo.section, msg.fromInfo.doctor,
+var generateReferralProfile = function (msg) {
+  return invokeChainCode(patient.peer, patient.channelName, patient.chaincode, [msg.Id, msg.PatientId, msg.ReferralType, msg.RelationDemand, msg.PayWay,
+    msg.IllnessState, msg.ToInfo.HospitalId, msg.ToInfo.Section, msg.ToInfo.Doctor, msg.ToInfo.Phone, msg.FromInfo.HospitalId, msg.FromInfo.Section, msg.FromInfo.Doctor,
     msg.fromInfo.phone], 'CreateReferralProfile', patient.adminName, patient.org)
-  return referralProfile
+}
+var ReferralReturn = function (msg) {
+  return invokeChainCode(patient.peer, patient.channelName, patient.chaincode, [msg.Id, msg.ToInfo.HospitalId, msg.State, msg.ToInfo.Section, msg.ToInfo.Doctor, msg.ToInfo.Phone], 'transferReturn', patient.adminName, patient.org)
 }
 //* 生成转诊单号
 var refId = []
@@ -42,11 +45,11 @@ var queryReferrals = function* (msg) {
   const Case = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [msg.referralId, msg.hospitalId], 'queryReferralByReferralIdAndHospitalId', patient.adminName, patient.org)
   return Case
 }
-
 module.exports = {
-  generateReferralByPatientId,
+  generateReferralProfile,
   querySendReferrals,
   queryReceiveReferrals,
   queryReferrals,
-  generateRefferralId
+  generateRefferralId,
+  ReferralReturn
 }
