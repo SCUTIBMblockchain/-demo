@@ -151,7 +151,7 @@
             <el-row>
               <el-col :span="15">
                 <el-form-item label='拒绝理由' label-width='80px'>
-                  <el-input type='textarea' v-model='form.RejectReason' :disabled='fromDisable'></el-input>
+                  <el-input type='textarea' v-model='form.ToInfo.RejectReason' :disabled='fromDisable'></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -193,9 +193,12 @@
         })
           break
         case 'send':
-          this.$http.post('根据patientid创建转诊单').then((res) => {
+          let sendData = {
+            hospitalId: 'hospital01'
+          }
+          this.$http.post('/referral/create/' + this.info, sendData).then((res) => {
             if (res.status === 200) {
-              
+              this.form = res.data
             }
             else {
               this.$message.error('创建转诊单失败')
@@ -224,7 +227,6 @@
           Id: '20171010636741',
           Date: '20171012',
           State: 'accept',
-          RejectReason: '专家有事不在',
           Name: '赵镇洪',
           PIN: '142703199701012232',
           Gender: '男',
@@ -247,7 +249,8 @@
           ToInfo: {
             Section: '内科',
             Doctor: '徐宽',
-            Phone: '13427534816'
+            Phone: '13427534816',
+            RejectReason: '专家有事不在'
           }
         },
         dialogVisible: true,
@@ -278,7 +281,7 @@
           .then(_ => {
             console.log('确认')
             let sendData = this.form
-          this.ws.send(JSON.stringify(sendData))
+            this.ws.send(JSON.stringify(sendData))
           })
           .catch(_ => {
             console.log('取消')
@@ -291,6 +294,7 @@
         }).then(({
           value
         }) => {
+          this.form.ToInfo.RejectReason = value
           let sendData = this.form
           this.ws.send(JSON.stringify(sendData))
           this.$message({

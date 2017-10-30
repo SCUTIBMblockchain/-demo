@@ -19,7 +19,7 @@ var referral = function (msg) {
     var sendmsg = {
       operation: 'send',
       patientId: message.patientId,
-      additionMsg: message.additionMsg
+      additionMsg: message.referralProfile
     }
     this.ws.referralMsg = sendmsg
     h.on('open', function open () {
