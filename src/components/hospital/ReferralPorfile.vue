@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title='转诊单' :visible.sync='referralVisible' :before-close="beforeClose" @update:visible='referralStateChange'>
+    <el-dialog title='转诊单' :close-on-press-escape="false" :visible.sync='referralVisible' :before-close="beforeClose" @update:visible='referralStateChange'>
       <span>
         <el-row>
           <el-col :span="5">
@@ -264,11 +264,11 @@
       onSubmit () {
         this.$confirm('确认提交？')
           .then(_ => {
-            console.log('确认')
+            console.log('onsubmit 一次确认')
             let sendData = this.form
             this.ws.send(JSON.stringify(sendData))
-            this.$refs.processDemo.show_tx() // 动画效果
-            console.log('确认');
+            //this.$refs.processDemo.show_tx() // 动画效果
+            console.log('onsubmit 二次确认');
           })
           .catch(_ => {
             console.log('取消')
@@ -277,7 +277,7 @@
       onAccept () {
         this.$confirm('确认提交？')
           .then(_ => {
-            console.log('确认');
+            console.log('accept 一次确认');
             this.$refs.processDemo.show_tx();       //动画效果
             let sendData = {
               "operation": "accept",

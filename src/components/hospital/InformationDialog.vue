@@ -154,19 +154,19 @@
         </el-collapse-item>
         <el-collapse-item title="病例信息" name="2">
           <el-table :data="tableData"  ref="referralTable" @cell-click="handleCellClick" height="300" width="1050"  >
-            <el-table-column label="id" prop="id" width="100">
+            <el-table-column label="病例 id" prop="Id" width="100">
             </el-table-column>
-            <el-table-column label="时间" prop="time" width="100">
+            <el-table-column label="时间" prop="Date" width="100">
             </el-table-column>
-            <el-table-column label="就诊医院" prop="hospital" width="100">
+            <el-table-column label="就诊医院" prop="HospitalId" width="100">
             </el-table-column>
-            <el-table-column label="医生" prop="doctor">
+            <el-table-column label="医生" prop="DoctorName">
             </el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
     </el-dialog>
-    <Case :caseVisible="caseVisible" :caseId="clickRowId" @updateCaseVisible="updateCaseVisible"></Case>
+    <Case :caseVisible="caseVisible" :patientCase.sync="clickRow" @updateCaseVisible="updateCaseVisible"></Case>
   </div>
 </template>
 
@@ -222,12 +222,22 @@
           "Referral": ""
         }
       },
-      tableData: [{'id': '120417',
-      'time': '2017',
-      'hospital': 'hospitalA',
-      'doctor': '刘威',
+      tableData: [{'Id': '120417',
+      'Date': '2017',
+      'HospitalId': 'hospitalA',
+      'DoctorName': '刘威',
+      },{
+        "HospitalId": "123456789",
+        "PatientId": "258369147",
+        "Date": "12-05-12",
+        "DoctorName": "doc",
+        "Situation": "good",
+        "Suggestion": "no",
+        "Prescription": "none",
+        "Diagnosis": "yes",
+        "Id": "3389"
       }],
-      clickRowId: '',
+      clickRow: {},
     };
   },
   watch: {
@@ -259,7 +269,7 @@
             console.log('this.$http.get(\'/patient/queryByPatientId/\',this.selfPatientId) return not 200');
           }
         },(err) => {
-          this.$message.error('初始化病人个人信息时请求错误！')
+          this.$message.error('初始化病人个人信息时请求错误！');
           let tmpPatient = {
             "Id": "patient01",
             "Marriage": "未婚",
@@ -303,7 +313,29 @@
         this.$http.get('/api/case/queryByPatientId',this.selfPatientId)
         .then((res) => {
           if(res.status === '200'){
-            this.tableData = res.data.cases;
+            for(let i=0;i<res.data.cases.length;i++){
+              let tmpCase = {
+                "HospitalId": "",
+                "PatientId": "",
+                "Date": "",
+                "DoctorName": "",
+                "Situation": "",
+                "Suggestion": "",
+                "Prescription": "",
+                "Diagnosis": "",
+                "Id": ""
+              };
+              tmpCase.HospitalId = res.data.cases[i].HospitalId;
+              tmpCase.PatientId = res.data.cases[i].PatientId;
+              tmpCase.Date = res.data.cases[i].Date;
+              tmpCase.DoctorName = res.data.cases[i].DoctorName;
+              tmpCase.Situation = res.data.cases[i].Situation;
+              tmpCase.Suggestion = res.data.cases[i].Suggestion;
+              tmpCase.Prescription = res.data.cases[i].Prescription;
+              tmpCase.Diagnosis = res.data.cases[i].Diagnosis;
+              tmpCase.Id = res.data.cases[i].Id;
+              this.tableData.push(tmpCase)
+            }
           }else {
             console.log('this.$http.get(\'/api/case/queryByPatientId\',this.selfPatientId) return is not 200');
           }
@@ -315,8 +347,12 @@
       this.$emit('updateDialogVisible',false);
     },
     handleCellClick(row,event) {
-      //console.log(row)
-      this.clickRowId = row.id;
+      for(let i=0;i<this.tableData.length;i++) {
+        if(this.tableData[i].Id === row.Id) {
+          this.clickRow = this.tableData[i];
+          break;
+        }
+      }
       this.caseVisible = true;
       this.InfoDialogVisible = false
     },

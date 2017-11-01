@@ -74,21 +74,21 @@
           'gender': '男',
           'address': '广东省东莞市大石镇大石街道办4层461号',
           'hospital': '广东省仁和医院',
-          'referralStatus': 'undeal'
+          'referralStatus': '未处理'
         }, {
           'id': 'patient21',
           'name': '辰法',
           'gender': '男',
           'address': '广东省东莞市厚街镇厚街362号',
           'hospital': '广东省仁和医院',
-          'referralStatus': 'undeal'
+          'referralStatus': '未处理'
         }, {
           'id': 'patient24',
           'name': '钟娟',
           'gender': '女',
           'address': '广东省惠州市惠新镇城中村339号',
           'hospital': '广州市红十字会医院',
-          'referralStatus': 'undeal'
+          'referralStatus': '未处理'
         }],
         dealedTableData: [{
           'id': 'patient28',
@@ -97,7 +97,7 @@
           'address': '广东省广州市番禹区大学城华南理工大学C4栋118号',
           'hospital': '华南理工大学附属医院',
           'referralStatus': '已处理',
-          'operationStatus': 'receive'
+          'operationStatus': '对方接受'
         }, {
           'id': 'patient36',
           'name': '孙子良',
@@ -105,7 +105,7 @@
           'address': '广东省广州市番禹区番禺小区7栋746号',
           'hospital': '广东省第二人民医院',
           'referralStatus': '已处理',
-          'operationStatus': 'reject'
+          'operationStatus': '对方拒绝'
         }, {
           'id': 'patient37',
           'name': '周运楚',
@@ -113,25 +113,63 @@
           'address': '广东省广州市中山二路106号',
           'hospital': '中国人民解放军第421医院',
           'referralStatus': '已处理',
-          'operationStatus': 'accept'
+          'operationStatus': '对方接受'
         }]
       }
     },
     mounted: function () {
-      this.$http.get('/api/receiver/get_todeal_patients',this.hospitalId)
+      this.$http.get('/api/receiver/get_todeal_patients/',this.hospitalId)
         .then((res) => {
           if (res.status==='200') {
-            this.todealTableData = res.data.patients;
+            for (var i=0;i<res.data.patients.length;i++) {
+              let todealPatient = {
+                'id': '',
+                'name': '',
+                'gender': '',
+                'address': '',
+                'hospital': '',
+                'referralStatus': '',
+              };
+              todealPatient.id = res.data.patients[i].Id;
+              todealPatient.name = res.data.patients[i].Name;
+              todealPatient.gender = res.data.patients[i].Gender;
+              todealPatient.address = res.data.patients[i].Resident;
+              todealPatient.hospital = res.data.patients[i].State.HospitalName;
+              if (res.data.patients[i].State.Referral === 'normal') {
+                todealPatient.referralStatus = '未处理';
+              }
+              this.todealTableData.push(todealPatient);
+            }
           }else {
             console.log('this.$http.get(\'/api/receiver/get_todeal_patients\',this.hospitalId) return is not 200');
           }
         },(err) => {
           this.$message.error('初始化未处理病人时请求错误！')
         });
-      this.$http.get('/api/receiver/get_todeal_patients',this.hospitalId)
+      this.$http.get('/api/receiver/get_dealed_patients/',this.hospitalId)
         .then((res) => {
           if (res.status==='200') {
-            this.dealedTableData = res.data.patients;
+            for (var i=0;i<res.data.patients.length;i++) {
+              let dealedPatient = {
+                'id': '',
+                'name': '',
+                'gender': '',
+                'address': '',
+                'hospital': '',
+                'referralStatus': '',
+              };
+              dealedPatient.id = res.data.patients[i].Id;
+              dealedPatient.name = res.data.patients[i].Name;
+              dealedPatient.gender = res.data.patients[i].Gender;
+              dealedPatient.address = res.data.patients[i].Resident;
+              dealedPatient.hospital = res.data.patients[i].State.HospitalName;
+              if (res.data.patients[i].State.Referral === 'accept') {
+                dealedPatient.referralStatus = '对方接受';
+              }else if(res.data.patients[i].State.Referral === 'reject') {
+                dealedPatient.referralStatus = '对方拒绝';
+              }
+              this.undealTableData.push(undealPatient);
+            }
           }else {
             console.log('this.$http.get(\'/api/receiver/get_dealed_patients\',this.hospitalId) return is not 200');
           }
@@ -142,7 +180,8 @@
     watch: {
       patientInfo (newPaitent){
         if ('id' in newPaitent) {
-          ;//pass
+          console.log('receive a new patient is',newPaitent);
+          this.todealTableData.push(newPaitent);//pass
         }else {
           console.log('id not in newPatient');
           return;
@@ -168,12 +207,12 @@
     },
     methods: {
       tableRowClassName (row, index) {
-        if (row.referralStatus === 'undeal') {
+        if (row.referralStatus === '未处理') {
           return 'info-row'
         } else {
-          if (row.operationStatus === 'reject') {
+          if (row.operationStatus === '对方拒绝') {
             return 'negative-row'
-          } else if (row.operationStatus === 'accept') {
+          } else if (row.operationStatus === '对方接受') {
             return 'positive-row'
           }
         }

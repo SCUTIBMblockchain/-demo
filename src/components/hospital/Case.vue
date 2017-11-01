@@ -70,31 +70,30 @@
       ElForm,
       ElDialog
     },
-    props: ['caseVisible','caseId'],
+    props: ['caseVisible','patientCase'],
     data() {
       return {
         selfVisible: this.caseVisible,
-        selfCaseId: this.caseId,
-        cases: {
-            'Id': '',
-            'HospitalId': 'hospital01',
-            'PatientId': 'patient01',
-            'Date': '2017-7-29',
-            'DoctorName': '刘威',
-            'Situation': '发热',
-            'Suggestion': '服用消炎感冒药，休息2日',
-            'Prescription': '阿资匹林1片/日',
-            'Diagnosis': '感冒',
-          },
+        cases: this.patientCase,
+//        cases: {
+//            'Id': '',
+//            'HospitalId': 'hospital01',
+//            'PatientId': 'patient01',
+//            'Date': '2017-7-29',
+//            'DoctorName': '刘威',
+//            'Situation': '发热',
+//            'Suggestion': '服用消炎感冒药，休息2日',
+//            'Prescription': '阿资匹林1片/日',
+//            'Diagnosis': '感冒',
+//          },
       }
     },
     watch: {
       caseVisible (newValue) {
         this.selfVisible = newValue;
       },
-      caseId (newValue){
-        this.selfCaseId = newValue;
-        this.cases['Id'] = newValue;
+      patientCase (newValue){
+        this.cases = newValue;
       }
     },
     methods: {

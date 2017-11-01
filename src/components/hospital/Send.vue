@@ -154,7 +154,25 @@
         .then((res) => {
           if(res.status === '200') {
             alert(res.data);
-            this.undealTableData = res.data.patients
+            for (var i=0;i<res.data.patients.length;i++){
+              let undealPatient = {
+                'id': '',
+                'name': '',
+                'gender': '',
+                'address': '',
+                'hospital': '',
+                'referralStatus': '',
+              };
+              undealPatient.id = res.data.patients[i].Id;
+              undealPatient.name = res.data.patients[i].Name;
+              undealPatient.gender = res.data.patients[i].Gender;
+              undealPatient.address = res.data.patients[i].Resident;
+              undealPatient.hospital = res.data.patients[i].State.HospitalName;
+              if(res.data.patients[i].State.Referral === 'normal'){
+                undealPatient.referralStatus = '未处理';
+              }
+              this.undealTableData.push(undealPatient);
+            }
           }else {
             alert('初始化未处理病人时失败!')
           }
@@ -165,7 +183,25 @@
         .then((res) => {
           if(res.status === '200') {
             alert(res.data);
-            this.todealTableData = res.data.patients
+            for (let i=0;i<res.data.patients.length;i++){
+              let todealPatient = {
+                'id': '',
+                'name': '',
+                'gender': '',
+                'address': '',
+                'hospital': '',
+                'referralStatus': '',
+              };
+              todealPatient.id = res.data.patients[i].Id;
+              todealPatient.name = res.data.patients[i].Name;
+              todealPatient.gender = res.data.patients[i].Gender;
+              todealPatient.address = res.data.patients[i].Resident;
+              todealPatient.hospital = res.data.patients[i].State.HospitalName;
+              if(res.data.patients[i].State.Referral === 'undeal'){
+                todealPatient.referralStatus = '待处理';
+              }
+              this.todealTableData.push(todealPatient);
+            }
           }else {
             alert('初始化待处理病人时失败!')
           }
@@ -176,7 +212,30 @@
         .then((res) => {
           if(res.result === '200') {
             alert(res.data);
-            this.dealedTableData = res.data.patients
+            for (let i=0;i<res.data.patients.length;i++){
+              let dealedPatient = {
+                'id': '',
+                'name': '',
+                'gender': '',
+                'address': '',
+                'hospital': '',
+                'referralStatus': '',
+                'operationStatus': '',
+              };
+              dealedPatient.id = res.data.patients[i].Id;
+              dealedPatient.name = res.data.patients[i].Name;
+              dealedPatient.gender = res.data.patients[i].Gender;
+              dealedPatient.address = res.data.patients[i].Resident;
+              dealedPatient.hospital = res.data.patients[i].State.HospitalName;
+              if(res.data.patients[i].State.Referral === 'accept'){
+                dealedPatient.referralStatus = '已处理';
+                dealedPatient.operationStatus = '对方接受';
+              }else if(res.data.patients[i].State.Referral === 'reject'){
+                dealedPatient.referralStatus = '已处理';
+                dealedPatient.operationStatus = '对方拒绝';
+              }
+              this.dealedTableData.push(dealedPatient);
+            }
           }else {
             alert('初始化已处理病人时失败!')
           }
@@ -201,13 +260,14 @@
           'referralStatus': '',
           'operationStatus': '',
         };
-        tmpPatient.id = newPatient.id;
-        tmpPatient.name = newPatient.name;
-        tmpPatient.gender = newPatient.gender;
-        tmpPatient.address = newPatient.address;
-        tmpPatient.hospital = newPatient.hospital;
-        tmpPatient.referralStatus = newPatient.referralStatus;
-        tmpPatient.operationStatus = newPatient.operationStatus;
+        tmpPatient.id = newPatient.Id;
+        tmpPatient.name = newPatient.Name;
+        tmpPatient.gender = newPatient.Gender;
+        tmpPatient.address = newPatient.Resident;
+        tmpPatient.hospital = newPatient.State.HospitalName;
+        if(newPatient.State.Referral === 'reject'){
+          tmpPatient.referralStatus = '被拒绝';
+        }
         this.undealTableData.push(tmpPatient);
       }
     },
