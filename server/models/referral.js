@@ -6,7 +6,7 @@ const invokeChainCode = require('./invokeTransaction').invokeChaincode
 var generateReferralProfile = function (msg) {
   return invokeChainCode(patient.peer, patient.channelName, patient.chaincode, [msg.Id, msg.PatientId, msg.ReferralType, msg.RelationDemand, msg.PayWay,
     msg.IllnessState, msg.ToInfo.HospitalId, msg.ToInfo.Section, msg.ToInfo.Doctor, msg.ToInfo.Phone, msg.FromInfo.HospitalId, msg.FromInfo.Section, msg.FromInfo.Doctor,
-    msg.fromInfo.phone], 'CreateReferralProfile', patient.adminName, patient.org)
+    msg.fromInfo.Phone], 'CreateReferralProfile', patient.adminName, patient.org)
 }
 var ReferralReturn = function (msg) {
   return invokeChainCode(patient.peer, patient.channelName, patient.chaincode, [msg.Id, msg.ToInfo.HospitalId, msg.State, msg.ToInfo.Section, msg.ToInfo.Doctor, msg.ToInfo.Phone], 'transferReturn', patient.adminName, patient.org)

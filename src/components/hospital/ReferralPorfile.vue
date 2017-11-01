@@ -180,39 +180,25 @@
       ProcessDemo
     },
     props: ['referralVisible', 'state', 'ws', 'info'],
-    created () {
+    created() {
       switch (this.state) {
         case 'look':
           this.$http.post('根据referralid获取referral').then((res) => {
-            if (res.status === 200) {}
-            else {
+            if (res.status === 200) {} else {
               this.$message.error('获取转诊单数据失败')
             }
           }, (er) => {
             this.$message.error('获取转诊单数据失败')
-        })
+          })
           break
         case 'send':
-          let sendData = {
-            hospitalId: 'hospital01'
-          }
-          this.$http.post('/referral/create/' + this.info, sendData).then((res) => {
-            if (res.status === 200) {
-              this.form = res.data
-            }
-            else {
-              this.$message.error('创建转诊单失败')
-            }
-          }, (er) => {
-            this.$message.error('创建转诊单失败')
-          })
+
           break
         case 'receive':
           this.$http.post('根据referralid获取referral').then((res) => {
             if (res.status === 200) {
 
-            }
-            else {
+            } else {
               this.$message.error('创建转诊单失败')
             }
           }, (er) => {
@@ -221,7 +207,7 @@
           break
       }
     },
-    data () {
+    data() {
       return {
         form: {
           Id: '20171010636741',
@@ -268,32 +254,36 @@
         this.$confirm('确认提交？')
           .then(_ => {
             console.log('确认')
-            let sendData = this.form
+            let sendData = {
+              operation: 'send',
+              referralProfile: this.form
+            }
+            console.log(sendData)
             this.ws.send(JSON.stringify(sendData))
             this.$refs.processDemo.show_tx() // 动画效果
-            console.log('确认');
+            console.log('确认')
           })
           .catch(_ => {
             console.log('取消')
           })
       },
-      onAccept () {
+      onAccept() {
         this.$confirm('确认提交？')
           .then(_ => {
-            console.log('确认');
-            this.$refs.processDemo.show_tx();       //动画效果
+            console.log('确认')
+            this.$refs.processDemo.show_tx() //动画效果
             let sendData = {
-              "operation": "accept",
-              "referralProfile": this.form,
-              };
+              operation: 'accept',
+              referralProfile: this.form
+            }
             //传数据到后端
-            ws.send(JSON.stringify(sendData));
+            ws.send(JSON.stringify(sendData))
           })
           .catch(_ => {
             console.log('取消')
           })
       },
-      onReject () {
+      onReject() {
         this.$prompt('请输入拒绝理由', '确认拒绝', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
@@ -309,10 +299,10 @@
           })
         }).catch(() => {})
       },
-      beforeClose () {
+      beforeClose() {
         this.$emit('updateReferralVisible')
       },
-      handleClose (done) {},
+      handleClose(done) {},
       referralStateChange: function () {
         switch (this.state) {
           case 'look':
@@ -330,6 +320,15 @@
             this.toVisiable = false
             this.sendVisiable = true
             this.receiveVisiable = false
+            this.$http.post('/referral/create/' + this.info).then((res) => {
+              if (res.status === 200) {
+                this.form = res.data
+              } else {
+                this.$message.error('创建转诊单失败')
+              }
+            }, (er) => {
+              this.$message.error('创建转诊单失败')
+            })
             break
           case 'receive':
             this.fromDisable = true

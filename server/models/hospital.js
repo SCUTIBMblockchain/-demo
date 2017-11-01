@@ -7,7 +7,7 @@ const hospital = {
   userName: 'admin'
 }
 const queryHospitalByHospitalName = function (name) {
-  return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, name, 'queryHospitalByHospitalName', [name], hospital.userName, hospital.org)
+  return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, [name], 'queryHospitalByHospitalName', hospital.userName, hospital.org)
 }
 /**
  *

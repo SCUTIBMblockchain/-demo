@@ -36,7 +36,7 @@ var referral = function (msg) {
         }
       }
       genReferral.generateReferralProfile(attrs).then((res) => {
-        var h = new WebSocket('ws://' + hospitalInfo.Ip + '/referral/host')
+        var h = new WebSocket('ws://' + 'localhost:8889' + '/referral/host')
         // 发送信息
   
         var sendmsg = {
