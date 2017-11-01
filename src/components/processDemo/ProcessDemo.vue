@@ -292,6 +292,10 @@
         var diff = dist3.left - dist2.left;
         var oldStyle=$('#endorseMarble').attr("style");
         roll_ball('#endorseMarble', diff, function(){
+          setTimeout(function () {
+            $('#endorseMarble').hide();
+          },400);
+
             $('#endorseMarbleStable').show();
             $('#anotherTx1').fadeIn();
             $('#anotherTx2').fadeIn();
@@ -301,7 +305,7 @@
                     $('#orderBoxStable').css('border', '2px #fff solid');
                     setTimeout(function(){
                         $('#endorseMarble').attr("style",oldStyle);
-                        $('#endorseMarble').hide();
+//                        $('#endorseMarble').hide();
                         if(cb) cb();
                     }, 500);
                 }, 500);
