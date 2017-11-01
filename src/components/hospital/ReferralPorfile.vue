@@ -256,6 +256,7 @@
             console.log('确认')
             let sendData = {
               operation: 'send',
+              patientId: this.info,
               referralProfile: this.form
             }
             console.log(sendData)
@@ -277,7 +278,7 @@
               referralProfile: this.form
             }
             //传数据到后端
-            ws.send(JSON.stringify(sendData))
+            this.ws.send(JSON.stringify(sendData))
           })
           .catch(_ => {
             console.log('取消')
@@ -291,7 +292,10 @@
           value
         }) => {
           this.form.ToInfo.RejectReason = value
-          let sendData = this.form
+          let sendData = {
+              operation: 'reject',
+              referralProfile: this.form
+            }
           this.ws.send(JSON.stringify(sendData))
           this.$message({
             type: 'success',

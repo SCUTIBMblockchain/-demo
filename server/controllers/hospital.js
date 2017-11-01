@@ -11,7 +11,7 @@ var referral = function (msg) {
   }
   var message = JSON.parse(msg)
   if (message.operation === 'send') {
-    hospital.queryHospitalByHospitalName(message.referralProfile.FromInfo.HospitalName).then((hospitalInfo) => {
+    //hospital.queryHospitalByHospitalName(message.referralProfile.FromInfo.HospitalName).then((hospitalInfo) => {
       // 建立与目标医院的webSocket连接
       //* 在区块链中生成转诊单
       let attrs = {
@@ -29,7 +29,7 @@ var referral = function (msg) {
           Phone: message.referralProfile.FromInfo.Phone
         },
         ToInfo: {
-          HospitalId: hospitalInfo.HospitalId,
+          HospitalId: 'hospital02',
           Section: message.referralProfile.ToInfo.Section,
           Doctor: message.referralProfile.ToInfo.Doctor,
           Phone: message.referralProfile.ToInfo.Phone
@@ -62,26 +62,31 @@ var referral = function (msg) {
       })
       
       // 接受返回信息
-    })
+    //})
   }
-  if (message.operation === 'accept') {
+  if (message.operation === 'accept' || message.operation === 'reject') {
     // 若使用fabric请去掉注释
     // 同意转诊
-  
-    var reply = {
-      operation: message.operation,
-      referralProfile: message.referralProfile
+    let attrs = {
+      Id: message.referralProfile.Id,
+      State: message.operation,
+      ToInfo: {
+        HospitalId: 'hospital02',
+        Section: message.referralProfile.ToInfo.Section,
+        Doctor: message.referralProfile.ToInfo.Doctor,
+        Phone: message.referralProfile.ToInfo.Phone,
+        RejectReason: message.referralProfile.ToInfo.RejectReason
+      }
     }
-    this.wss.sendMessage('/referral/host', JSON.stringify(reply))
+    const genReferral = require('../models/referral')
+    genReferral.ReferralReturn(attrs).then((res) => {
+      var reply = {
+        operation: message.operation,
+        referralProfile: message.referralProfile
+      }
+      this.wss.sendMessage('/referral/host', JSON.stringify(reply))
+    })
     // })
-  }
-  if (message.operation === 'reject') {
-    // 拒绝转诊
-    reply = {
-      operation: 'reject', // 置accept为假
-      referralProfile: message.referralProfile
-    }
-    this.wss.sendMessage('/referral/host', JSON.stringify(reply))
   }
 }
 
@@ -91,26 +96,13 @@ var referralHost = function (msg) {
   }
   var message = JSON.parse(msg)
   if (message.operation === 'send') {
-    let attrs = {
-      Id: message.referralProfile.Id,
-      State: message.operation,
-      ToInfo: {
-        HospitalId: 'hospital02',
-        Section: message.referralProfile.ToInfo.Section,
-        Doctor: message.referralProfile.ToInfo.Doctor,
-        Phone: message.referralProfile.ToInfo.Phone
-      }
-    }
-    const genReferral = require('../models/referral')
-    genReferral.ReferralReturn(attrs).then((res) => {
-      var reply = {
-        operation: 'receive',
-        patientId: message.patientId,
-        additionMsg: message.additionMsg
+    var reply = {
+      operation: 'receive',
+      patientId: message.patientId,
+      referralProfile: message.referralProfile
   
-      }
-      this.wss.sendMessage('/referral', JSON.stringify(reply))
-    })
+    }
+    this.wss.sendMessage('/referral', JSON.stringify(reply))
   }
 }
 
