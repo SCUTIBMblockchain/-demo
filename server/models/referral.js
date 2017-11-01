@@ -1,17 +1,21 @@
 const query = require('./query')
 const patient = require('./patient').patient
+const invokeChainCode = require('./invokeTransaction').invokeChaincode
 
 //* 生成转诊单
-var generateReferralByPatientId = function* (msg) {
-  const referralProfile = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [msg.Id, msg.patientId, msg.referralType, msg.relationDemand, msg.payWay,
-    msg.IllnessState, msg.toInfo.hospitalId, msg.toInfo.section, msg.toInfo.doctor, msg.toInfo.phone, msg.fromInfo.hospitalId, msg.fromInfo.section, msg.fromInfo.doctor,
-    msg.fromInfo.phone], 'CreateReferralProfile', patient.adminName, patient.org)
-  return referralProfile
+var generateReferralProfile = function (msg) {
+  return invokeChainCode(['localhost:7051'], patient.channelName, patient.chaincode, 'CreateReferralProfile', [msg.Id, msg.PatientId, msg.ReferralType, msg.RelationDemand, msg.PayWay,
+    msg.IllnessState, msg.ToInfo.HospitalId, msg.FromInfo.HospitalId, msg.FromInfo.Section, msg.FromInfo.Doctor,
+    msg.FromInfo.Phone], patient.adminName, patient.org)
 }
-//* 生成转诊单号
+var ReferralReturn = function (msg) {
+  return invokeChainCode(['localhost:7051'], patient.channelName, patient.chaincode, 'transferReturn', [msg.Id, msg.ToInfo.HospitalId, msg.State, msg.ToInfo.Section, msg.ToInfo.Doctor, msg.ToInfo.Phone, msg.ToInfo.RejectReason], patient.adminName, patient.org)
+}
+
 var refId = []
 var count = 0
 var generateRefferralId = function (patientId) {
+  //* 生成转诊单号
   var len = count
   if (len < 10) {
     len = '0' + len
@@ -24,8 +28,8 @@ var generateRefferralId = function (patientId) {
   }
   count++
   refId[patientId] = refToken
-  var result = refId[patientId]
-  return result
+  var referralId = refId[patientId]
+  return referralId
 }
 
 var querySendReferrals = function* (hospitalId) {
@@ -42,11 +46,11 @@ var queryReferrals = function* (msg) {
   const Case = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [msg.referralId, msg.hospitalId], 'queryReferralByReferralIdAndHospitalId', patient.adminName, patient.org)
   return Case
 }
-
 module.exports = {
-  generateReferralByPatientId,
+  generateReferralProfile,
   querySendReferrals,
   queryReceiveReferrals,
   queryReferrals,
-  generateRefferralId
+  generateRefferralId,
+  ReferralReturn
 }

@@ -69,7 +69,7 @@
       InformationDialog,
       ReferralProfile
     },
-    props: ['sendVisible','patientInfo' ],
+    props: ['sendVisible','patientInfo','ws'],
     data() {
       return {
         dialogVisible: false,
@@ -150,7 +150,7 @@
       }
     },
     mounted: function() {
-      this.$http.get('/api/sender/get_undeal_patients/',this.hospitalId)
+      this.$http.get('/api/sender/get_undeal_patients/', this.hospitalId)
         .then((res) => {
           if(res.status === '200') {
             alert(res.data);

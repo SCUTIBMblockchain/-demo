@@ -1,4 +1,5 @@
 const referral = require('../models/referral')
+const patient = require('../models/patient')
 
 // 请求所有发送的转诊单
 const getSendReferrals = function* () {
@@ -24,15 +25,47 @@ const getReferrals = function* () {
   this.body = result
 }
 
-const getReferralId = function () {
+const getReferral = function* () {
   const patientId = this.params.patientId
   const referralId = referral.generateRefferralId(patientId)
-  this.body = referralId
+  const patientString = yield patient.queryPatientByPatientId(patientId)
+  var msg = JSON.parse(patientString)
+  var ref = {
+    'Id': referralId,
+    'State': msg.State,
+    'Date': msg.Date,
+    'Name': msg.Name,
+    'PIN': msg.PIN,
+    'Gender': msg.Gender,
+    'Age': msg.Age,
+    'Resident': msg.Resident,
+    'Phone': msg.Phone,
+    'Birthplace': msg.Birthplace,
+    'Nationality': msg.Nationality,
+    'Occupation': msg.Occupation,
+    'FromInfo': {
+      'Section': null,
+      'HospitalName': null,
+      'Doctor': null,
+      'Phone': null,
+      'ReferralType': null,
+      'RelationDemand': null,
+      'PayWay': null,
+      'IllnessState': null
+    },
+    'ToInfo': {
+      'Section': null,
+      'Doctor': null,
+      'Phone': null,
+      'RejectReason': null
+    }
+  }
+  this.body = ref
 }
 
 module.exports = {
   getSendReferrals,
   getReceiveReferrals,
   getReferrals,
-  getReferralId
+  getReferral
 }

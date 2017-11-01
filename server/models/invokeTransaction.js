@@ -21,7 +21,7 @@ var network = require('./network.js')
 var log = network.getlog('invoke-chaincode')
 fbc.addConfigFile(path.join(__dirname, 'network-config.json'))
 
-var invokeChaincode = function* (peersUrls, channelName, chaincodeName, fcn, args, username, org) {
+var invokeChaincode = function (peersUrls, channelName, chaincodeName, fcn, args, username, org) {
   log.debug(util.format('\n============ invoke transaction on organization %s ============\n', org))
   var client = network.getClientForOrg(org)
   var channel = network.getChannelForOrg(org)
