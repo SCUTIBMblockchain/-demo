@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title='转诊单' :close-on-press-escape="false" :visible.sync='referralVisible' :before-close="beforeClose" @update:visible='referralStateChange'>
+    <el-dialog title='转诊单' id="referralDialog" :close-on-press-escape="false" :visible.sync='referralVisible' :before-close="beforeClose" @update:visible='referralStateChange'>
       <span>
         <el-row>
           <el-col :span="5">
@@ -167,7 +167,7 @@
         <el-button type='primary' @click='onAccept'>接 收</el-button>
         <el-button type='primary' @click='onReject'>拒 绝</el-button>
       </span>
-      <process-demo ref="processDemo"></process-demo>
+      <process-demo ref="processDemo" @close-referral="beforeClose"></process-demo>
     </el-dialog>
 
   </div>

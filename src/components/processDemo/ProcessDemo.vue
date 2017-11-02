@@ -1,6 +1,6 @@
 <template id="processDemo">
     <div>
-        <div id="txStoryPanel"><span id="closeTxStoryPos" class="fa fa-close closeTxStory"></span>
+        <div id="txStoryPanel"><span id="closeTxStoryPos" class="fa fa-close closeTxStory" @click="closeTxStory"></span>
             <div id="txStep1" class="txStepWrap inactiveStep">
                 <div class="txStatusWrap">
                     <div class="txStatus"></div>
@@ -94,7 +94,7 @@
             <div id="txStoryErrorWrap"> <span style="fill: #000;" class="fa fa-warning"></span><span id="txStoryErrorTxt">&nbsp;</span></div>
             <div id="doneTxStep" class="stepHelpWrap">
                 <h2>交易完成</h2>
-                <button type="button" class="closeTxStory">关闭</button>
+                <button type="button" class="closeTxStory" @click="closeTxStory">关闭</button>
             </div>
         </div>
         <!--<button @click.nactive='show_tx'>详情</button>-->
@@ -359,18 +359,6 @@
           // =================================================================================
           // jQuery UI Events
           // =================================================================================
-          $('.closeTxStory').click(function(){
-            $('#txStoryPanel, #tint, #doneTxStep').fadeOut();
-            $('.testMarsk').fadeOut();
-            //reset
-            setTimeout(function(){
-              $('#txStep1 .txStoryWrap').html(story1html);
-              $('#txStep2 .txStoryWrap').html(story2html);
-              $('#txStep3 .txStoryWrap').html(story3html);
-              $('#txStep4 .txStoryWrap').html(story4html);
-            }, 500);
-
-          });
           story1html = $('#txStep1 .txStoryWrap').html();
           story2html = $('#txStep2 .txStoryWrap').html();
           story3html = $('#txStep3 .txStoryWrap').html();
@@ -379,6 +367,18 @@
 
       },
         methods:{
+        closeTxStory:function () {
+          $('#txStoryPanel, #tint, #doneTxStep').fadeOut();
+          $('.testMarsk').fadeOut();
+          this.$emit('close-referral');
+          //reset
+          setTimeout(function(){
+            $('#txStep1 .txStoryWrap').html(story1html);
+            $('#txStep2 .txStoryWrap').html(story2html);
+            $('#txStep3 .txStoryWrap').html(story3html);
+            $('#txStep4 .txStoryWrap').html(story4html);
+          }, 500);
+        },
             show_tx:function () {
                 $('.testMarsk').show();
                 show_tx_step({state:"building_proposal"});
