@@ -64,11 +64,11 @@
         caseListVisible: false,
         referralVisible: false,
         dialogVisible: false,
-        hospitalId: 'hospital01',
+        hospitalId: 'hospital02',
         referralState: 'receive',
         referralInfo: null,
         selfWs: this.ws,
-        todealTableData: [{
+        todealTableData: [ /* {
           'id': 'patient09',
           'name': '贺肃',
           'gender': '男',
@@ -114,13 +114,13 @@
           'hospital': '中国人民解放军第421医院',
           'referralStatus': '已处理',
           'operationStatus': '对方接受'
-        }]
+        }*/ ]
       }
     },
     mounted: function () {
-      this.$http.get('/api/receiver/get_todeal_patients/',this.hospitalId)
+      this.$http.get('/api/receiver/get_todeal_patients/hospital02',this.hospitalId)
         .then((res) => {
-          if (res.status==='200') {
+          if (res.status === 200) {
             for (var i=0;i<res.data.patients.length;i++) {
               let todealPatient = {
                 'id': '',
@@ -146,9 +146,9 @@
         },(err) => {
           this.$message.error('初始化未处理病人时请求错误！')
         });
-      this.$http.get('/api/receiver/get_dealed_patients/',this.hospitalId)
+      this.$http.get('/api/receiver/get_dealed_patients/hospital02',this.hospitalId)
         .then((res) => {
-          if (res.status==='200') {
+          if (res.status === 200) {
             for (var i=0;i<res.data.patients.length;i++) {
               let dealedPatient = {
                 'id': '',

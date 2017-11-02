@@ -97,7 +97,7 @@
       }
     },
     methods: {
-      beforeClose() {
+      beforeClose () {
         this.$emit('updateCaseVisible',false);
       },
     }

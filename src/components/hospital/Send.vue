@@ -78,7 +78,7 @@
         referralInfo: null,
         clickPatientId: '',
         hospitalId: 'hospital01',
-        undealTableData: [{
+        undealTableData: [ /* {
           'id': 'patient01',
           'name': '赵镇洪',
           'gender': '男',
@@ -99,8 +99,8 @@
           'address': '广东省广州市番禹区北海路工业园C栋2号',
           'hospital': '广东省人民医院',
           'referralStatus': '未处理',
-        }],
-        todealTableData: [{
+        }*/],
+        todealTableData: [/* {
           'id': 'patient08',
           'name': '刘欣',
           'gender': '女',
@@ -121,8 +121,8 @@
           'address': '广东省广州市番禹区大石街道办662号',
           'hospital': '广东省人民医院',
           'referralStatus': '未处理',
-        }],
-        dealedTableData: [{
+        }*/ ],
+        dealedTableData: [/* {
           'id': 'patient31',
           'name': '蔡文馨',
           'gender': '女',
@@ -146,14 +146,14 @@
           'hospital': '华南理工大学附属医院',
           'referralStatus': '被接受',
           'operationStatus': '对方接受',
-        }],
+        }*/ ],
       }
     },
     mounted: function() {
-      this.$http.get('/api/sender/get_undeal_patients/', this.hospitalId)
+      this.$http.get('/api/sender/get_undeal_patients/hospital02', this.hospitalId)
         .then((res) => {
-          if(res.status === '200') {
-            alert(res.data);
+          if(res.status === 200) {
+            // alert(res.data);
             for (var i=0;i<res.data.patients.length;i++){
               let undealPatient = {
                 'id': '',
@@ -169,7 +169,7 @@
               undealPatient.address = res.data.patients[i].Resident;
               undealPatient.hospital = res.data.patients[i].State.HospitalName;
               if(res.data.patients[i].State.Referral === 'normal'){
-                undealPatient.referralStatus = '未处理';
+                undealPatient.referralStatus = '未转诊';
               }
               this.undealTableData.push(undealPatient);
             }
@@ -179,10 +179,10 @@
         }, (eor) => {
           this.$message.error('初始化未处理病人时请求错误！')
         });
-      this.$http.get('/api/sender/get_todeal_patients/',this.hospitalId)
+      this.$http.get('/api/sender/get_todeal_patients/hospital02',this.hospitalId)
         .then((res) => {
-          if(res.status === '200') {
-            alert(res.data);
+          if(res.status === 200) {
+            // alert(res.data);
             for (let i=0;i<res.data.patients.length;i++){
               let todealPatient = {
                 'id': '',
@@ -208,10 +208,10 @@
         }, (eor) => {
           this.$message.error('初始化待处理病人时请求错误！')
         });
-      this.$http.get('/api/sender/get_dealed_patients/',this.hospitalId)
+      this.$http.get('/api/sender/get_dealed_patients/hospital02',this.hospitalId)
         .then((res) => {
-          if(res.result === '200') {
-            alert(res.data);
+          if(res.status === 200) {
+            console.log(res.data);
             for (let i=0;i<res.data.patients.length;i++){
               let dealedPatient = {
                 'id': '',
@@ -227,7 +227,7 @@
               dealedPatient.gender = res.data.patients[i].Gender;
               dealedPatient.address = res.data.patients[i].Resident;
               dealedPatient.hospital = res.data.patients[i].State.HospitalName;
-              if(res.data.patients[i].State.Referral === 'accept'){
+              if(res.data.patients[i].State.Referral === 'receive'){
                 dealedPatient.referralStatus = '已处理';
                 dealedPatient.operationStatus = '对方接受';
               }else if(res.data.patients[i].State.Referral === 'reject'){

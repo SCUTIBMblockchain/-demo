@@ -39,6 +39,10 @@ module.exports = {
       '/referral': {
           target: 'http://localhost:8889',
           changeOrigin: true
+      },
+      '/patient': {
+        target: 'http://localhost:8889',
+        changeOrigin: true
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
