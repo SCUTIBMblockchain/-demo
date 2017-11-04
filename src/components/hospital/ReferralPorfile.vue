@@ -167,7 +167,7 @@
         <el-button type='primary' @click='onAccept'>接 收</el-button>
         <el-button type='primary' @click='onReject'>拒 绝</el-button>
       </span>
-      <process-demo ref="processDemo" @close-referral="beforeClose"></process-demo>
+      <process-demo ref="processDemo" @close-referral="movePatient"></process-demo>
     </el-dialog>
 
   </div>
@@ -303,7 +303,16 @@
           })
         }).catch(() => {})
       },
+//      movePatient() {
+//        console.log('before emit an event');
+//        this.$emit('updateReferralPatientId',sendData.patientId);
+//        console.log('after emit an event');
+//      },
       beforeClose() {
+        this.$emit('updateReferralVisible')
+      },
+      movePatient(){
+        this.$emit('updateReferralPatientId');
         this.$emit('updateReferralVisible')
       },
       handleClose(done) {},

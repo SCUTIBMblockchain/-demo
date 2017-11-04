@@ -57,7 +57,7 @@
       </el-table>
     </el-card>
     <InformationDialog :InfoDialogVisible="dialogVisible" :patientId="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
-    <ReferralProfile :referralVisible="referralVisible" :state.sync = "referralState" :ws = "ws" :info = 'referralInfo' @updateReferralVisible="referralVisible=false"></ReferralProfile>
+    <ReferralProfile :referralVisible="referralVisible" :state.sync = "referralState" :ws = "ws" :info = 'referralInfo' @updateReferralVisible="referralVisible=false" @updateReferralPatientId="movePatientFromUndeal"></ReferralProfile>
   </el-col>
 </template>
 
@@ -78,6 +78,7 @@
         referralInfo: null,
         clickPatientId: '',
         hospitalId: 'hospital01',
+        referralPatient:{},
         undealTableData: [{
           'id': 'patient01',
           'name': '赵镇洪',
@@ -154,7 +155,7 @@
         .then((res) => {
           if(res.status === '200') {
             alert(res.data);
-            for (var i=0;i<res.data.patients.length;i++){
+            for (let i=0;i<res.data.patients.length;i++){
               let undealPatient = {
                 'id': '',
                 'name': '',
@@ -303,9 +304,25 @@
       updateDialogVisible(val){
         this.dialogVisible = val;
       },
+      movePatientFromUndeal(){
+        let id = this.referralInfo
+        console.log('calling the emit event function');
+        console.log('id is ',id);
+        for(let i=0;i<this.undealTableData.length;i++){
+          if(this.undealTableData[i].id === id){
+            let p = this.undealTableData.splice(i, 1);
+            console.log('p is',p[0]);
+            //p.referralStatus = '待处理';
+            console.log(typeof(p[0]));
+            p[0].referralStatus = '未处理'
+            this.todealTableData.push(p[0]);
+          }
+        }
+        console.log('after calling');
+      },
       createReferral(row) {
-        this.referralState = 'send'
-        this.referralVisible = true
+        this.referralState = 'send';
+        this.referralVisible = true;
         this.referralInfo = row.id
       },
 //      handleNew() {
