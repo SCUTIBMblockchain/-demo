@@ -181,31 +181,6 @@
     },
     props: ['referralVisible', 'state', 'ws', 'info'],
     created() {
-      switch (this.state) {
-        case 'look':
-          this.$http.post('根据referralid获取referral').then((res) => {
-            if (res.status === 200) {} else {
-              this.$message.error('获取转诊单数据失败')
-            }
-          }, (er) => {
-            this.$message.error('获取转诊单数据失败')
-          })
-          break
-        case 'send':
-
-          break
-        case 'receive':
-          this.$http.post('根据referralid获取referral').then((res) => {
-            if (res.status === 200) {
-
-            } else {
-              this.$message.error('创建转诊单失败')
-            }
-          }, (er) => {
-            this.$message.error('创建转诊单失败')
-          })
-          break
-      }
     },
     data() {
       return {
@@ -319,12 +294,23 @@
       referralStateChange: function () {
         switch (this.state) {
           case 'look':
+          let obj = {
+              hospitalId: 'hospital02',
+              referralId: this.info
+          }
             this.fromDisable = true
             this.toDisable = true
             this.fromVisiable = true
             this.toVisiable = !(this.form.State === 'reject')
             this.sendVisiable = false
             this.receiveVisiable = false
+             this.$http.post('/api/referrals', obj).then((res) => {
+            if (res.status === 200) {} else {
+              this.$message.error('获取转诊单数据失败')
+            }
+          }, (er) => {
+            this.$message.error('获取转诊单数据失败')
+          })
             break
           case 'send':
             this.fromDisable = false
@@ -333,7 +319,7 @@
             this.toVisiable = false
             this.sendVisiable = true
             this.receiveVisiable = false
-            this.$http.post('/referral/create/' + this.info).then((res) => {
+            this.$http.post('/patient/create/' + this.info).then((res) => {
               if (res.status === 200) {
                 this.form = res.data
               } else {
@@ -350,6 +336,15 @@
             this.toVisiable = true
             this.sendVisiable = false
             this.receiveVisiable = true
+            this.$http.post('/api/referrals').then((res) => {
+            if (res.status === 200) {
+
+            } else {
+              this.$message.error('创建转诊单失败')
+            }
+          }, (er) => {
+            this.$message.error('创建转诊单失败')
+          })
             break
         }
       }

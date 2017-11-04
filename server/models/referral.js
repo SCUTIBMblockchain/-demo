@@ -23,7 +23,7 @@ var generateRefferralId = function (patientId) {
   const refToken = 'referral' + len
   for (var key in refId) {
     if (key === patientId) {
-      return null
+      return refId[patientId]
     }
   }
   count++

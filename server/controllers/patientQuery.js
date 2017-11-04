@@ -1,6 +1,9 @@
 const patient = require('../models/patient')
 const referral = require('../models/referral')
 
+let BackInfo = {
+  'patients': null
+}
 function count (obj) {
   var objType = typeof obj
   if (objType === 'string') {
@@ -33,15 +36,20 @@ const getNormalPatientAsSender = function* () {
     var hospital = msg[i].State.HospitalName
     if (hospital !== '华工校医院') {
       msg.splice(i, 1)
+      i--
+      con--
     }
   }
   for (var k = 0; k < con; k++) {
     var state = msg[k].State.Referral
     if (state !== 'normal') {
       msg.splice(k, 1)
+      k--
+      con--
     }
   }
-  this.body = msg
+  BackInfo.patients = msg
+  this.body = BackInfo
 }
 // 返回医院下的所有undeal病人
 const getUndealPatientAsSender = function* () {
@@ -54,15 +62,20 @@ const getUndealPatientAsSender = function* () {
     var hospital = msg[i].State.HospitalName
     if (hospital !== '华工校医院') {
       msg.splice(i, 1)
+      i--
+      con--
     }
   }
   for (var k = 0; k < con; k++) {
     var state = msg[k].State.Referral
     if (state !== 'undeal') {
       msg.splice(k, 1)
+      k--
+      con--
     }
   }
-  this.body = msg
+  BackInfo.patients = msg
+  this.body = BackInfo
 }
 // 返回医院下的所有dealed病人
 const getDealedPatientAsSender = function* () {
@@ -75,15 +88,22 @@ const getDealedPatientAsSender = function* () {
     var hospital = msg[i].State.HospitalName
     if (hospital !== '华工校医院') {
       msg.splice(i, 1)
+      i--
+      con--
     }
   }
   for (var k = 0; k < con; k++) {
     var state = msg[k].State.Referral
-    if (state !== 'accept' || state !== 'reject') {
+    if (state === 'receive') {
+    } else if (state === 'reject') {
+    } else {
       msg.splice(k, 1)
+      k--
+      con--
     }
   }
-  this.body = msg
+  BackInfo.patients = msg
+  this.body = BackInfo
 }
 
 const getUndealPatientAsReceiver = function* () {
@@ -96,15 +116,20 @@ const getUndealPatientAsReceiver = function* () {
     var hospital = msg[i].State.HospitalName
     if (hospital === '华工校医院') {
       msg.splice(i, 1)
+      i--
+      con--
     }
   }
   for (var k = 0; k < con; k++) {
     var state = msg[k].State.Referral
     if (state !== 'undeal') {
       msg.splice(k, 1)
+      k--
+      con--
     }
   }
-  this.body = msg
+  BackInfo.patients = msg
+  this.body = BackInfo
 }
 
 const getDealedPatientAsReceiver = function* () {
@@ -117,15 +142,22 @@ const getDealedPatientAsReceiver = function* () {
     var hospital = msg[i].State.HospitalName
     if (hospital === '华工校医院') {
       msg.splice(i, 1)
+      i--
+      con--
     }
   }
   for (var k = 0; k < con; k++) {
     var state = msg[k].State.Referral
-    if (state !== 'accept' || state !== 'reject') {
+    if (state === 'receive') {
+    } else if (state === 'reject') {
+    } else {
       msg.splice(k, 1)
+      k--
+      con--
     }
   }
-  this.body = msg
+  BackInfo.patients = msg
+  this.body = BackInfo
 }
 
 // 返回病人的病例

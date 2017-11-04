@@ -252,7 +252,7 @@
     beforeOpen() {
       //alert(this.selfPatientId);
       //get patient info from backend
-      this.$http.get('/patient/queryByPatientId/',this.selfPatientId)
+      this.$http.get('/patient/queryByPatientId/' + this.selfPatientId)
         .then((res) => {
           if(res.status!=='200') {
             this.patientInfo = res.data;
@@ -310,7 +310,7 @@
             this.patientInfo.State.Referral = '已拒绝'
           }
         });
-        this.$http.get('/api/case/queryByPatientId',this.selfPatientId)
+        this.$http.get('/api/case/queryByPatientId/' + this.selfPatientId)
         .then((res) => {
           if(res.status === '200'){
             for(let i=0;i<res.data.cases.length;i++){
