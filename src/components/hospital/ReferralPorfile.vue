@@ -244,7 +244,7 @@
     },
     methods: {
       onSubmit () {
-        this.$confirm('确认提交？')
+        this.$confirm('确认提交转诊？')
           .then(_ => {
             console.log('确认')
             let sendData = {
@@ -254,7 +254,7 @@
             }
             console.log(sendData)
             this.ws.send(JSON.stringify(sendData))
-            this.$refs.processDemo.show_tx() // 动画效果
+            //this.$refs.processDemo.show_tx() // 动画效果
             console.log('确认')
           })
           .catch(_ => {
@@ -262,16 +262,17 @@
           })
       },
       onAccept() {
-        this.$confirm('确认提交？')
+        this.$confirm('确认接受转诊？')
           .then(_ => {
             console.log('确认')
-            this.$refs.processDemo.show_tx() //动画效果
+            //this.$refs.processDemo.show_tx() //动画效果
             let sendData = {
               operation: 'accept',
               referralProfile: this.form
             }
             //传数据到后端
-            this.ws.send(JSON.stringify(sendData))
+            this.ws.send(JSON.stringify(sendData));
+            this.$emit('acceptReferral');
           })
           .catch(_ => {
             console.log('取消')
@@ -289,11 +290,12 @@
               operation: 'reject',
               referralProfile: this.form
             }
-          this.ws.send(JSON.stringify(sendData))
-          this.$message({
-            type: 'success',
-            message: '拒绝理由是: ' + value
-          })
+          this.ws.send(JSON.stringify(sendData));
+          this.$emit('rejectReferral');
+//          this.$message({
+//            type: 'success',
+//            message: '拒绝理由是: ' + value
+//          })
         }).catch(() => {})
       },
       beforeClose() {

@@ -286,7 +286,7 @@
       },
       handleCellClick(row,event) {
         if(event.label === '操作') {
-          this.showReferralCase(row.id)
+          //this.showReferralCase(row.id)
         }else {
           this.clickPatientId = row.id;
           this.dialogVisible = true;

@@ -42,8 +42,8 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <InformationDialog :InfoDialogVisible="dialogVisible" @updateDialogVisible="updateDialogVisible"></InformationDialog>
-    <ReferralProfile :referralVisible="referralVisible" :info= 'referralInfo' :state.sync = "referralState" :ws = "selfWs" @updateReferralVisible="referralVisible=false"></ReferralProfile>
+    <InformationDialog :InfoDialogVisible="dialogVisible" :patientId="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
+    <ReferralProfile :referralVisible="referralVisible" :info= 'referralInfo' :state.sync = "referralState" :ws = "selfWs" @updateReferralVisible="referralVisible=false" @acceptReferral="accept" @rejectReferral="reject"></ReferralProfile>
   </el-col>
 </template>
 
@@ -67,8 +67,9 @@
         hospitalId: 'hospital02',
         referralState: 'receive',
         referralInfo: null,
+        clickPatientId: '',
         selfWs: this.ws,
-        todealTableData: [ /* {
+        todealTableData: [  {
           'id': 'patient09',
           'name': '贺肃',
           'gender': '男',
@@ -97,7 +98,7 @@
           'address': '广东省广州市番禹区大学城华南理工大学C4栋118号',
           'hospital': '华南理工大学附属医院',
           'referralStatus': '已处理',
-          'operationStatus': '对方接受'
+          'operationStatus': '接受'
         }, {
           'id': 'patient36',
           'name': '孙子良',
@@ -105,7 +106,7 @@
           'address': '广东省广州市番禹区番禺小区7栋746号',
           'hospital': '广东省第二人民医院',
           'referralStatus': '已处理',
-          'operationStatus': '对方拒绝'
+          'operationStatus': '拒绝'
         }, {
           'id': 'patient37',
           'name': '周运楚',
@@ -113,8 +114,8 @@
           'address': '广东省广州市中山二路106号',
           'hospital': '中国人民解放军第421医院',
           'referralStatus': '已处理',
-          'operationStatus': '对方接受'
-        }*/ ]
+          'operationStatus': '接受'
+        } ]
       }
     },
     mounted: function () {
@@ -210,9 +211,9 @@
         if (row.referralStatus === '未处理') {
           return 'info-row'
         } else {
-          if (row.operationStatus === '对方拒绝') {
+          if (row.operationStatus === '对方拒绝'||row.operationStatus === '拒绝') {
             return 'negative-row'
-          } else if (row.operationStatus === '对方接受') {
+          } else if (row.operationStatus === '对方接受'||row.operationStatus === '接受') {
             return 'positive-row'
           }
         }
@@ -223,6 +224,7 @@
           ;//don't need to do anything
         } else {
           // console.log('other cell click');
+          this.clickPatientId = row.id;
           this.dialogVisible = true
         }
       },
@@ -233,7 +235,6 @@
         this.dialogVisible = val
       },
       showReferral(row) {
-
         this.referralInfo = row.id
         this.referralVisible = true
         this.referralState = 'look'
@@ -243,6 +244,35 @@
         this.referralVisible = true
         this.referralState = 'receive'
         this.referralInfo = row.id
+      },
+      reject(){
+        console.log('this.referralInfo is ',this.referralInfo)
+        this.$message.error('reject' + this.referralInfo);
+        for(let i=0;i<this.todealTableData.length;i++){
+          if(this.todealTableData[i].id === this.referralInfo){
+            console.log('in for and if');
+            let p = this.todealTableData.splice(i,1);
+            //console.log(p);
+            //console.log(p[0]);
+            p[0].referralStatus = '已处理';
+            p[0].operationStatus = '拒绝';
+            this.dealedTableData.push(p[0]);
+            return;
+          }
+        }
+      },
+      accept(){
+        console.log('this.referralInfo is ',this.referralInfo)
+        this.$message.error('accept' + this.referralInfo);
+        for(let i=0;i<this.todealTableData.length;i++){
+          if(this.todealTableData[i].id === this.referralInfo){
+            let p = this.todealTableData.splice(i,1);
+            p[0].referralStatus = '已处理';
+            p[0].operationStatus = '接受';
+            this.dealedTableData.push(p[0]);
+            return;
+          }
+        }
       }
     }
   }
