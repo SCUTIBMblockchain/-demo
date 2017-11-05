@@ -222,7 +222,7 @@
           "Referral": ""
         }
       },
-      tableData: [{'Id': '120417',
+      tableData: [/*{'Id': '120417',
       'Date': '2017',
       'HospitalId': 'hospitalA',
       'DoctorName': '刘威',
@@ -236,7 +236,7 @@
         "Prescription": "none",
         "Diagnosis": "yes",
         "Id": "3389"
-      }],
+      }*/],
       clickRow: {},
     };
   },
@@ -254,7 +254,7 @@
       //get patient info from backend
       this.$http.get('/patient/queryByPatientId/' + this.selfPatientId)
         .then((res) => {
-          if(res.status!=='200') {
+          if(res.status === 200) {
             this.patientInfo = res.data;
             if (this.patientInfo.State.Referral === 'normal'){
               this.patientInfo.State.Referral = '未转诊'
@@ -312,7 +312,8 @@
         });
         this.$http.get('/api/case/queryByPatientId/' + this.selfPatientId)
         .then((res) => {
-          if(res.status === '200'){
+          if(res.status === 200){
+            this.tableData.length = 0;
             for(let i=0;i<res.data.cases.length;i++){
               let tmpCase = {
                 "HospitalId": "",

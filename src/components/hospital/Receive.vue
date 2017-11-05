@@ -89,8 +89,8 @@
           'address': '广东省惠州市惠新镇城中村339号',
           'hospital': '广州市红十字会医院',
           'referralStatus': '未处理'
-        }],
-        dealedTableData: [{
+        }*/],
+        dealedTableData: [/*{
           'id': 'patient28',
           'name': '林琅',
           'gender': '男',
@@ -118,7 +118,7 @@
       }
     },
     mounted: function () {
-      this.$http.get('/api/receiver/get_todeal_patients/hospital02',this.hospitalId)
+      this.$http.get('/api/receiver/get_todeal_patients/hospital01')
         .then((res) => {
           if (res.status === 200) {
             for (var i=0;i<res.data.patients.length;i++) {
@@ -146,7 +146,7 @@
         },(err) => {
           this.$message.error('初始化未处理病人时请求错误！')
         });
-      this.$http.get('/api/receiver/get_dealed_patients/hospital02',this.hospitalId)
+      this.$http.get('/api/receiver/get_dealed_patients/hospital01')
         .then((res) => {
           if (res.status === 200) {
             for (var i=0;i<res.data.patients.length;i++) {
@@ -168,7 +168,7 @@
               }else if(res.data.patients[i].State.Referral === 'reject') {
                 dealedPatient.referralStatus = '对方拒绝';
               }
-              this.undealTableData.push(undealPatient);
+              this.dealedTableData.push(dealedPatient);
             }
           }else {
             console.log('this.$http.get(\'/api/receiver/get_dealed_patients\',this.hospitalId) return is not 200');

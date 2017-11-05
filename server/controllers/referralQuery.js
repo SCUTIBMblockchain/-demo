@@ -26,6 +26,13 @@ const getReferrals = function* () {
   this.body = result
 }
 
+// 请求病人的所有转诊单
+const getReferralsByPatientId = function* () {
+  const msg = this.params.patientId
+  const result = yield referral.queryReferralsByPatientId(msg)
+  this.body = result
+}
+
 const getReferral = function* () {
   const patientId = this.params.patientId
   const referralId = referral.generateRefferralId(patientId)
@@ -68,5 +75,6 @@ module.exports = {
   getSendReferrals,
   getReceiveReferrals,
   getReferrals,
-  getReferral
+  getReferral,
+  getReferralsByPatientId
 }

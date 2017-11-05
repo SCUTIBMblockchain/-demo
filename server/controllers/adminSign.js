@@ -12,9 +12,15 @@ const buildConnect = function* () {
 
 const postAdminAuth = function* () {
   const data = this.request.body
-  const userInfo = {
-    name: 'admin',
-    password: 'adminpw'
+  const hopitals = {
+    user1: {
+      Id: 'hospital01',
+      password: 'hospital01pw'
+    },
+    user2: {
+      Id: 'hospital02',
+      password: 'hospital02pw'
+    }
   }
   if (userInfo.name === data.name) {
     if (userInfo.password !== data.password) {         // passwd not right

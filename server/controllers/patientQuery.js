@@ -2,7 +2,8 @@ const patient = require('../models/patient')
 const referral = require('../models/referral')
 
 let BackInfo = {
-  'patients': null
+  'patients': null,
+  'cases': null
 }
 function count (obj) {
   var objType = typeof obj
@@ -164,7 +165,9 @@ const getDealedPatientAsReceiver = function* () {
 const getCasesByPatientId = function* () {
   const patientId = this.params.patientId
   const result = yield patient.queryCasesByPatientId(patientId)
-  this.body = result
+  var res = JSON.parse(result)
+  BackInfo.cases = res
+  this.body = BackInfo
 }
 // 返回病人信息
 const getPatientInfoByPatientId = function* () {
