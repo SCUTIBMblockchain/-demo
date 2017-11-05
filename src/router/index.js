@@ -19,11 +19,6 @@ export default new Router({
       component: Hospital
     },
     {
-      path: '/processDemo',
-      name: 'processDemo',
-      component: ProcessDemo
-    },
-    {
       path: '*',
       name: 'else',
       redirect: '/'

@@ -265,7 +265,7 @@
             }
             console.log(sendData)
             this.ws.send(JSON.stringify(sendData))
-            //this.$refs.processDemo.show_tx() // 动画效果
+            this.$refs.processDemo.show_tx() // 动画效果
             console.log('确认')
           })
           .catch(_ => {
@@ -276,7 +276,7 @@
         this.$confirm('确认接受转诊？')
           .then(_ => {
             console.log('确认')
-            //this.$refs.processDemo.show_tx() //动画效果
+            this.$refs.processDemo.show_tx() //动画效果
             let sendData = {
               operation: 'accept',
               referralProfile: this.form
