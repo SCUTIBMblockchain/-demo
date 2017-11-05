@@ -6,10 +6,10 @@
           <el-col :span="5">
             <p>转诊单号: {{ form.Id }}</p>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="6">
             <p>创建日期: {{form.Date}}</p>
           </el-col>
-          <el-col :offset="11" :span="4" v-show="state==='look'">
+          <el-col :offset="5" :span="4" v-show="state==='look'">
             <p>状态: {{this.form.State}}</p>
           </el-col>
         </el-row>
@@ -43,7 +43,7 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="7">
+            <el-col :span="8">
               <el-form-item label='身份证号'>
                 <el-input v-model='form.PIN' :disabled='true'></el-input>
               </el-form-item>
@@ -55,13 +55,15 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="7">
+            <el-col :span="8">
               <el-form-item label='联系方式'>
                 <el-input v-model='form.Phone' :disabled='true'></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="9">
-              <el-form-item label='住址' label-width='50px'>
+          </el-row>
+          <el-row>
+            <el-col :span="18">
+              <el-form-item label='联系地址'>
                 <el-input v-model='form.Resident' :disabled='true'></el-input>
               </el-form-item>
             </el-col>
@@ -84,7 +86,9 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="7">
+            </el-row>
+            <el-row>
+              <el-col :span="16">
                 <el-form-item label='转诊目的'>
                   <el-input v-model='form.FromInfo.ReferralType' placeholder='请选择转诊目的' :disabled='fromDisable'></el-input>
                 </el-form-item>

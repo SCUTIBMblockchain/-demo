@@ -17,10 +17,16 @@ export default new Router({
       path: '/hospital',
       name: 'hospital',
       component: Hospital
-    },{
+    },
+    {
       path: '/processDemo',
       name: 'processDemo',
       component: ProcessDemo
+    },
+    {
+      path: '*',
+      name: 'else',
+      redirect: '/'
     }
   ]
 })

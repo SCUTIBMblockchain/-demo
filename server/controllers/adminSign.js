@@ -12,7 +12,7 @@ const buildConnect = function* () {
 
 const postAdminAuth = function* () {
   const data = this.request.body
-  const hopitals = {
+  const hospitals = {
     user1: {
       Id: 'hospital01',
       password: 'hospital01pw'
@@ -22,16 +22,34 @@ const postAdminAuth = function* () {
       password: 'hospital02pw'
     }
   }
-  if (userInfo.name === data.name) {
-    if (userInfo.password !== data.password) {         // passwd not right
+  if (hospitals.user1.Id === data.name) {
+    if (hospitals.user1.password !== data.password) {         // passwd not right
       this.body = {
         success: false,
-        info: 'Wrong password!'
+        info: '密码错误!'
       }
     } else {                                           // messages pass to userToken
       const userToken = {
-        name: userInfo.name,
-        password: userInfo.password
+        name: '人民医院',
+        Id: hospitals.user1.Id
+      }
+      const secret = 'blockchainForHealthcare'                    // config the cryptoKey
+      const token = jwt.sign(userToken, secret)        // sign the token
+      this.body = {
+        success: true,
+        token: token                                   // return the token
+      }
+    }
+  } else if (hospitals.user2.Id === data.name) {
+    if (hospitals.user2.password !== data.password) {         // passwd not right
+      this.body = {
+        success: false,
+        info: '密码错误!'
+      }
+    } else {                                           // messages pass to userToken
+      const userToken = {
+        name: '华工校医院',
+        Id: hospitals.user2.Id
       }
       const secret = 'blockchainForHealthcare'                    // config the cryptoKey
       const token = jwt.sign(userToken, secret)        // sign the token
@@ -43,7 +61,7 @@ const postAdminAuth = function* () {
   } else {
     this.body = {
       success: false,
-      info: 'Not exists!'
+      info: '账户不存在!'
     }
   }
 }
