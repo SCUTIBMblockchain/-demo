@@ -207,6 +207,9 @@
         this.todealTableData.push(tmpPaitent);
       }
     },
+    mounted() {
+      this.init()
+    },
     methods: {
       tableRowClassName (row, index) {
         if (row.referralStatus === '未处理') {
