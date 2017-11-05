@@ -184,6 +184,7 @@
     },
     data() {
       return {
+        hospitalId: 'hospital02',
         form: {
           Id: '20171010636741',
           Date: '20171012',
@@ -224,6 +225,23 @@
       }
     },
     computed: {},
+    mounted: function() {
+      //query referral by patient Id
+      this.$http.get('/api/referralInfo/queryByPatientId/:patientId',this.info)
+        .then((res) => {
+          if (res.status === 200) {
+            let tmpReferralProfile = res.data.referralProfileInfos[i];
+            if (res.data.referralProfileInfos[i].State === 'accept') {
+              tmpReferralProfile.State = '对方接受';
+            }
+            this.form = tmpReferralProfile;
+          }else {
+            console.log('this.$http.get(\'/api/referralInfo/queryByPatientId/:patientId\',this.info) return is not 200');
+          }
+        },(err) => {
+          this.$message.error('初始化 referralInfo 时请求错误！')
+        });
+    },
     methods: {
       onSubmit () {
         this.$confirm('确认提交？')
@@ -278,11 +296,6 @@
           })
         }).catch(() => {})
       },
-//      movePatient() {
-//        console.log('before emit an event');
-//        this.$emit('updateReferralPatientId',sendData.patientId);
-//        console.log('after emit an event');
-//      },
       beforeClose() {
         this.$emit('updateReferralVisible')
       },
