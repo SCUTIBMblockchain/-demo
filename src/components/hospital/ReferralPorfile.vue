@@ -186,33 +186,33 @@
       return {
         hospitalId: 'hospital02',
         form: {
-          Id: '20171010636741',
-          Date: '20171012',
-          State: 'accept',
-          Name: '赵镇洪',
-          PIN: '142703199701012232',
-          Gender: '男',
+          Id: '',
+          Date: '',
+          State: '',
+          Name: '',
+          PIN: '',
+          Gender: '',
           Age: 26,
-          Birthplace: '陕西省忻州市五寨县',
-          Nationality: '汉',
-          Occupation: '电工',
-          Resident: '广东省广州市番禹区番禺小区4栋471号',
-          Phone: '13825646512',
+          Birthplace: '',
+          Nationality: '',
+          Occupation: '',
+          Resident: '',
+          Phone: '',
           FromInfo: {
-            Section: '内科',
-            HospitalName: '仁和医院',
-            Doctor: '徐宽',
-            Phone: '13654681827',
-            ReferralType: '治疗重症',
-            RelationDemand: '要杨镇宇专家负责',
-            PayWay: '医保',
-            IllnessState: '长期高烧不退，各种抗生素均无效'
+            Section: '',
+            HospitalName: '',
+            Doctor: '',
+            Phone: '',
+            ReferralType: '',
+            RelationDemand: '',
+            PayWay: '',
+            IllnessState: ''
           },
           ToInfo: {
-            Section: '内科',
-            Doctor: '徐宽',
-            Phone: '13427534816',
-            RejectReason: '专家有事不在'
+            Section: '',
+            Doctor: '',
+            Phone: '',
+            RejectReason: ''
           }
         },
         dialogVisible: true,
@@ -225,22 +225,29 @@
       }
     },
     computed: {},
-    mounted: function() {
-      //query referral by patient Id
-      this.$http.get('/api/referralInfo/queryByPatientId/:patientId',this.info)
+    watch: {
+      info(newValue){
+        if(newValue!==null){
+          //query referral by patient Id
+      this.$http.get('/api/referralInfo/queryByPatientId/' + this.info)
         .then((res) => {
+          console.log('referral info data is',res.data);
           if (res.status === 200) {
-            let tmpReferralProfile = res.data.referralProfileInfos[i];
-            if (res.data.referralProfileInfos[i].State === 'accept') {
-              tmpReferralProfile.State = '对方接受';
-            }
+            let tmpReferralProfile = res.data;
+            console.log('referral info data is',res.data);
+            // if (res.data.referralProfileInfos.State === 'accept') {
+            //   tmpReferralProfile.State = '对方接受';
+            // }
             this.form = tmpReferralProfile;
+            console.log('this form is',this.form);
           }else {
             console.log('this.$http.get(\'/api/referralInfo/queryByPatientId/:patientId\',this.info) return is not 200');
           }
         },(err) => {
           this.$message.error('初始化 referralInfo 时请求错误！')
         });
+        }
+      }
     },
     methods: {
       onSubmit () {

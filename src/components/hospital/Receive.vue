@@ -42,7 +42,7 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <InformationDialog :InfoDialogVisible="dialogVisible" @updateDialogVisible="updateDialogVisible"></InformationDialog>
+    <InformationDialog :InfoDialogVisible="dialogVisible" :patientId="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
     <ReferralProfile :referralVisible="referralVisible" :info= 'referralInfo' :state.sync = "referralState" :ws = "selfWs" @updateReferralVisible="referralVisible=false"></ReferralProfile>
   </el-col>
 </template>
@@ -67,6 +67,7 @@
         hospitalId: 'hospital02',
         referralState: 'receive',
         referralInfo: null,
+        clickPatientId: '',
         selfWs: this.ws,
         todealTableData: [ /* {
           'id': 'patient09',
@@ -135,8 +136,8 @@
               todealPatient.gender = res.data.patients[i].Gender;
               todealPatient.address = res.data.patients[i].Resident;
               todealPatient.hospital = res.data.patients[i].State.HospitalName;
-              if (res.data.patients[i].State.Referral === 'normal') {
-                todealPatient.referralStatus = '未处理';
+              if (res.data.patients[i].State.Referral === 'undeal') {
+                todealPatient.referralStatus = '待处理';
               }
               this.todealTableData.push(todealPatient);
             }
@@ -163,10 +164,11 @@
               dealedPatient.gender = res.data.patients[i].Gender;
               dealedPatient.address = res.data.patients[i].Resident;
               dealedPatient.hospital = res.data.patients[i].State.HospitalName;
-              if (res.data.patients[i].State.Referral === 'accept') {
-                dealedPatient.referralStatus = '对方接受';
+              dealedPatient.referralStatus = '已处理';
+              if (res.data.patients[i].State.Referral === 'receive') {
+                dealedPatient.operationStatus = '接受';
               }else if(res.data.patients[i].State.Referral === 'reject') {
-                dealedPatient.referralStatus = '对方拒绝';
+                dealedPatient.operationStatus = '拒绝';
               }
               this.dealedTableData.push(dealedPatient);
             }
@@ -210,9 +212,9 @@
         if (row.referralStatus === '未处理') {
           return 'info-row'
         } else {
-          if (row.operationStatus === '对方拒绝') {
+          if (row.operationStatus === '对方拒绝'||row.operationStatus === '拒绝') {
             return 'negative-row'
-          } else if (row.operationStatus === '对方接受') {
+          } else if (row.operationStatus === '对方接受'||row.operationStatus === '接受') {
             return 'positive-row'
           }
         }
@@ -223,6 +225,7 @@
           ;//don't need to do anything
         } else {
           // console.log('other cell click');
+          this.clickPatientId = row.id;
           this.dialogVisible = true
         }
       },

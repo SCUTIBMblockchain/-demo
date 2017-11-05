@@ -33,7 +33,7 @@ const postAdminAuth = function* () {
         name: userInfo.name,
         password: userInfo.password
       }
-      const secret = 'vue-koa-demo'                    // config the cryptoKey
+      const secret = 'blockchainForHealthcare'                    // config the cryptoKey
       const token = jwt.sign(userToken, secret)        // sign the token
       this.body = {
         success: true,
