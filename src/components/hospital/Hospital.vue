@@ -62,7 +62,7 @@
               type: 'success',
               message: '接收到一个新的转诊请求'
             });
-            console.log('patient info is ', jsonobj.referralProfile);
+            console.log('receive a referral: patient info is ', jsonobj.referralProfile);
             win.receivePatientInfo = jsonobj.referralProfile
           }else if(jsonobj.operation==="accept"){
             win.$message({

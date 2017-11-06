@@ -130,12 +130,14 @@
                 'address': '',
                 'hospital': '',
                 'referralStatus': '',
+                'referralId': '',
               };
               todealPatient.id = res.data.patients[i].Id;
               todealPatient.name = res.data.patients[i].Name;
               todealPatient.gender = res.data.patients[i].Gender;
               todealPatient.address = res.data.patients[i].Resident;
               todealPatient.hospital = res.data.patients[i].State.HospitalName;
+              todealPatient.referralId = res.data.patients[i].State.ReferralId;
               if (res.data.patients[i].State.Referral === 'undeal') {
                 todealPatient.referralStatus = '待处理';
               }
@@ -158,12 +160,14 @@
                 'address': '',
                 'hospital': '',
                 'referralStatus': '',
+                'referralId': '',
               };
               dealedPatient.id = res.data.patients[i].Id;
               dealedPatient.name = res.data.patients[i].Name;
               dealedPatient.gender = res.data.patients[i].Gender;
               dealedPatient.address = res.data.patients[i].Resident;
               dealedPatient.hospital = res.data.patients[i].State.HospitalName;
+              dealedPatient.referralId = res.data.patients[i].State.ReferralId;
               dealedPatient.referralStatus = '已处理';
               if (res.data.patients[i].State.Referral === 'receive') {
                 dealedPatient.operationStatus = '接受';
@@ -181,30 +185,42 @@
     },
     watch: {
       patientInfo (newPaitent){
-        if ('id' in newPaitent) {
+        if ('Id' in newPaitent) {
           console.log('receive a new patient is',newPaitent);
-          this.todealTableData.push(newPaitent);//pass
+          var tmpPatient = {
+            id: newPaitent.Id,
+            name: newPaitent.Name,
+            gender: newPaitent.Gender,
+            address: newPaitent.Resident,
+            hospital: newPaitent.State.HospitalName,
+            referralStatus: newPaitent.State.Referral,
+            referralId: newPaitent.State.ReferralId,
+            operationStatus: '待处理'
+          };
+          //console.log('tmp patient is',tmpPatient);
+//          tmpPatient.id = newPaitent.Id;
+//          tmpPatient.name = newPaitent.Name;
+//          tmpPatient.gender = newPaitent.Gender;
+//          tmpPatient.address = newPaitent.Resident;
+//          tmpPatient.hospital = newPaitent.State.HospitalName;
+//          tmpPatient.referralStatus = newPaitent.State.Referral;
+//          tmpPatient.operationStatus = '待处理';
+          console.log('tmp patient now is',tmpPatient);
+          this.todealTableData.push({
+            id: newPaitent.Id,
+            name: newPaitent.Name,
+            gender: newPaitent.Gender,
+            address: newPaitent.Resident,
+            hospital: newPaitent.State.HospitalName,
+            referralId: newPaitent.State.ReferralId,
+            referralStatus: '待处理',
+            operationStatus: '待处理'
+          });//pass
         }else {
           console.log('id not in newPatient');
           return;
         }
-        let tmpPatient = {
-          'id': '',
-          'name': '',
-          'gender': '',
-          'address': '',
-          'hospital': '',
-          'referralStatus': '',
-          'operationStatus': ''
-        };
-        tmpPatient.id = newPaitent.id;
-        tmpPatient.name = newPaitent.name;
-        tmpPatient.gender = newPaitent.gender;
-        tmpPatient.address = newPaitent.address;
-        tmpPatient.hospital = newPaitent.hospital;
-        tmpPatient.referralStatus = newPaitent.referralStatus;
-        tmpPatient.operationStatus = newPaitent.operationStatus;
-        this.todealTableData.push(tmpPaitent);
+
       }
     },
     methods: {
@@ -225,6 +241,7 @@
           ;//don't need to do anything
         } else {
           // console.log('other cell click');
+          //this.$message.error('look'+row.referralId);
           this.clickPatientId = row.id;
           this.dialogVisible = true
         }
@@ -236,12 +253,14 @@
         this.dialogVisible = val
       },
       showReferral(row) {
-        this.referralInfo = row.id
+        this.$message.error('look'+row.id);
+        this.referralInfo = row.id;
         this.referralVisible = true
         this.referralState = 'look'
 
       },
       dealReferral(row) {
+        this.$message.error('receive'+row.id);
         this.referralVisible = true
         this.referralState = 'receive'
         this.referralInfo = row.id
