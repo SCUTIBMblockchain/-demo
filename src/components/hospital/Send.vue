@@ -57,7 +57,7 @@
       </el-table>
     </el-card>
     <InformationDialog :InfoDialogVisible="dialogVisible" :patientId="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
-    <ReferralProfile :referralVisible="referralVisible" :state.sync = "referralState" :ws = "ws" :info = 'referralInfo' @updateReferralVisible="referralVisible=false" @updateReferralPatientId="movePatientFromUndeal"></ReferralProfile>
+    <ReferralProfile v-if="referralVisible" :referralVisible="referralVisible" :state.sync = "referralState" :ws = "ws" :info = 'referralInfo' @updateReferralVisible="referralVisible=false" @updateReferralPatientId="movePatientFromUndeal"></ReferralProfile>
   </el-col>
 </template>
 
