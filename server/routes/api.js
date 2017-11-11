@@ -28,6 +28,7 @@ router.get('/sender/get_dealed_patients/:hospitalName', patient.getDealedPatient
 router.get('/receiver/get_todeal_patients/:hospitalName', patient.getUndealPatientAsReceiver)
 router.get('/receiver/get_dealed_patients/:hospitalName', patient.getDealedPatientAsReceiver)
 router.post('/referrals', referral.getReferrals)
+router.get('/referralProfileInfo/queryByHospitalId/:hospitalId', referral.getReferralsAsReceiverByHospitalId)
 //* end of demo API
 
 // todo 测试该api

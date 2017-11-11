@@ -5,7 +5,7 @@ const util = require('util')
 const fbc = require('fabric-client')
 const network = require('./network.js')
 const log = network.getlog('instantiateChaincode')
-fbc.addConfigFile(path.join(__dirname, 'network-config.json'))
+fbc.addConfigFile(path.join(__dirname, 'network-configback.json'))
 const orgs = fbc.getConfigSetting('network-config')
 var txId = null
 var eh = null

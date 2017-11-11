@@ -63,10 +63,41 @@ const getReferral = function* () {
   }
   this.body = ref
 }
-
+const getReferralsAsReceiverByHospitalId = function* () {
+  const msg = this.params.hospitalId
+  const result = yield referral.queryReferralProfileInfoAsReceiverByHospitalId(msg)
+  const referralsTodeal = JSON.parse(result)
+  const referralsDealed = referralsTodeal
+  let backReferrals = {
+    'todealReferralProfileInfo': null,
+    'dealedReferralProfileInfo': null
+  }
+  var con1 = count(referralsTodeal)
+  var con2 = count(referralsDealed)
+  for (var i = 0; i < con1; i++) {
+    var state = referralsTodeal[i].State
+    if (state !== 'undeal') {
+      referralsTodeal.splice(i, 1)
+      i--
+      con1--
+    }
+  }
+  for (var j = 0; j < con2; j++) {
+    state = referralsDealed[j].State
+    if (state === 'undeal') {
+      referralsDealed.splice(j, 1)
+      j--
+      con2--
+    }
+  }
+  backReferrals.todealReferralProfileInfo = referralsTodeal
+  backReferrals.dealedReferralProfileInfo = referralsDealed
+  this.body = backReferrals
+}
 module.exports = {
   getSendReferrals,
   getReceiveReferrals,
   getReferrals,
-  getReferral
+  getReferral,
+  getReferralsAsReceiverByHospitalId
 }

@@ -19,7 +19,7 @@ var util = require('util')
 var fbc = require('fabric-client')
 var network = require('./network.js')
 var log = network.getlog('invoke-chaincode')
-fbc.addConfigFile(path.join(__dirname, 'network-config.json'))
+fbc.addConfigFile(path.join(__dirname, 'network-configback.json'))
 
 var invokeChaincode = function (peersUrls, channelName, chaincodeName, fcn, args, username, org) {
   log.debug(util.format('\n============ invoke transaction on organization %s ============\n', org))

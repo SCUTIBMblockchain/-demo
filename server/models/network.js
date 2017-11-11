@@ -26,7 +26,7 @@ var CopService = require('fabric-ca-client')
 var config = require('../config/config.json')
 
 var Fbc = require('fabric-client')
-Fbc.addConfigFile(path.join(__dirname, '../config/network-config.json'))
+Fbc.addConfigFile(path.join(__dirname, '../config/network-configback.json'))
 Fbc.setLogger(logger)
 var ORGS = Fbc.getConfigSetting('network-config')
 
