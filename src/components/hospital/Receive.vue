@@ -110,7 +110,7 @@
         }],
         dealedTableData: [
           {
-            "Id": "20171010001",
+            "Id": "referral01",
             "State": "dealed",
             "Date": "20171012",
             "PatientId": "patient02",
@@ -144,115 +144,41 @@
       }
     },
     mounted: function () {
-      this.$http.get('/api/referralProfileInfo/queryUndealByHospitalId/',this.hospitalId)
-        .then((res) => {
-          if(res.status === 200) {
-            this.todealTableData.length = 0 //clear the todealTableData
-            for (let i=0;i<res.data.referralInfo.length;i++) {
-              let todealReferral = {
-                "Id": res.data.referralInfo[i].Id,
-                "State": res.data.referralInfo[i].State,
-                "Date": res.data.referralInfo[i].Date,
-                "PatientId": res.data.referralInfo[i].PatientId,
-                "Name": res.data.referralInfo[i].Name,
-                "FromInfo": {
-                  "Section": res.data.referralInfo[i].FromInfo.Section,
-                  "HospitalName": res.data.referralInfo[i].FromInfo.HospitalName,
-                  "Doctor": res.data.referralInfo[i].FromInfo.Doctor,
-                  "ReferralType": res.data.referralInfo[i].FromInfo.ReferralType,
-                  "IllnessState": res.data.referralInfo[i].FromInfo.IllnessState
-                },
-              }
-              this.todealTableData.push(todealReferral)
-            }
-          }else {
-            console.log('this.$http.get(\'/api/referralProfileInfo/queryUndealByHospitalId/\',this.hospitalId) return is not 200')
-          }
-        },(err) => {
-          this.$message.error('this.$http.get(\'/api/referralProfileInfo/queryUndealByHospitalId/\',this.hospitalId) return error')
-          console.log('/api/referralProfileinfo/queryUndealByHospitalId/ err msg is '+err)
-        })
-
-//      this.$http.get('/api/receiver/get_todeal_patients/hospital01')
-//        .then((res) => {
-//          if (res.status === 200) {
-//            for (var i=0;i<res.data.patients.length;i++) {
-//              let todealPatient = {
-//                'id': '',
-//                'name': '',
-//                'gender': '',
-//                'address': '',
-//                'hospital': '',
-//                'referralStatus': '',
-//                'referralId': '',
-//              };
-//              todealPatient.id = res.data.patients[i].Id;
-//              todealPatient.name = res.data.patients[i].Name;
-//              todealPatient.gender = res.data.patients[i].Gender;
-//              todealPatient.address = res.data.patients[i].Resident;
-//              todealPatient.hospital = res.data.patients[i].State.HospitalName;
-//              todealPatient.referralId = res.data.patients[i].State.ReferralId;
-//              if (res.data.patients[i].State.Referral === 'undeal') {
-//                todealPatient.referralStatus = '待处理';
-//              }
-//              this.todealTableData.push(todealPatient);
-//            }
-//          }else {
-//            console.log('this.$http.get(\'/api/receiver/get_todeal_patients\',this.hospitalId) return is not 200');
-//          }
-//        },(err) => {
-//          this.$message.error('初始化未处理病人时请求错误！')
-//        });
-//      this.$http.get('/api/receiver/get_dealed_patients/hospital01')
-//        .then((res) => {
-//          if (res.status === 200) {
-//            for (var i=0;i<res.data.patients.length;i++) {
-//              let dealedPatient = {
-//                'id': '',
-//                'name': '',
-//                'gender': '',
-//                'address': '',
-//                'hospital': '',
-//                'referralStatus': '',
-//                'referralId': '',
-//              };
-//              dealedPatient.id = res.data.patients[i].Id;
-//              dealedPatient.name = res.data.patients[i].Name;
-//              dealedPatient.gender = res.data.patients[i].Gender;
-//              dealedPatient.address = res.data.patients[i].Resident;
-//              dealedPatient.hospital = res.data.patients[i].State.HospitalName;
-//              dealedPatient.referralId = res.data.patients[i].State.ReferralId;
-//              dealedPatient.referralStatus = '已处理';
-//              if (res.data.patients[i].State.Referral === 'receive') {
-//                dealedPatient.operationStatus = '接受';
-//              }else if(res.data.patients[i].State.Referral === 'reject') {
-//                dealedPatient.operationStatus = '拒绝';
-//              }
-//              this.dealedTableData.push(dealedPatient);
-//            }
-//          }else {
-//            console.log('this.$http.get(\'/api/receiver/get_dealed_patients\',this.hospitalId) return is not 200');
-//          }
-//        },(err) => {
-//          this.$message.error('初始化未处理病人时请求错误！')
-//        });
       this.$http.get('/api/referralProfileInfo/queryByHospitalId/',this.hospitalId)
         .then((res) => {
           if(res.status === 200) {
             this.todealTableData.length = 0 //clear the todealTableData
-            for (let i=0;i<res.data.referralInfo.length;i++) {
+            for (let i=0;i<res.data.todealReferralProfileInfo.length;i++) {
               let todealReferral = {
-                "Id": res.data.referralInfo[i].Id,
-                "State": res.data.referralInfo[i].State,
-                "Date": res.data.referralInfo[i].Date,
-                "PatientId": res.data.referralInfo[i].PatientId,
-                "Name": res.data.referralInfo[i].Name,
+                "Id": res.data.todealReferralProfileInfo[i].Id,
+                "State": res.data.todealReferralProfileInfo[i].State,
+                "Date": res.data.todealReferralProfileInfo[i].Date,
+                "PatientId": res.data.todealReferralProfileInfo[i].PatientId,
+                "Name": res.data.todealReferralProfileInfo[i].Name,
                 "FromInfo": {
-                  "Section": res.data.referralInfo[i].FromInfo.Section,
-                  "HospitalName": res.data.referralInfo[i].FromInfo.HospitalName,
-                  "Doctor": res.data.referralInfo[i].FromInfo.Doctor,
-                  "ReferralType": res.data.referralInfo[i].FromInfo.ReferralType,
-                  "IllnessState": res.data.referralInfo[i].FromInfo.IllnessState
+                  "Section": res.data.todealReferralProfileInfo[i].FromInfo.Section,
+                  "HospitalName": res.data.todealReferralProfileInfo[i].FromInfo.HospitalName,
+                  "Doctor": res.data.todealReferralProfileInfo[i].FromInfo.Doctor,
+                  "ReferralType": res.data.todealReferralProfileInfo[i].FromInfo.ReferralType,
+                  "IllnessState": res.data.todealReferralProfileInfo[i].FromInfo.IllnessState
+                },
+              }
+              this.todealTableData.push(todealReferral)
+            }
+            this.dealedTableData.length = 0 //clear the dealedTableData
+            for (let i=0;i<res.data.dealedReferralProfileInfo.length;i++) {
+              let todealReferral = {
+                "Id": res.data.dealedReferralProfileInfo[i].Id,
+                "State": res.data.dealedReferralProfileInfo[i].State,
+                "Date": res.data.dealedReferralProfileInfo[i].Date,
+                "PatientId": res.data.dealedReferralProfileInfo[i].PatientId,
+                "Name": res.data.dealedReferralProfileInfo[i].Name,
+                "FromInfo": {
+                  "Section": res.data.dealedReferralProfileInfo[i].FromInfo.Section,
+                  "HospitalName": res.data.dealedReferralProfileInfo[i].FromInfo.HospitalName,
+                  "Doctor": res.data.dealedReferralProfileInfo[i].FromInfo.Doctor,
+                  "ReferralType": res.data.dealedReferralProfileInfo[i].FromInfo.ReferralType,
+                  "IllnessState": res.data.dealedReferralProfileInfo[i].FromInfo.IllnessState
                 },
               }
               this.todealTableData.push(todealReferral)
@@ -262,7 +188,7 @@
           }
         },(err) => {
           this.$message.error('this.$http.get(\'/api/referralProfileInfo/queryByHospitalId/\',this.hospitalId) return error')
-          console.log('/api/referralProfileInfo/queryByHospitalId/ err msg is '+err)
+          console.log('/api/referralProfileinfo/queryByHospitalId/ err msg is '+err)
         })
     },
     watch: {
