@@ -171,7 +171,8 @@
         <el-button type='primary' @click='onAccept'>接 收</el-button>
         <el-button type='primary' @click='onReject'>拒 绝</el-button>
       </span>
-      <process-demo ref="processDemo" @close-referral="movePatient"></process-demo>
+
+      <process-demo ref="processDemo" @close-referral="movePatient" v-if="referralVisible"></process-demo>
     </el-dialog>
 
   </div>
@@ -189,6 +190,7 @@
     data() {
       return {
         hospitalId: 'hospital02',
+        demoVisible:true,
         form: {
           Id: '',
           Date: '',
@@ -258,9 +260,15 @@
         this.$confirm('确认提交转诊？')
           .then(_ => {
             console.log('确认')
-
+            let sendData = {
+              operation: 'send',
+              patientId: this.info,
+              referralProfile: this.form
+            }
+            console.log(sendData)
+            this.demoVisible=true;
+            this.ws.send(JSON.stringify(sendData))
             this.$refs.processDemo.show_tx() // 动画效果
-
             console.log('确认')
           })
           .catch(_ => {
