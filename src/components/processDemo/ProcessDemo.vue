@@ -357,6 +357,7 @@
           // =================================================================================
           // jQuery UI Events
           // =================================================================================
+
           story1html = $('#txStep1 .txStoryWrap').html();
           story2html = $('#txStep2 .txStoryWrap').html();
           story3html = $('#txStep3 .txStoryWrap').html();
@@ -378,6 +379,7 @@
             $('#txStep3 .txStoryWrap').html(story3html);
             $('#txStep4 .txStoryWrap').html(story4html);
           }, 500);
+          stepflag=0;
         },
             show_tx:function () {
                 $('.testMarsk').show();
