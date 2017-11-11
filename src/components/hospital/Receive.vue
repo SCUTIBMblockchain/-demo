@@ -79,7 +79,7 @@
         selfWs: this.ws,
         todealTableData: [ {
           "Id": "20171010001",
-          "State": "undeal",
+          "State": "未处理",
           "Date": "20171012",
           "PatientId": "patient01",
           "Name": "王建国",
@@ -111,7 +111,7 @@
         dealedTableData: [
           {
             "Id": "referral01",
-            "State": "dealed",
+            "State": "接受",
             "Date": "20171012",
             "PatientId": "patient02",
             "Name": "王建国",
@@ -163,11 +163,14 @@
                   "IllnessState": res.data.todealReferralProfileInfo[i].FromInfo.IllnessState
                 },
               }
+              if (todealReferral.State === 'undeal') {
+                todealReferral.State = '未处理'
+              }
               this.todealTableData.push(todealReferral)
             }
             this.dealedTableData.length = 0 //clear the dealedTableData
             for (let i=0;i<res.data.dealedReferralProfileInfo.length;i++) {
-              let todealReferral = {
+              let dealedReferral = {
                 "Id": res.data.dealedReferralProfileInfo[i].Id,
                 "State": res.data.dealedReferralProfileInfo[i].State,
                 "Date": res.data.dealedReferralProfileInfo[i].Date,
@@ -181,7 +184,12 @@
                   "IllnessState": res.data.dealedReferralProfileInfo[i].FromInfo.IllnessState
                 },
               }
-              this.todealTableData.push(todealReferral)
+              if (dealedReferral.State === 'accept') {
+                dealedReferral.State = '接受'
+              }else if (dealedReferral.State === 'reject') {
+                dealedReferral.State = '拒绝'
+              }
+              this.dealedTableData.push(todealReferral)
             }
           }else {
             console.log('this.$http.get(\'/api/referralProfileInfo/queryByHospitalId/\',this.hospitalId) return is not 200')
@@ -241,12 +249,12 @@
     },
     methods: {
       tableRowClassName (row, index) {
-        if (row.referralStatus === '未处理') {
+        if (row.State === '未处理') {
           return 'info-row'
         } else {
-          if (row.operationStatus === '对方拒绝'||row.operationStatus === '拒绝') {
+          if (row.State === '对方拒绝'||row.Stata === '拒绝') {
             return 'negative-row'
-          } else if (row.operationStatus === '对方接受'||row.operationStatus === '接受') {
+          } else if (row.State === '对方接受'||row.State === '接受') {
             return 'positive-row'
           }
         }
