@@ -231,30 +231,6 @@
       }
     },
     computed: {},
-    watch: {
-      info(newValue){
-        if(newValue!==null){
-          //query referral by patient Id
-      this.$http.get('/api/referralInfo/queryByPatientId/' + this.info)
-        .then((res) => {
-          console.log('referral info data is',res.data);
-          if (res.status === 200) {
-            let tmpReferralProfile = res.data;
-            console.log('referral info data is',res.data);
-            // if (res.data.referralProfileInfos.State === 'accept') {
-            //   tmpReferralProfile.State = '对方接受';
-            // }
-            this.form = tmpReferralProfile;
-            console.log('this form is',this.form);
-          }else {
-            console.log('this.$http.get(\'/api/referralInfo/queryByPatientId/:patientId\',this.info) return is not 200');
-          }
-        },(err) => {
-          this.$message.error('初始化 referralInfo 时请求错误！')
-        });
-        }
-      }
-    },
     methods: {
       onSubmit () {
         this.$confirm('确认提交转诊？')
@@ -333,8 +309,10 @@
             this.toVisiable = !(this.form.State === 'reject')
             this.sendVisiable = false
             this.receiveVisiable = false
-             this.$http.post('/api/referrals', obj).then((res) => {
-            if (res.status === 200) {} else {
+             this.$http.get('api/referralInfo/queryReferralByreferralId/' + this.info).then((res) => {
+            if (res.status === 200) {
+              this.from = res.data
+            } else {
               this.$message.error('获取转诊单数据失败')
             }
           }, (er) => {
@@ -348,7 +326,7 @@
             this.toVisiable = false
             this.sendVisiable = true
             this.receiveVisiable = false
-            this.$http.post('/patient/create/' + this.info).then((res) => {
+            this.$http.get('/api/referral/create/' + this.info).then((res) => {
               if (res.status === 200) {
                 this.form = res.data
               } else {
@@ -365,9 +343,9 @@
             this.toVisiable = true
             this.sendVisiable = false
             this.receiveVisiable = true
-            this.$http.post('/api/referrals').then((res) => {
+            this.$http.get('api/referralInfo/queryReferralByreferralId/'+ this.info).then((res) => {
             if (res.status === 200) {
-
+              this.form = res.data
             } else {
               this.$message.error('创建转诊单失败')
             }

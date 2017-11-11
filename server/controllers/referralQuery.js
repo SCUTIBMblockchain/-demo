@@ -139,7 +139,7 @@ const getReferralByreffralId = function* () {
   this.body = ref
 }
 
-const getReferral = function* () {
+const createReferralProfileInfo = function* () {
   const patientId = this.params.patientId
   const referralId = referral.generateRefferralId(patientId)
   const patientString = yield patient.queryPatientByPatientId(patientId)
@@ -149,6 +149,7 @@ const getReferral = function* () {
     'State': msg.State,
     'Date': msg.Date,
     'Name': msg.Name,
+    'PatientId': patientId,
     'PIN': msg.PIN,
     'Gender': msg.Gender,
     'Age': msg.Age,
@@ -181,7 +182,7 @@ module.exports = {
   getSendReferrals,
   getReceiveReferrals,
   getReferrals,
-  getReferral,
+  createReferralProfileInfo,
   getReferralsByPatientId,
   getReferralByreffralId
 }
