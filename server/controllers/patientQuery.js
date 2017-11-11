@@ -2,7 +2,8 @@ const patient = require('../models/patient')
 const referral = require('../models/referral')
 
 let BackInfo = {
-  'patients': null
+  'patients': null,
+  'cases': null
 }
 function count (obj) {
   var objType = typeof obj
@@ -30,8 +31,25 @@ const getNormalPatientAsSender = function* () {
   const hospitalName = this.params.hospitalName
   const result = yield patient.queryAllPatient(hospitalName)
   var msg = JSON.parse(result)
-  // 处理返回数据
   var con = count(msg)
+  // 去重
+  var check = {
+    /*
+    * Example:
+    * patient: 1   (if match patient delete it)
+    */
+  }
+  for (var m = 0; m < con; m++) {
+    var patientId = msg[m].Id
+    if (patientId in check) {
+      msg.splice(m, 1)
+      m--
+      con--
+    } else {
+      check[patientId] = 'exist'
+    }
+  }
+  // 处理返回数据
   for (var i = 0; i < con; i++) {
     var hospital = msg[i].State.HospitalName
     if (hospital !== '华工校医院') {
@@ -56,8 +74,25 @@ const getUndealPatientAsSender = function* () {
   const hospitalName = this.params.hospitalName
   const result = yield patient.queryAllPatient(hospitalName)
   var msg = JSON.parse(result)
-  // 处理返回数据
   var con = count(msg)
+  // 去重
+  var check = {
+    /*
+    * Example:
+    * patient: 1   (if match patient delete it)
+    */
+  }
+  for (var m = 0; m < con; m++) {
+    var patientId = msg[m].Id
+    if (patientId in check) {
+      msg.splice(m, 1)
+      m--
+      con--
+    } else {
+      check[patientId] = 'exist'
+    }
+  }
+  // 处理返回数据
   for (var i = 0; i < con; i++) {
     var hospital = msg[i].State.HospitalName
     if (hospital !== '华工校医院') {
@@ -82,8 +117,25 @@ const getDealedPatientAsSender = function* () {
   const hospitalName = this.params.hospitalName
   const result = yield patient.queryAllPatient(hospitalName)
   var msg = JSON.parse(result)
-  // 处理返回数据
   var con = count(msg)
+  // 去重
+  var check = {
+    /*
+    * Example:
+    * patient: 1   (if match patient delete it)
+    */
+  }
+  for (var m = 0; m < con; m++) {
+    var patientId = msg[m].Id
+    if (patientId in check) {
+      msg.splice(m, 1)
+      m--
+      con--
+    } else {
+      check[patientId] = 'exist'
+    }
+  }
+  // 处理返回数据
   for (var i = 0; i < con; i++) {
     var hospital = msg[i].State.HospitalName
     if (hospital !== '华工校医院') {
@@ -110,8 +162,25 @@ const getUndealPatientAsReceiver = function* () {
   const hospitalName = this.params.hospitalName
   const result = yield patient.queryAllPatient(hospitalName)
   var msg = JSON.parse(result)
-  // 处理返回数据
   var con = count(msg)
+  // 去重
+  var check = {
+    /*
+    * Example:
+    * patient: 1   (if match patient delete it)
+    */
+  }
+  for (var m = 0; m < con; m++) {
+    var patientId = msg[m].Id
+    if (patientId in check) {
+      msg.splice(m, 1)
+      m--
+      con--
+    } else {
+      check[patientId] = 'exist'
+    }
+  }
+  // 处理返回数据
   for (var i = 0; i < con; i++) {
     var hospital = msg[i].State.HospitalName
     if (hospital === '华工校医院') {
@@ -136,8 +205,25 @@ const getDealedPatientAsReceiver = function* () {
   const hospitalName = this.params.hospitalName
   const result = yield patient.queryAllPatient(hospitalName)
   var msg = JSON.parse(result)
-  // 处理返回数据
   var con = count(msg)
+  // 去重
+  var check = {
+    /*
+    * Example:
+    * patient: 1   (if match patient delete it)
+    */
+  }
+  for (var m = 0; m < con; m++) {
+    var patientId = msg[m].Id
+    if (patientId in check) {
+      msg.splice(m, 1)
+      m--
+      con--
+    } else {
+      check[patientId] = 'exist'
+    }
+  }
+  // 处理返回数据
   for (var i = 0; i < con; i++) {
     var hospital = msg[i].State.HospitalName
     if (hospital === '华工校医院') {
@@ -164,7 +250,9 @@ const getDealedPatientAsReceiver = function* () {
 const getCasesByPatientId = function* () {
   const patientId = this.params.patientId
   const result = yield patient.queryCasesByPatientId(patientId)
-  this.body = result
+  var res = JSON.parse(result)
+  BackInfo.cases = res
+  this.body = BackInfo
 }
 // 返回病人信息
 const getPatientInfoByPatientId = function* () {

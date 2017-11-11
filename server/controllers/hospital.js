@@ -41,7 +41,6 @@ var referral = function (msg) {
   
         var sendmsg = {
           operation: 'send',
-          patientId: message.patientId,
           referralProfile: message.referralProfile
         }
         this.ws.referralMsg = sendmsg
@@ -98,7 +97,6 @@ var referralHost = function (msg) {
   if (message.operation === 'send') {
     var reply = {
       operation: 'receive',
-      patientId: message.patientId,
       referralProfile: message.referralProfile
   
     }
