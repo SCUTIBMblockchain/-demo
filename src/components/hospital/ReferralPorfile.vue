@@ -6,10 +6,10 @@
           <el-col :span="5">
             <p>转诊单号: {{ form.Id }}</p>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="6">
             <p>创建日期: {{form.Date}}</p>
           </el-col>
-          <el-col :offset="11" :span="4" v-show="state==='look'">
+          <el-col :offset="5" :span="4" v-show="state==='look'">
             <p>状态: {{this.form.State}}</p>
           </el-col>
         </el-row>
@@ -43,7 +43,7 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="7">
+            <el-col :span="8">
               <el-form-item label='身份证号'>
                 <el-input v-model='form.PIN' :disabled='true'></el-input>
               </el-form-item>
@@ -55,13 +55,15 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="7">
+            <el-col :span="8">
               <el-form-item label='联系方式'>
                 <el-input v-model='form.Phone' :disabled='true'></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="9">
-              <el-form-item label='住址' label-width='50px'>
+          </el-row>
+          <el-row>
+            <el-col :span="18">
+              <el-form-item label='联系地址'>
                 <el-input v-model='form.Resident' :disabled='true'></el-input>
               </el-form-item>
             </el-col>
@@ -84,7 +86,9 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="7">
+            </el-row>
+            <el-row>
+              <el-col :span="16">
                 <el-form-item label='转诊目的'>
                   <el-input v-model='form.FromInfo.ReferralType' placeholder='请选择转诊目的' :disabled='fromDisable'></el-input>
                 </el-form-item>
@@ -167,7 +171,8 @@
         <el-button type='primary' @click='onAccept'>接 收</el-button>
         <el-button type='primary' @click='onReject'>拒 绝</el-button>
       </span>
-      <process-demo ref="processDemo" @close-referral="movePatient"></process-demo>
+
+      <process-demo ref="processDemo" @close-referral="movePatient" v-if="referralVisible"></process-demo>
     </el-dialog>
 
   </div>
@@ -185,34 +190,35 @@
     data() {
       return {
         hospitalId: 'hospital02',
+        demoVisible:true,
         form: {
-          Id: '20171010636741',
-          Date: '20171012',
-          State: 'accept',
-          Name: '赵镇洪',
-          PIN: '142703199701012232',
-          Gender: '男',
+          Id: '',
+          Date: '',
+          State: '',
+          Name: '',
+          PIN: '',
+          Gender: '',
           Age: 26,
-          Birthplace: '陕西省忻州市五寨县',
-          Nationality: '汉',
-          Occupation: '电工',
-          Resident: '广东省广州市番禹区番禺小区4栋471号',
-          Phone: '13825646512',
+          Birthplace: '',
+          Nationality: '',
+          Occupation: '',
+          Resident: '',
+          Phone: '',
           FromInfo: {
-            Section: '内科',
-            HospitalName: '仁和医院',
-            Doctor: '徐宽',
-            Phone: '13654681827',
-            ReferralType: '治疗重症',
-            RelationDemand: '要杨镇宇专家负责',
-            PayWay: '医保',
-            IllnessState: '长期高烧不退，各种抗生素均无效'
+            Section: '',
+            HospitalName: '',
+            Doctor: '',
+            Phone: '',
+            ReferralType: '',
+            RelationDemand: '',
+            PayWay: '',
+            IllnessState: ''
           },
           ToInfo: {
-            Section: '内科',
-            Doctor: '徐宽',
-            Phone: '13427534816',
-            RejectReason: '专家有事不在'
+            Section: '',
+            Doctor: '',
+            Phone: '',
+            RejectReason: ''
           }
         },
         dialogVisible: true,
@@ -225,22 +231,29 @@
       }
     },
     computed: {},
-    mounted: function() {
-      //query referral by patient Id
-      this.$http.get('/api/referralInfo/queryByPatientId/:patientId',this.info)
-        .then((res) => {
-          if (res.status === 200) {
-            let tmpReferralProfile = res.data.referralProfileInfos[i];
-            if (res.data.referralProfileInfos[i].State === 'accept') {
-              tmpReferralProfile.State = '对方接受';
-            }
-            this.form = tmpReferralProfile;
-          }else {
-            console.log('this.$http.get(\'/api/referralInfo/queryByPatientId/:patientId\',this.info) return is not 200');
-          }
-        },(err) => {
-          this.$message.error('初始化 referralInfo 时请求错误！')
-        });
+    watch: {
+//      info(newValue){
+//        if(newValue!==null){
+//          //query referral by patient Id
+//      this.$http.get('/api/referralInfo/queryByPatientId/' + this.info)
+//        .then((res) => {
+//          console.log('referral info data is',res.data);
+//          if (res.status === 200) {
+//            let tmpReferralProfile = res.data;
+//            console.log('referral info data is',res.data);
+//            // if (res.data.referralProfileInfos.State === 'accept') {
+//            //   tmpReferralProfile.State = '对方接受';
+//            // }
+//            this.form = tmpReferralProfile;
+//            console.log('this form is',this.form);
+//          }else {
+//            console.log('this.$http.get(\'/api/referralInfo/queryByPatientId/:patientId\',this.info) return is not 200');
+//          }
+//        },(err) => {
+//          this.$message.error('初始化 referralInfo 时请求错误！')
+//        });
+//        }
+//      }
     },
     methods: {
       onSubmit () {
@@ -253,8 +266,9 @@
               referralProfile: this.form
             }
             console.log(sendData)
+            this.demoVisible=true;
             this.ws.send(JSON.stringify(sendData))
-            //this.$refs.processDemo.show_tx() // 动画效果
+            this.$refs.processDemo.show_tx() // 动画效果
             console.log('确认')
           })
           .catch(_ => {
@@ -265,7 +279,7 @@
         this.$confirm('确认接受转诊？')
           .then(_ => {
             console.log('确认')
-            //this.$refs.processDemo.show_tx() //动画效果
+            this.$refs.processDemo.show_tx() //动画效果
             let sendData = {
               operation: 'accept',
               referralProfile: this.form
@@ -302,6 +316,13 @@
         this.$emit('updateReferralVisible')
       },
       movePatient(){
+        let sendData = {
+          operation: 'send',
+          patientId: this.info,
+          referralProfile: this.form
+        }
+        console.log(sendData)
+        this.ws.send(JSON.stringify(sendData))
         this.$emit('updateReferralPatientId');
         this.$emit('updateReferralVisible')
       },
@@ -320,7 +341,9 @@
             this.sendVisiable = false
             this.receiveVisiable = false
              this.$http.post('/api/referrals', obj).then((res) => {
-            if (res.status === 200) {} else {
+            if (res.status === 200) {
+              this.form = res.data
+            } else {
               this.$message.error('获取转诊单数据失败')
             }
           }, (er) => {
@@ -334,7 +357,7 @@
             this.toVisiable = false
             this.sendVisiable = true
             this.receiveVisiable = false
-            this.$http.post('/patient/create/' + this.info).then((res) => {
+            this.$http.get('/api/referral/create/' + this.info).then((res) => {
               if (res.status === 200) {
                 this.form = res.data
               } else {
@@ -353,7 +376,7 @@
             this.receiveVisiable = true
             this.$http.post('/api/referrals').then((res) => {
             if (res.status === 200) {
-
+              this.form = res.data
             } else {
               this.$message.error('创建转诊单失败')
             }
