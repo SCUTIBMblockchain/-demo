@@ -30,7 +30,7 @@ router.get('/receiver/get_dealed_patients/:hospitalName', patient.getDealedPatie
 router.post('/referrals', referral.getReferrals)
 router.get('/referralInfo/queryByPatientId/:patientId', referral.getReferralsByPatientId)
 router.get('/referralInfo/queryReferralByreferralId/:referralId',referral.getReferralByreffralId)//new api by yan
-
+router.get('/referralProfileInfo/queryByHospitalId/:hospitalId', referral.getReferralsAsReceiverByHospitalId)
 //* end of demo API
 
 // todo 测试该api
