@@ -17,3 +17,4 @@ yarn-error.log*
 *.html~
 *.vue~
 *.gitignore~
+tmpaddon

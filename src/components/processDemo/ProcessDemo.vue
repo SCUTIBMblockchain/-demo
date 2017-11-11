@@ -97,8 +97,6 @@
                 <button type="button" class="closeTxStory" @click="closeTxStory">关闭</button>
             </div>
         </div>
-        <!--<button @click.nactive='show_tx'>详情</button>-->
-        <!--<div class="testMarsk"></div>-->
     </div>
 
 </template>
@@ -364,6 +362,7 @@
           story3html = $('#txStep3 .txStoryWrap').html();
           story4html = $('#txStep4 .txStoryWrap').html();
           $('.peersEndorse').hide();
+          stepflag=0;
 
       },
         methods:{
@@ -371,6 +370,7 @@
           $('#txStoryPanel, #tint, #doneTxStep').fadeOut();
           $('.testMarsk').fadeOut();
           this.$emit('close-referral');
+
           //reset
           setTimeout(function(){
             $('#txStep1 .txStoryWrap').html(story1html);
