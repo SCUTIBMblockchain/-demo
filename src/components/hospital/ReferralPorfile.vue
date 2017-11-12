@@ -189,7 +189,7 @@
     },
     data() {
       return {
-        hospitalId: 'hospital02',
+        hospitalId: 'hospital01',
         demoVisible:true,
         sendData: '',
         form: {
@@ -314,7 +314,7 @@
         switch (this.state) {
           case 'look':
             let obj = {
-                hospitalId: 'hospital02',
+                hospitalId: 'hospital01',
                 referralId: this.info
             }
             this.fromDisable = true

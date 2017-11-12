@@ -71,7 +71,7 @@ var referral = function (msg) {
       Id: message.referralProfile.Id,
       State: message.operation,
       ToInfo: {
-        HospitalId: 'hospital02',
+        HospitalId: 'hospital01',
         Section: message.referralProfile.ToInfo.Section,
         Doctor: message.referralProfile.ToInfo.Doctor,
         Phone: message.referralProfile.ToInfo.Phone,

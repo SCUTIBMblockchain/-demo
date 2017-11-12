@@ -72,7 +72,7 @@
         caseListVisible: false,
         referralVisible: false,
         dialogVisible: false,
-        hospitalId: 'hospital02',
+        hospitalId: 'hospital01',
         referralState: 'receive',
         referralInfo: null,
         clickPatientId: '',

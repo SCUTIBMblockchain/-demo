@@ -152,7 +152,7 @@
       }
     },
     mounted: function() {
-      this.$http.get('/api/sender/get_undeal_patients/hospital02')
+      this.$http.get('/api/sender/get_undeal_patients/hospital01')
         .then((res) => {
           if(res.status === 200) {
             // alert(res.data);
@@ -181,7 +181,7 @@
         }, (eor) => {
           this.$message.error('初始化未处理病人时请求错误！')
         });
-      this.$http.get('/api/sender/get_todeal_patients/hospital02')
+      this.$http.get('/api/sender/get_todeal_patients/hospital01')
         .then((res) => {
           if(res.status === 200) {
             // alert(res.data);
@@ -210,7 +210,7 @@
         }, (eor) => {
           this.$message.error('初始化待处理病人时请求错误！')
         });
-      this.$http.get('/api/sender/get_dealed_patients/hospital02')
+      this.$http.get('/api/sender/get_dealed_patients/hospital01')
         .then((res) => {
           if(res.status === 200) {
             console.log(res.data);
