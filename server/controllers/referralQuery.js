@@ -146,8 +146,8 @@ const createReferralProfile = function* () {
   var msg = JSON.parse(patientString)
   var ref = {
     'Id': referralId,
-    'State': msg.State,
-    'Date': msg.Date,
+    'State': "undeal",
+    'Date': Date.now(),
     'Name': msg.Name,
     'PIN': msg.PIN,
     'patientId': patientId,

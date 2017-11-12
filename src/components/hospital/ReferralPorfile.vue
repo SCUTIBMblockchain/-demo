@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title='转诊单' id="referralDialog" :close-on-press-escape="false" :visible.sync='referralVisible' :before-close="beforeClose" @update:visible='referralStateChange'>
+    <el-dialog title='转诊单' id="referralDialog" :close-on-press-escape="false" :visible.sync='referralVisible' :before-close="beforeClose" @open='referralStateChange'>
       <span>
         <el-row>
           <el-col :span="5">
@@ -191,10 +191,12 @@
       return {
         hospitalId: 'hospital02',
         demoVisible:true,
+        sendData: '',
         form: {
           Id: '',
           Date: '',
           State: '',
+          PatientId: '',
           Name: '',
           PIN: '',
           Gender: '',
@@ -231,46 +233,18 @@
       }
     },
     computed: {},
-//    watch: {
-//      info(newValue){
-//        if(newValue!==null){
-//          //query referral by patient Id
-//          console.log(this.info)
-//          console.log(newValue)
-//      this.$http.get('/api/referralInfo/queryByPatientId/' + this.info)
-//        .then((res) => {
-//          console.log('referral info data is'+res.data);
-//          if (res.status === 200) {
-//            let tmpReferralProfile = res.data;
-//            console.log('status is 200 referral info data is'+res.data);
-//            // if (res.data.referralProfileInfos.State === 'accept') {
-//            //   tmpReferralProfile.State = '对方接受';
-//            // }
-//            this.form = tmpReferralProfile;
-//            console.log('this form is',this.form);
-//          }else {
-//            console.log('this.$http.get(\'/api/referralInfo/queryByPatientId/:patientId\',this.info) return is not 200');
-//          }
-//        },(err) => {
-//          this.$message.error('初始化 referralInfo 时请求错误！')
-//        });
-//        }
-//      }
-//    },
     methods: {
       onSubmit () {
         this.$confirm('确认提交转诊？')
           .then(_ => {
             console.log('确认')
-            let sendData = {
+            this.demoVisible=true;
+            this.$refs.processDemo.show_tx() // 动画效果
+            this.sendData = {
               operation: 'send',
               patientId: this.info,
               referralProfile: this.form
             }
-            console.log(sendData)
-            this.demoVisible=true;
-            this.ws.send(JSON.stringify(sendData))
-            this.$refs.processDemo.show_tx() // 动画效果
             console.log('确认')
           })
           .catch(_ => {
@@ -282,12 +256,12 @@
           .then(_ => {
             console.log('确认')
             this.$refs.processDemo.show_tx() //动画效果
-            let sendData = {
+            this.sendData = {
               operation: 'accept',
               referralProfile: this.form
             }
             //传数据到后端
-            this.ws.send(JSON.stringify(sendData));
+            //this.ws.send(JSON.stringify(sendData));
             this.$emit('acceptReferral');
           })
           .catch(_ => {
@@ -301,12 +275,13 @@
         }).then(({
           value
         }) => {
+          this.$refs.processDemo.show_tx()
           this.form.ToInfo.RejectReason = value
-          let sendData = {
+          this.sendData = {
               operation: 'reject',
               referralProfile: this.form
             }
-          this.ws.send(JSON.stringify(sendData));
+          //this.ws.send(JSON.stringify(sendData));
           this.$emit('rejectReferral');
 //          this.$message({
 //            type: 'success',
@@ -318,6 +293,8 @@
         this.$emit('updateReferralVisible')
       },
       movePatient(){
+        console.log('send data is ',this.sendData)
+        this.ws.send(JSON.stringify(this.sendData))
         this.$emit('updateReferralPatientId');
         this.$emit('updateReferralVisible')
       },
@@ -325,25 +302,26 @@
       referralStateChange: function () {
         switch (this.state) {
           case 'look':
-          let obj = {
-              hospitalId: 'hospital02',
-              referralId: this.info
-          }
+            let obj = {
+                hospitalId: 'hospital02',
+                referralId: this.info
+            }
             this.fromDisable = true
             this.toDisable = true
             this.fromVisiable = true
             this.toVisiable = !(this.form.State === 'reject')
             this.sendVisiable = false
             this.receiveVisiable = false
-             this.$http.get('/api/referralInfo/queryReferralByreferralId/'+this.info).then((res) => {
-            if (res.status === 200) {
-              this.form = res.data
-            } else {
+            this.$http.get('/api/referralInfo/queryReferralByreferralId/'+this.info)
+              .then((res) => {
+                if (res.status === 200) {
+                  this.form = res.data
+                } else {
+                  this.$message.error('获取转诊单数据失败')
+                }
+              }, (er) => {
               this.$message.error('获取转诊单数据失败')
-            }
-          }, (er) => {
-            this.$message.error('获取转诊单数据失败')
-          })
+            })
             break
           case 'send':
             this.fromDisable = false

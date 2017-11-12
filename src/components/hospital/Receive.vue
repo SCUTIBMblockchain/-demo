@@ -4,7 +4,7 @@
     <el-card class="box_card">
       <h1>待处理</h1>
       <el-table :data="todealTableData" :row-class-name="tableRowClassName" @cell-click="handleCellClick" height="300" width="1550"  >
-        <el-table-column label="referral id" prop="Id" width="150">
+        <el-table-column label="转诊 id" prop="Id" width="150">
         </el-table-column>
         <el-table-column label="病人姓名" prop="Name" width="100">
         </el-table-column>
@@ -30,7 +30,7 @@
       </el-table>
       <h1>已处理</h1>
       <el-table :data="dealedTableData" :row-class-name="tableRowClassName" @cell-click="showReferral" height="300" width="1050"  >
-        <el-table-column label="referral id" prop="Id" width="150">
+        <el-table-column label="转诊 id" prop="Id" width="150">
         </el-table-column>
         <el-table-column label="病人姓名" prop="Name" width="100">
         </el-table-column>
@@ -76,6 +76,7 @@
         referralState: 'receive',
         referralInfo: null,
         clickPatientId: '',
+        clickRow: '',
         selfWs: this.ws,
         todealTableData: [ {
           "Id": "20171010001",
@@ -111,7 +112,7 @@
         dealedTableData: [
           {
             "Id": "referral01",
-            "State": "接受",
+            "State": "拒绝",
             "Date": "20171012",
             "PatientId": "patient02",
             "Name": "王建国",
@@ -218,23 +219,12 @@
             },
           }
           console.log('tmp patient now is',tmpPatient);
-          this.todealTableData.push({
-            "Id": newPaitent.Id,
-            "State": newPaitent.State,
-            "Date": newPaitent.Date,
-            "PatientInfo": newPaitent.PatientId,
-            "Name": newPaitent.Name,
-            "FromInfo": {
-              "Section": newPaitent.FromInfo.Section,
-              "HospitalName": newPaitent.FromInfo.HospitalName,
-              "Doctor": newPaitent.FromInfo.Doctor,
-              "ReferralType": newPaitent.FromInfo.ReferralType,
-              "IllnessState": newPaitent.FromInfo.IllnessState
-            },
-          });
+          if (tmpPatient.State === 'undeal'){
+            tmpPatient.State = '未处理'
+          }
+          this.todealTableData.push(tmpPatient);
         }else {
           console.log('id not in newPatient');
-          return;
         }
 
       }
@@ -243,14 +233,11 @@
       tableRowClassName (row, index) {
         if (row.State === '未处理') {
           return 'info-row'
-        } else {
-          if (row.State === '对方拒绝'||row.Stata === '拒绝') {
+        } else if (row.State === '拒绝' || row.State === '对方拒绝') {
             return 'negative-row'
           } else if (row.State === '对方接受'||row.State === '接受') {
             return 'positive-row'
           }
-        }
-        return ''
       },
       handleCellClick (row, event) {
         if (event.label === '操作') {
@@ -259,6 +246,7 @@
           // console.log('other cell click');
           //this.$message.error('look'+row.referralId);
           this.clickPatientId = row.PatientId;
+
           // alert('patient id is '+row.PatientId)
           this.dialogVisible = true
         }
@@ -281,22 +269,22 @@
         this.referralVisible = true
         this.referralState = 'receive'
         this.referralInfo = row.Id
+        this.clickRow = row
       },
       reject(){
         console.log('this.referralInfo is ',this.referralInfo)
-        this.$message.error('reject' + this.referralInfo);
+//        this.$message.error('reject' + this.referralInfo);
         for(let i=0;i<this.todealTableData.length;i++){
           if(this.todealTableData[i].Id === this.referralInfo){
             console.log('in for and if');
             let p = this.todealTableData.splice(i,1);
-            //console.log(p);
-            //console.log(p[0]);
-            p[0].referralStatus = '已处理';
-            p[0].operationStatus = '拒绝';
+            this.clickRow.State = '拒绝';
             this.dealedTableData.push(p[0]);
             return;
           }
         }
+//        console.log('choose reject , row is ',this.clickRow)
+//        this.dealedTableData.push(this.clickRow);
       },
       accept(){
         console.log('this.referralInfo is ',this.referralInfo)
@@ -304,12 +292,12 @@
         for(let i=0;i<this.todealTableData.length;i++){
           if(this.todealTableData[i].Id === this.referralInfo){
             let p = this.todealTableData.splice(i,1);
-            p[0].referralStatus = '已处理';
-            p[0].operationStatus = '接受';
-            this.dealedTableData.push(p[0]);
+            this.clickRow.State = '接受'
+            this.dealedTableData.push(this.clickRow);
             return;
           }
         }
+
       }
     }
   }
