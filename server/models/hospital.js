@@ -9,6 +9,9 @@ const hospital = {
 const queryHospitalByHospitalName = function (name) {
   return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, [name], 'queryHospitalByHospitalName', hospital.userName, hospital.org)
 }
+const queryHospitalByHospitalId = function (hospitalId){
+  return queryChainCode(hospital.peer, hospital.channelName, hospital.chaincode, [hospitalId], 'queryHospitalByHospitalId', hospital.userName, hospital.org)
+}
 /**
  *
  * @param {*} args = [patientId, originHospitalId, targetHospitalId]
@@ -16,5 +19,6 @@ const queryHospitalByHospitalName = function (name) {
 
 module.exports = {
   queryHospitalByHospitalName,
-  hospital
+  hospital,
+  queryHospitalByHospitalId
 }

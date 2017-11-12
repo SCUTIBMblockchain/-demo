@@ -3,26 +3,26 @@
     <!--<Case :message.sync="patientInfo" :ws.sync="ws"></Case>-->
     <el-card class="box_card">
       <h1>待处理</h1>
-      <el-table :data="todealTableData" :row-class-name="tableRowClassName" @cell-click="handleCellClick" height="300" width="1550"  >
-        <el-table-column label="转诊 id" prop="Id" width="150">
+      <el-table :data="todealTableData" :row-class-name="tableRowClassName" @cell-click="handleCellClick" height="300" width="1850"  >
+        <el-table-column label="转诊 id" prop="Id" width="100">
         </el-table-column>
         <el-table-column label="病人姓名" prop="Name" width="100">
         </el-table-column>
         <el-table-column label="转诊状态" prop="State" width="100">
         </el-table-column>
-        <el-table-column label="时间" prop="Date" width="100">
+        <el-table-column label="时间" prop="Date" width="150">
         </el-table-column>
-        <el-table-column label="转诊目的" prop="FromInfo.ReferralType" width="100">
+        <el-table-column label="转诊目的" prop="FromInfo.ReferralType" width="300">
         </el-table-column>
-        <el-table-column label="病情" prop="FromInfo.IllnessState" width="200">
+        <el-table-column label="病情" prop="FromInfo.IllnessState" width="220">
         </el-table-column>
-        <el-table-column label="请求转诊医院" prop="FromInfo.HospitalName" width="100">
+        <el-table-column label="请求转诊医院" prop="FromInfo.HospitalName" width="150">
         </el-table-column>
         <el-table-column label="转出科室" prop="FromInfo.Section" width="100">
         </el-table-column>
         <el-table-column label="请求转诊医生" prop="FromInfo.Doctor" width="100">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="100">
           <template scope="scope">
             <el-button type="text" @click="dealReferral(scope.row)">处 理 转 诊</el-button>
           </template>
@@ -30,19 +30,19 @@
       </el-table>
       <h1>已处理</h1>
       <el-table :data="dealedTableData" :row-class-name="tableRowClassName" @cell-click="showReferral" height="300" width="1050"  >
-        <el-table-column label="转诊 id" prop="Id" width="150">
+        <el-table-column label="转诊 id" prop="Id" width="100">
         </el-table-column>
         <el-table-column label="病人姓名" prop="Name" width="100">
         </el-table-column>
         <el-table-column label="转诊状态" prop="State" width="100">
         </el-table-column>
-        <el-table-column label="时间" prop="Date" width="100">
+        <el-table-column label="时间" prop="Date" width="150">
         </el-table-column>
-        <el-table-column label="转诊目的" prop="FromInfo.ReferralType" width="100">
+        <el-table-column label="转诊目的" prop="FromInfo.ReferralType" width="300">
         </el-table-column>
-        <el-table-column label="病情" prop="FromInfo.IllnessState" width="200">
+        <el-table-column label="病情" prop="FromInfo.IllnessState" width="220">
         </el-table-column>
-        <el-table-column label="请求转诊医院" prop="FromInfo.HospitalName" width="100">
+        <el-table-column label="请求转诊医院" prop="FromInfo.HospitalName" width="150">
         </el-table-column>
         <el-table-column label="转出科室" prop="FromInfo.Section" width="100">
         </el-table-column>
@@ -50,7 +50,7 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <InformationDialog :InfoDialogVisible="dialogVisible" :patientId="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
+    <InformationDialog :InfoDialogVisible="dialogVisible" :patientId.sync="clickPatientId" @updateDialogVisible="updateDialogVisible"></InformationDialog>
     <ReferralProfile :referralVisible="referralVisible" :info= 'referralInfo' :state.sync = "referralState" :ws = "selfWs" @updateReferralVisible="referralVisible=false" @acceptReferral="accept" @rejectReferral="reject"></ReferralProfile>
   </el-col>
 </template>
@@ -208,7 +208,7 @@
             "Id": newPaitent.Id,
             "State": newPaitent.State,
             "Date": newPaitent.Date,
-            "PatientInfo": newPaitent.PatientId,
+            "PatientId": newPaitent.patientId,
             "Name": newPaitent.Name,
             "FromInfo": {
               "Section": newPaitent.FromInfo.Section,
@@ -246,7 +246,8 @@
           // console.log('other cell click');
           //this.$message.error('look'+row.referralId);
           this.clickPatientId = row.PatientId;
-
+          //alert(row.PatientId)
+          console.log('row obj is ',row)
           // alert('patient id is '+row.PatientId)
           this.dialogVisible = true
         }
@@ -275,11 +276,11 @@
         console.log('this.referralInfo is ',this.referralInfo)
 //        this.$message.error('reject' + this.referralInfo);
         for(let i=0;i<this.todealTableData.length;i++){
-          if(this.todealTableData[i].Id === this.referralInfo){
+          if(this.todealTableData[i] == this.clickRow){
             console.log('in for and if');
             let p = this.todealTableData.splice(i,1);
             this.clickRow.State = '拒绝';
-            this.dealedTableData.push(p[0]);
+            this.dealedTableData.push(this.clickRow);
             return;
           }
         }
@@ -290,7 +291,7 @@
         console.log('this.referralInfo is ',this.referralInfo)
         this.$message.error('accept' + this.referralInfo);
         for(let i=0;i<this.todealTableData.length;i++){
-          if(this.todealTableData[i].Id === this.referralInfo){
+          if(this.todealTableData[i] == this.clickRow){
             let p = this.todealTableData.splice(i,1);
             this.clickRow.State = '接受'
             this.dealedTableData.push(this.clickRow);

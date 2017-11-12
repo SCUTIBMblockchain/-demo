@@ -10,7 +10,7 @@
             <p>创建日期: {{form.Date}}</p>
           </el-col>
           <el-col :offset="5" :span="4" v-show="state==='look'">
-            <p>状态: {{this.form.State}}</p>
+            <p>状态: {{referralState}}</p>
           </el-col>
         </el-row>
         <hr>
@@ -232,7 +232,18 @@
         receiveVisiable: false
       }
     },
-    computed: {},
+    computed: {
+      referralState: function () {
+        switch (this.form.State) {
+          case 'undeal':
+            return '未处理'
+          case 'accept':
+            return '已接受'
+          case 'reject':
+            return '已拒绝'
+        }
+      }
+    },
     methods: {
       onSubmit () {
         this.$confirm('确认提交转诊？')
