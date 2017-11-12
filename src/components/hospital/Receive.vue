@@ -259,14 +259,14 @@
         this.dialogVisible = val
       },
       showReferral(row) {
-        this.$message.error('look'+row.Id);
+        //this.$message.error('look'+row.Id);
         this.referralInfo = row.Id;
         this.referralVisible = true
         this.referralState = 'look'
 
       },
       dealReferral(row) {
-        this.$message.error('receive'+row.Id);
+        //this.$message.error('receive'+row.Id);
         this.referralVisible = true
         this.referralState = 'receive'
         this.referralInfo = row.Id
@@ -289,7 +289,7 @@
       },
       accept(){
         console.log('this.referralInfo is ',this.referralInfo)
-        this.$message.error('accept' + this.referralInfo);
+        //this.$message.error('accept' + this.referralInfo);
         for(let i=0;i<this.todealTableData.length;i++){
           if(this.todealTableData[i] == this.clickRow){
             let p = this.todealTableData.splice(i,1);

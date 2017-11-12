@@ -17,7 +17,7 @@ var referral = function (msg) {
       let attrs = {
         Id: message.referralProfile.Id,
         State: 'undeal',
-        PatientId: message.patientId,
+        PatientId: message.referralProfile.PatientId,
         ReferralType: message.referralProfile.FromInfo.ReferralType,
         RelationDemand: message.referralProfile.FromInfo.ReferralType,
         PayWay: message.referralProfile.FromInfo.PayWay,
@@ -38,7 +38,7 @@ var referral = function (msg) {
       genReferral.generateReferralProfile(attrs).then((res) => {
         var h = new WebSocket('ws://' + 'localhost:8889' + '/referral/host')
         // 发送信息
-  
+
         var sendmsg = {
           operation: 'send',
           patientId: message.patientId,
@@ -60,7 +60,7 @@ var referral = function (msg) {
           }
         })
       })
-      
+
       // 接受返回信息
     //})
   }
@@ -100,7 +100,7 @@ var referralHost = function (msg) {
       operation: 'receive',
       patientId: message.patientId,
       referralProfile: message.referralProfile
-  
+
     }
     this.wss.sendMessage('/referral', JSON.stringify(reply))
   }

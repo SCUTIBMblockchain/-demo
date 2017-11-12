@@ -10,12 +10,12 @@
         <el-collapse-item title="病人基本信息" name="1">
           <el-form ref="patientInfo" labelWidth='80px'>
             <el-row >
-              <el-col :span="4">
+              <el-col :span="5">
                 <el-form-item label="姓名" labelWidth='60px'>
                   <el-input placeholder="姓名" v-model="patientInfo.Name" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="5">
+              <el-col :span="6">
                 <el-form-item label="病人 id" labelWidth='60px'>
                   <el-input placeholder="id" :value="this.selfPatientId" :disabled="true"></el-input>
                 </el-form-item>
@@ -48,7 +48,7 @@
                   <el-input placeholder="联系电话" v-model="patientInfo.Phone" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="10">
+              <el-col :span="12">
                 <el-form-item label="居住地" label-width='60px'>
                   <el-input placeholder="居住地" v-model="patientInfo.Resident" :disabled="true"></el-input>
                 </el-form-item>
@@ -60,7 +60,7 @@
                   <el-input placeholder="职业" v-model="patientInfo.Occupation" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="7" >
+              <el-col :span="8" >
                 <el-form-item label="身份证" label-width='60px'>
                   <el-input placeholder="身份证" v-model="patientInfo.PIN" :disabled="true"></el-input>
                 </el-form-item>
@@ -77,12 +77,12 @@
           <label>亲属</label>
           <!--<el-form label-width='40px'>-->
             <el-row>
-              <el-col :span="5">
+              <el-col :span="6">
                 <el-form-item label="亲属姓名" label-width='80px'>
                   <el-input placeholder="亲属姓名" v-model="patientInfo.Relation.Name" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="6">
                 <el-form-item label="与病人关系" label-width='90px'>
                   <el-input placeholder="关系" v-model="patientInfo.Relation.Relation" :disabled="true"></el-input>
                 </el-form-item>
@@ -139,7 +139,7 @@
           <label>状态</label>
           <!--<el-form label-width='90px'>-->
             <el-row>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="当前医院">
                   <el-input placeholder="当前医院" v-model="patientInfo.State.HospitalName" :disabled="true"></el-input>
                 </el-form-item>
@@ -156,7 +156,7 @@
           <el-table :data="tableData"  ref="referralTable" @cell-click="handleCellClick" height="300" width="1050"  >
             <el-table-column label="病例 id" prop="Id" width="100">
             </el-table-column>
-            <el-table-column label="时间" prop="Date" width="100">
+            <el-table-column label="时间" prop="Date" width="300">
             </el-table-column>
             <el-table-column label="就诊医院" prop="HospitalId" width="100">
             </el-table-column>

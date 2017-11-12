@@ -69,7 +69,7 @@
       InformationDialog,
       ReferralProfile
     },
-    props: ['sendVisible','patientInfo','ws'],
+    props: ['sendVisible','patientInfo','ws','patientInfoObj'],
     data() {
       return {
         dialogVisible: false,
@@ -271,6 +271,25 @@
           tmpPatient.referralStatus = '被拒绝';
         }
         this.undealTableData.push(tmpPatient);
+      },
+      patientInfoObj(newValue){
+        if(newValue === ''){
+          ;//don't need to do anything
+        }else {
+          console.log('对方医院处理了该patient id为',newValue)
+          for(let i=0;i<this.todealTableData.length;i++){
+            if(this.todealTableData[i].id === newValue.id){
+              let p = this.todealTableData.splice(i, 1);
+              p[0].referralStatus = '已处理'
+              if(newValue.operation === 'accept'){
+                p[0].operationStatus = '对方接受'
+              } else {
+                p[0].operationStatus = '对方拒绝'
+              }
+              this.dealedTableData.push(p[0])
+            }
+          }
+        }
       }
     },
     methods: {
@@ -293,9 +312,11 @@
         }
       },
       showReferral (row) {
-        this.referralVisible = true
-        this.referralState = 'look'
-        this.referralInfo = row.id
+//        this.referralVisible = true
+//        this.referralState = 'look'
+//        this.referralInfo = row.id
+        this.clickPatientId = row.id;
+        this.dialogVisible = true;
       },
       showReferralCase(rowId){
         //console.log('calling referral case');
@@ -326,106 +347,6 @@
         this.referralVisible = true;
         this.referralInfo = row.id
       },
-//      handleNew() {
-//
-//        this._data.dialogVisible = true;
-//        this._props.sendLogs += '\ncreating a new case';
-//        this.$emit('update:sendLogs', this._props.sendLogs);
-//        Date.prototype.format = function (format) {
-//          var o = {
-//            "M+": this.getMonth() + 1, //month
-//            "d+": this.getDate(),    //day
-//            "h+": this.getHours(),   //hour
-//            "m+": this.getMinutes(), //minute
-//            "s+": this.getSeconds(), //second
-//            "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter
-//            "S": this.getMilliseconds() //millisecond
-//          }
-//          if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
-//            (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-//          for (var k in o) if (new RegExp("(" + k + ")").test(format))
-//            format = format.replace(RegExp.$1,
-//              RegExp.$1.length === 1 ? o[k] :
-//                ("00" + o[k]).substr(("" + o[k]).length));
-//          return format;
-//        };
-//        let tmp = {
-//          create_time: new Date().format("yyyy-MM-dd"),
-//          receive_time: new Date().format("yyyy-MM-dd"),
-//          name: '',
-//          age: '',
-//          sex: '男',
-//          address: '',
-//          //history: '',
-//          guominyuan: '',
-//          doctor: '',
-//          sick: '',
-//          detail_sick: '',
-//        };
-//        this._data.operation = "new";
-//        this._data.sampleData = tmp
-//      },
-//      updateTableData() {
-//        this._data.dialogVisible = false;
-//        if (this._data.operation === "new") {
-//          this.table.push(this._data.sampleData)
-//        } else if (this._data.operation === "edit") {
-//
-//        }
-//      },
-//      showHistory(index, row) {
-//        this._data.historyDialogVisible = true;
-//      },
-//      handleDelete(index, row) {
-//        this._props.sendLogs += '\ndeleting a case';
-//        this.$emit('update:sendLogs', this._props.sendLogs);
-//        this.table.splice(index, 1);
-//      },
-//      handleMove(index, row) {
-//        let win = this;
-//        let totalLogs = ['医院A：发送转诊请求','后台A：接收到转诊请求，对内容解码', 'fabric：验证请求用户权限', 'fabric：执行查询的chaincode，返回查询结果',
-//          '后台A：接收到查询结果，向对应服务器建立连接', '后台A：向后台B发送转诊信息', '后台B：接收到转诊信息，向fabric查询病人信息', 'fabric：验证请求用户权限',
-//          'fabric：执行查询的chaincode，返回查询结果', '后台B：打包查询结果和其余信息，发送给医院B', '医院B：接收到转诊请求，同意转诊，并提交附加信息',
-//          '后台B：接收到处理结果，将结果和附加信息发送给后台A', '后台A：接收到处理结果，将结果和附加信息发送给医院A' ];
-//        let timer = setInterval(function () {
-//          let logItem = totalLogs.shift();
-//          if (logItem === undefined) {
-//            clearInterval(timer);
-//            return;
-//          }
-//          addLogs(logItem);
-//        }, 1000);
-//
-//        function addLogs(logMsg) {
-//          win._props.sendLogs += '\n';
-//          win._props.sendLogs += logMsg;
-//          win.$emit('update:sendLogs', win._props.sendLogs);
-//        }
-//
-//        win._props.sendData = row;
-//        win.$emit('update:sendData', win._props.sendData);
-//        let sendData = {"operation": "send", "hospitalId": "hospital01", "patientId": "patient01", "additionMsg": row};
-//        console.log('in send ws is ', win._props.ws);
-//        win._props.ws.send(JSON.stringify(sendData));
-//        win.handleDelete(index, row);
-////        let myws = new WebSocket('ws://localhost:8889/referral/request');
-////        myws.onopen = function (event) {
-////          //console.log('doctor client open');
-////          //myws.send('move' + index + row)
-////          let sendData = {"hospitalId": "hospital01","patientId": "patient01","additionMsg": row};
-////          myws.send(JSON.stringify(sendData));
-////        };
-////        myws.onmessage = function (event) {
-////          console.log('doctor client gets message');
-////          console.log(event.data);
-////          win.$message({
-////            type: 'success',
-////            message: event.data
-////          });
-////          win.handleDelete(index, row)
-////        };
-////      }
-//      },
     }
   }
 </script>

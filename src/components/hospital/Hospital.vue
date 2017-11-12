@@ -9,7 +9,7 @@
       </el-col>
       <br/>
       <el-col :span="22">
-        <Send :sendVisible="sendVisible" :patient.sync="rejectPatientInfo" :ws.sync="myws"></Send>
+        <Send :sendVisible="sendVisible" :patientInfo.sync="rejectPatientInfo" :patientInfoObj.sync="acceptPatientInfo" :ws.sync="myws"></Send>
       </el-col>
     </el-row>
 
@@ -37,6 +37,7 @@
         receiveVisible: false,
         receivePatientInfo: {},
         rejectPatientInfo: {},
+        acceptPatientInfo: '',
         myws: this.init(),
         navItems: [{
           index: 'send',
@@ -69,10 +70,24 @@
               type: 'success',
               message: '对方同意接收转诊'
             });
+            console.log('同意转诊,接收到profile ',jsonobj.referralProfile)
+            let tmpPatientInfo = {
+              'id': jsonobj.referralProfile.PatientId,
+              'operation': 'accept'
+            }
+            console.log('tmpPatientId is ',tmpPatientInfo)
+            win.acceptPatientInfo = tmpPatientInfo
           }else if(jsonobj.operation==="reject"){
             win.$message.error('对方拒绝接收转诊');
              win.rejectPatientInfo = jsonobj.referralProfile;
             console.log("json data is ",jsonobj)
+            console.log('拒绝转诊,接收到profile ',jsonobj.referralProfile)
+            let tmpPatientInfo = {
+              'id': jsonobj.referralProfile.PatientId,
+              'operation': 'reject'
+            }
+            console.log('tmpPatientId is ',tmpPatientInfo)
+            win.acceptPatientInfo = tmpPatientInfo
           }else {
             win.$message.error('某些原因导致错误');
           }
