@@ -16,20 +16,14 @@ var refId = []
 var count = 0
 var generateRefferralId = function (patientId) {
   //* 生成转诊单号
-  var len = count
-  if (len < 10) {
-    len = '0' + len
+  var info = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [], 'returnNextReferralIdAndTime', patient.adminName, patient.org)
+  var a=''
+  var s = info.indexOf('&')
+  var message = {
+    referalId: info.substr(0,s),
+    date: info.substr(s+1)
   }
-  const refToken = 'referral' + len
-  for (var key in refId) {
-    if (key === patientId) {
-      return refId[patientId]
-    }
-  }
-  count++
-  refId[patientId] = refToken
-  var referralId = refId[patientId]
-  return referralId
+  return message
 }
 
 

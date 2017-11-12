@@ -143,13 +143,13 @@ const getReferralByreffralId = function* () {
 
 const createReferralProfile = function* () {
   const patientId = this.params.patientId
-  const referralId = referral.generateRefferralId(patientId)
+  const seqInfo = referral.generateRefferralId(patientId)
   const patientString = yield patient.queryPatientByPatientId(patientId)
   var msg = JSON.parse(patientString)
   var ref = {
-    'Id': referralId,
+    'Id': seqInfo.referralId,
     'State': "undeal",
-    'Date': Date.now(),
+    'Date': seqInfo.data,
     'Name': msg.Name,
     'PIN': msg.PIN,
     'PatientId': patientId,
