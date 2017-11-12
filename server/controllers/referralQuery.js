@@ -111,6 +111,7 @@ const getReferralByreffralId = function* () {
       'State': referralMessage.State,
       'Date': referralMessage.Date,
       'Name': patientMessage.Name,
+      'patientId': patientId,
       'PIN': patientMessage.PIN,
       'Gender': patientMessage.Gender,
       'Age': patientMessage.Age,
