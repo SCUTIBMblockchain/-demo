@@ -4,12 +4,12 @@ const invokeChainCode = require('./invokeTransaction').invokeChaincode
 
 //* 生成转诊单
 var generateReferralProfile = function (msg) {
-  return invokeChainCode(['localhost:7051'], patient.channelName, patient.chaincode, 'CreateReferralProfile', [msg.Id, msg.PatientId, msg.ReferralType, msg.RelationDemand, msg.PayWay,
+  return invokeChainCode(['120.77.243.233:7051'], patient.channelName, patient.chaincode, 'CreateReferralProfile', [msg.Id, msg.PatientId, msg.ReferralType, msg.RelationDemand, msg.PayWay,
     msg.IllnessState, msg.ToInfo.HospitalId, msg.FromInfo.HospitalId, msg.FromInfo.Section, msg.FromInfo.Doctor,
     msg.FromInfo.Phone], patient.adminName, patient.org)
 }
 var ReferralReturn = function (msg) {
-  return invokeChainCode(['localhost:7051'], patient.channelName, patient.chaincode, 'transferReturn', [msg.Id, msg.ToInfo.HospitalId, msg.State, msg.ToInfo.Section, msg.ToInfo.Doctor, msg.ToInfo.Phone, msg.ToInfo.RejectReason], patient.adminName, patient.org)
+  return invokeChainCode(['120.77.243.233:7051'], patient.channelName, patient.chaincode, 'transferReturn', [msg.Id, msg.ToInfo.HospitalId, msg.State, msg.ToInfo.Section, msg.ToInfo.Doctor, msg.ToInfo.Phone, msg.ToInfo.RejectReason], patient.adminName, patient.org)
 }
 
 var refId = []
