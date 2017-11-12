@@ -208,7 +208,7 @@
             "Id": newPaitent.Id,
             "State": newPaitent.State,
             "Date": newPaitent.Date,
-            "PatientId": newPaitent.patientId,
+            "PatientId": newPaitent.PatientId,
             "Name": newPaitent.Name,
             "FromInfo": {
               "Section": newPaitent.FromInfo.Section,

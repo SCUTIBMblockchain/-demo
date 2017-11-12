@@ -336,7 +336,7 @@
             console.log('p is',p[0]);
             //p.referralStatus = '待处理';
             console.log(typeof(p[0]));
-            p[0].referralStatus = '未处理'
+            p[0].referralStatus = '待处理'
             this.todealTableData.push(p[0]);
           }
         }

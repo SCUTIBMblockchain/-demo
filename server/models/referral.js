@@ -14,10 +14,9 @@ var ReferralReturn = function (msg) {
 
 var refId = []
 var count = 0
-var generateRefferralId = function (patientId) {
+var generateRefferralId = function* (patientId) {
   //* 生成转诊单号
   var info = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [], 'returnNextReferralIdAndTime', patient.adminName, patient.org)
-  var a=''
   var s = info.indexOf('&')
   var message = {
     referalId: info.substr(0,s),
