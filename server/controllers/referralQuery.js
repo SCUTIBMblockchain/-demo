@@ -93,13 +93,13 @@ const getReferralsByPatientId = function* () {
 //根据转诊单ID查询转诊单
 const getReferralByreffralId = function* () {
   const msg = this.params.referralId
-  
+
   const referralString = yield referral.queryReferralByreferralId(msg)
   var referralMessage = JSON.parse(referralString)
   patientId=referralMessage.PatientId
   const patientString = yield patient.queryPatientByPatientId(patientId)
   var patientMessage = JSON.parse(patientString)
- 
+
   var HospitalName = null
     if (referralMessage.FromInfo.hospitalId === 'hospital01') {
       HospitalName = '人民医院'
@@ -139,7 +139,7 @@ const getReferralByreffralId = function* () {
   this.body = ref
 }
 
-const getReferral = function* () {
+const createReferralProfile = function* () {
   const patientId = this.params.patientId
   const referralId = referral.generateRefferralId(patientId)
   const patientString = yield patient.queryPatientByPatientId(patientId)
@@ -150,6 +150,7 @@ const getReferral = function* () {
     'Date': msg.Date,
     'Name': msg.Name,
     'PIN': msg.PIN,
+    'patientId': patientId,
     'Gender': msg.Gender,
     'Age': msg.Age,
     'Resident': msg.Resident,
@@ -176,12 +177,44 @@ const getReferral = function* () {
   }
   this.body = ref
 }
+const getReferralsAsReceiverByHospitalId = function* () {
+    const msg = this.params.hospitalId
+      const result = yield referral.queryReferralProfileInfoAsReceiverByHospitalId(msg)
+    const referralsTodeal = JSON.parse(result)
+      const referralsDealed = JSON.parse(result)
+      let backReferrals = {
+        'todealReferralProfileInfo': null,
+        'dealedReferralProfileInfo': null
+    }
+    var con1 = count(referralsTodeal)
+      var con2 = count(referralsDealed)
+      for (var i = 0; i < con1; i++) {
+        var state = referralsTodeal[i].State
+          if (state !== 'undeal') {
+            referralsTodeal.splice(i, 1)
+            i--
+            con1--
+          }
+      }
+    for (var j = 0; j < con2; j++) {
+        state = referralsDealed[j].State
+          if (state === 'undeal') {
+            referralsDealed.splice(j, 1)
+            j--
+            con2--
+          }
+      }
+    backReferrals.todealReferralProfileInfo = referralsTodeal
+    backReferrals.dealedReferralProfileInfo = referralsDealed
+    this.body = backReferrals
+    }
 
 module.exports = {
   getSendReferrals,
   getReceiveReferrals,
   getReferrals,
-  getReferral,
+  createReferralProfile,
   getReferralsByPatientId,
-  getReferralByreffralId
+  getReferralByreffralId,
+  getReferralsAsReceiverByHospitalId
 }

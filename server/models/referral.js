@@ -57,6 +57,10 @@ var queryReferralByreferralId = function* (referralId) {
   const Referrals = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [referralId, "hospital01"], 'queryReferralByReferralIdAndHospitalId', patient.adminName, patient.org)
   return Referrals
 }
+var queryReferralProfileInfoAsReceiverByHospitalId = function* (hospitalId) {
+    const Referrals = yield query.queryChaincode(patient.peer, patient.channelName, patient.chaincode, [hospitalId], 'queryReferralsAsReceiverByHospitalId', patient.adminName, patient.org)
+    return Referrals
+    }
 module.exports = {
   generateReferralProfile,
   querySendReferrals,
@@ -65,5 +69,6 @@ module.exports = {
   generateRefferralId,
   ReferralReturn,
   queryReferralsByPatientId,
-  queryReferralByreferralId
+  queryReferralByreferralId,
+  queryReferralProfileInfoAsReceiverByHospitalId
 }

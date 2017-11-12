@@ -144,7 +144,7 @@
       }
     },
     mounted: function () {
-      this.$http.get('/api/referralProfileInfo/queryByHospitalId/',this.hospitalId)
+      this.$http.get('/api/referralProfileInfo/queryByHospitalId/'+this.hospitalId)
         .then((res) => {
           if(res.status === 200) {
             this.todealTableData.length = 0 //clear the todealTableData
@@ -184,12 +184,12 @@
                   "IllnessState": res.data.dealedReferralProfileInfo[i].FromInfo.IllnessState
                 },
               }
-              if (dealedReferral.State === 'accept') {
+              if (dealedReferral.State === 'receive') {
                 dealedReferral.State = '接受'
               }else if (dealedReferral.State === 'reject') {
                 dealedReferral.State = '拒绝'
               }
-              this.dealedTableData.push(todealReferral)
+              this.dealedTableData.push(dealedReferral)
             }
           }else {
             console.log('this.$http.get(\'/api/referralProfileInfo/queryByHospitalId/\',this.hospitalId) return is not 200')
